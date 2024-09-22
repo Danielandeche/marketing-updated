@@ -48,7 +48,7 @@ type ActiveSymbolTypes = {
 };
 
 const BinaryAnalysisPage = observer(() => {
-    const [activeCard, setActiveCard] = useState('pie_diff');
+    const [activeCard, setActiveCard] = useState('LDP');
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [currentTick, setCurrentTick] = useState<number | string>('Updating...');
     const [allLastDigitList, setAllLastDigitList] = useState<number[]>([]);
@@ -587,7 +587,13 @@ const BinaryAnalysisPage = observer(() => {
                         setEnableDisableMartingale={setEnableDisableMartingale}
                     />
                 )}
-                <div className='buttons'>
+                <div className='buttons'>                  
+                    <button
+                        className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('LDP')}
+                    >
+                        LDP
+                    </button>
                     <button
                         className={`button ${activeCard === 'pie_diff' ? 'active' : ''}`}
                         onClick={() => handleSetActiveCard('pie_diff')}
@@ -605,12 +611,6 @@ const BinaryAnalysisPage = observer(() => {
                         onClick={() => handleSetActiveCard('rise_fall')}
                     >
                         Rise/Fall
-                    </button>
-                    <button
-                        className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
-                        onClick={() => handleSetActiveCard('LDP')}
-                    >
-                        LDP
                     </button>
                 </div>
             </div>

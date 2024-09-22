@@ -46,20 +46,20 @@
 
 /* Styles for even and odd digit boxes */
 .even {
-    background-color: green;
+    background-color: #008000;
 }
 
 .odd {
-    background-color: red;
+    background-color: #ff0000;
 }
 
 /* Styles for rise and fall boxes */
 .rise-ldp {
-    background-color: blue;
+    background-color: #0000ff;
 }
 
 .fall-ldp {
-    background-color: orange;
+    background-color: #ffa500;
 }
 
 /* Button metric styles */
@@ -82,11 +82,11 @@
 }
 
 .metric.even {
-    background-color: green;
+    background-color: #008000;
 }
 
 .metric.odd {
-    background-color: red;
+    background-color: #ff0000;
 }
 
 .metric:hover {
