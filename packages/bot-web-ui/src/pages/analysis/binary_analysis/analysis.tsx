@@ -10,6 +10,7 @@ import OverUnderBarChart from './components/ou_bar_chart';
 import PieChart from './components/pie_chart';
 import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
+import DigitSequenceComponent from './LDP/DigitSequenceComponent';
 
 function sleep(milliseconds: any) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -108,7 +109,7 @@ const BinaryAnalysisPage = observer(() => {
     const DBotStores = useDBotStore();
     const { transactions } = DBotStores;
 
-    const { is_mobile } = ui;
+    const { is_mobile, is_dark_mode_on } = ui;
     const { updateResultsCompletedContract } = transactions;
 
     useEffect(() => {
@@ -221,7 +222,7 @@ const BinaryAnalysisPage = observer(() => {
                                 }
                             }
 
-                            console.log('Martingale Status',enable_disable_martingale.current)
+                            console.log('Martingale Status', enable_disable_martingale.current);
                             if (proposal_open_contract.status === 'lost') {
                                 if (!current_contractids.current.includes(proposal_open_contract.contract_id)) {
                                     totalLostAmount.current += Math.abs(proposal_open_contract.profit);
@@ -354,6 +355,12 @@ const BinaryAnalysisPage = observer(() => {
         });
 
         return returnedList;
+    };
+
+    const getTickList = () => {
+        const requiredItems = allLastDigitList.slice(-numberOfTicks);
+
+        return requiredItems;
     };
 
     const getLineChartList = () => {
@@ -599,8 +606,26 @@ const BinaryAnalysisPage = observer(() => {
                     >
                         Rise/Fall
                     </button>
+                    <button
+                        className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('LDP')}
+                    >
+                        LDP
+                    </button>
                 </div>
             </div>
+            {activeCard === 'LDP' && (
+                <DigitSequenceComponent
+                    digitList={getLastDigitList()}
+                    tickList={getTickList()}
+                    customPrediction={customPrediction}
+                    handleCustomPredictionInputChange={handleCustomPredictionInputChange}
+                    is_dark_mode_on={is_dark_mode_on}
+                    buy_contract={buy_contract}
+                    buy_contract_differs={buy_contract_differs}
+                    selectTickList={selectTickList}
+                />
+            )}
             {/* Middle Cards */}
             {(activeCard === 'rise_fall' || activeCard === 'over_under') && (
                 <div className='rf_ou'>

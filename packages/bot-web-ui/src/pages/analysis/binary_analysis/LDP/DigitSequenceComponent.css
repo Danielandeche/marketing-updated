@@ -1,0 +1,209 @@
+.ldp_max_container {
+    display: flex;
+    justify-content: center;
+}
+.container-ldp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Digit container styles */
+.digit-container-ldp {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.all_digit_boxes {
+    display: flex;
+    gap: 10px;
+}
+
+.last_p {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Common styles for all digit boxes */
+.digit-box {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 5px;
+    border: 2px solid #333;
+}
+
+/* Styles for even and odd digit boxes */
+.even {
+    background-color: green;
+}
+
+.odd {
+    background-color: red;
+}
+
+/* Styles for rise and fall boxes */
+.rise-ldp {
+    background-color: blue;
+}
+
+.fall-ldp {
+    background-color: orange;
+}
+
+/* Button metric styles */
+.metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.metric {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.metric.even {
+    background-color: green;
+}
+
+.metric.odd {
+    background-color: red;
+}
+
+.metric:hover {
+    opacity: 0.9;
+}
+
+/* Sequence container styles */
+.sequences {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sequence {
+    text-align: center;
+}
+
+.sequence h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.sequence-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.container-ldp .digit-container-ldp .last_p label {
+    font-size: 14px;
+    font-weight: bold;
+}
+.container-ldp .digit-container-ldp .custom_prediction {
+    height: 30px !important;
+    width: 70px !important;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 14px;
+}
+.container-ldp .oneclick_amout {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.container-ldp .oneclick_amout input {
+    width: 70px;
+    padding: 6px 0px;
+    text-align: center;
+    border-radius: 2px;
+}
+/* Responsive styles */
+@media (max-width: 768px) {
+    .ldp_max_container {
+        width: 90%;
+        align-items: center;
+        margin: auto;
+        margin-bottom: 80%;
+    }
+
+    .container-ldp {
+        width: 100%;
+    }
+
+    .digit-container-ldp {
+        width: 100%;
+    }
+
+    .all_digit_boxes {
+        width: 100%;
+    }
+
+    .digit-box {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .metric {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ldp_max_container {
+        width: 90%;
+        align-items: center;
+        margin: auto;
+        margin-bottom: 80%;
+    }
+
+    .container-ldp {
+        width: 100%;
+    }
+
+    .digit-container-ldp {
+        width: 100%;
+    }
+
+    .all_digit_boxes {
+        width: 100%;
+    }
+
+    .digit-box {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .metric {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+
+    .metrics {
+        gap: 5px;
+    }
+}
