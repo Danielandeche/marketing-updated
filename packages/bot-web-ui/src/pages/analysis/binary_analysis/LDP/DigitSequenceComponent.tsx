@@ -50,16 +50,16 @@ const DigitSequenceComponent: React.FC<Props> = ({
     // Get background color based on percentages
     const getBackgroundColor = (digit: number): string => {
         if (digit === highestPercentageDigit) {
-            return 'linear-gradient(to top, #00a79e 55%, #777 50%)';
+            return 'linear-gradient(to top, #00a79e 55%, #777 45%)';
         }
         if (digit === secondHighestPercentageDigit) {
-            return 'linear-gradient(to top, #070bf7 35%, #777 50%)';
+            return 'linear-gradient(to top, #070bf7 35%, #777 65%)';
         }
         if (digit === leastPercentageDigit) {
-            return 'linear-gradient(to top, #ff444f 55%, #777 50%)';
+            return 'linear-gradient(to top, #ff444f 55%, #777 45%)';
         }
         if (digit === secondLeastPercentageDigit) {
-            return 'linear-gradient(to top, #ffe644 35%, #777 50%)';
+            return 'linear-gradient(to top, #ffe644 35%, #777 65%)';
         }
         return '#666'; // Default background color
     };

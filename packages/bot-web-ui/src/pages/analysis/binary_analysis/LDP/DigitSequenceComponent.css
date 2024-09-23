@@ -307,6 +307,6 @@
 }
 
 .digit-item.selected:after {
-    background-color: #2a3052; /* Purple background for the selected digit */
+    background-color: #fd9903; /* Purple background for the selected digit */
 }
 
