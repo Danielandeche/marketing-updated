@@ -24,23 +24,49 @@ const DigitSequenceComponent: React.FC<Props> = ({
     handleCustomPredictionInputChange,
 }) => {
     const predictionValue = typeof customPrediction === 'string' ? parseInt(customPrediction) : customPrediction;
-    const {
-        evenPercentage,
-        oddPercentage,
-        overPercentage,
-        underPercentage,
-        matchesPercentage,
-        differsPercentage,
-        risePercentage,
-        fallPercentage,
-    } = calculatePercentages(digitList, tickList, predictionValue);
 
-    digitList = digitList.slice(-10);
-    tickList = tickList.slice(-10);
+    // Calculate based on the last 1000 digits/ticks
+    const fullDigitList = digitList.slice(-1000); // Full list for percentage calculations
+    const fullTickList = tickList.slice(-1000); // Full tick list for calculations
+
+    // Calculate percentages for each digit
+    const percentages = Array.from(
+        { length: 10 },
+        (_, digit) => calculatePercentages(fullDigitList, fullTickList, digit).matchesPercentage
+    );
+
+    // Find the highest, second highest, least, and second least percentages
+    const sortedPercentages = [...percentages].slice().sort((a, b) => b - a);
+    const highestPercentageDigit = percentages.indexOf(sortedPercentages[0]);
+    const secondHighestPercentageDigit = percentages.indexOf(sortedPercentages[1]);
+    const leastPercentageDigit = percentages.indexOf(sortedPercentages[sortedPercentages.length - 1]);
+    const secondLeastPercentageDigit = percentages.indexOf(sortedPercentages[sortedPercentages.length - 2]);
+
+    // Display only the last 10 digits and ticks
+    const displayedDigitList = digitList.slice(-10);
+    const displayedTickList = tickList.slice(-10);
+    const displayedDigit = digitList[digitList.length - 1];
+
+    // Get background color based on percentages
+    const getBackgroundColor = (digit: number): string => {
+        if (digit === highestPercentageDigit) {
+            return 'linear-gradient(to top, #00a79e 55%, #777 50%)';
+        }
+        if (digit === secondHighestPercentageDigit) {
+            return 'linear-gradient(to top, #070bf7 35%, #777 50%)';
+        }
+        if (digit === leastPercentageDigit) {
+            return 'linear-gradient(to top, #ff444f 55%, #777 50%)';
+        }
+        if (digit === secondLeastPercentageDigit) {
+            return 'linear-gradient(to top, #ffe644 35%, #777 50%)';
+        }
+        return '#666'; // Default background color
+    };
 
     // Function to generate Even/Odd sequence
     const getEvenOddSequence = () => {
-        return digitList.map((digit, index) => (
+        return displayedDigitList.map((digit, index) => (
             <div key={index} className={`digit-box ${digit % 2 === 0 ? 'even' : 'odd'}`}>
                 {digit % 2 === 0 ? 'E' : 'O'}
             </div>
@@ -50,8 +76,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
     // Function to generate Rise/Fall sequence
     const getRiseFallSequence = () => {
         const riseFallSequence: string[] = [];
-        for (let i = 1; i < tickList.length; i++) {
-            riseFallSequence.push(tickList[i] > tickList[i - 1] ? 'R' : 'F');
+        for (let i = 1; i < displayedTickList.length; i++) {
+            riseFallSequence.push(displayedTickList[i] > displayedTickList[i - 1] ? 'R' : 'F');
         }
 
         return riseFallSequence.map((item, index) => (
@@ -75,9 +101,37 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         />
                         {selectTickList()}
                     </div>
-                    {/* Digit boxes */}
+
+                    {/* Digit list with individual match percentages */}
+                    <div className='digit-list'>
+                        {Array.from({ length: 10 }, (_, digit) => {
+                            const individualMatchPercentage = calculatePercentages(
+                                fullDigitList,
+                                fullTickList,
+                                digit
+                            ).matchesPercentage;
+                            const backgroundColor = getBackgroundColor(digit);
+
+                            return (
+                                <div
+                                    key={digit}
+                                    className={`digit-item ${digit === customPrediction ? 'selected' : ''}`}
+                                    onClick={() =>
+                                        handleCustomPredictionInputChange({ target: { value: digit } } as any)
+                                    }
+                                    style={{ background: backgroundColor }}
+                                >
+                                    {digit === customPrediction && <div className='red-pointer' />}
+                                    <h3>{digit}</h3>
+                                    <h4>{individualMatchPercentage.toFixed(2)}%</h4>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Digit boxes (last 10 digits only) */}
                     <div className='all_digit_boxes'>
-                        {digitList.map((digit, index) => (
+                        {displayedDigitList.map((digit, index) => (
                             <div key={index} className={`digit-box ${digit % 2 === 0 ? 'even' : 'odd'}`}>
                                 {digit}
                             </div>
@@ -88,16 +142,26 @@ const DigitSequenceComponent: React.FC<Props> = ({
                 <div className='metrics'>
                     {/* Metric buttons */}
                     <button className='metric even' onClick={() => buy_contract_differs('DIGITOVER')}>
-                        Over {overPercentage.toFixed(2)}%
+                        Over{' '}
+                        {calculatePercentages(fullDigitList, fullTickList, predictionValue).overPercentage.toFixed(2)}%
                     </button>
                     <button className='metric odd' onClick={() => buy_contract_differs('DIGITUNDER')}>
-                        Under {underPercentage.toFixed(2)}%
+                        Under{' '}
+                        {calculatePercentages(fullDigitList, fullTickList, predictionValue).underPercentage.toFixed(2)}%
                     </button>
                     <button className='metric even' onClick={() => buy_contract_differs('DIGITMATCH')}>
-                        Matches {matchesPercentage.toFixed(2)}%
+                        Matches{' '}
+                        {calculatePercentages(fullDigitList, fullTickList, predictionValue).matchesPercentage.toFixed(
+                            2
+                        )}
+                        %
                     </button>
                     <button className='metric odd' onClick={() => buy_contract_differs('DIGITDIFF')}>
-                        Differ {differsPercentage.toFixed(2)}%
+                        Differ{' '}
+                        {calculatePercentages(fullDigitList, fullTickList, predictionValue).differsPercentage.toFixed(
+                            2
+                        )}
+                        %
                     </button>
                 </div>
 
@@ -108,10 +172,22 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         <div className='sequence-container'>{getEvenOddSequence()}</div>
                         <div className='metrics'>
                             <button className='metric even' onClick={() => buy_contract('DIGITEVEN', true)}>
-                                Even {evenPercentage.toFixed(2)}%
+                                Even{' '}
+                                {calculatePercentages(
+                                    fullDigitList,
+                                    fullTickList,
+                                    predictionValue
+                                ).evenPercentage.toFixed(2)}
+                                %
                             </button>
                             <button className='metric odd' onClick={() => buy_contract('DIGITODD', true)}>
-                                Odd {oddPercentage.toFixed(2)}%
+                                Odd{' '}
+                                {calculatePercentages(
+                                    fullDigitList,
+                                    fullTickList,
+                                    predictionValue
+                                ).oddPercentage.toFixed(2)}
+                                %
                             </button>
                         </div>
                     </div>
@@ -122,10 +198,22 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         <div className='sequence-container'>{getRiseFallSequence()}</div>
                         <div className='metrics'>
                             <button className='metric even' onClick={() => buy_contract('CALL', true)}>
-                                Rise {risePercentage.toFixed(2)}%
+                                Rise{' '}
+                                {calculatePercentages(
+                                    fullDigitList,
+                                    fullTickList,
+                                    predictionValue
+                                ).risePercentage.toFixed(2)}
+                                %
                             </button>
                             <button className='metric odd' onClick={() => buy_contract('PUT', true)}>
-                                Fall {fallPercentage.toFixed(2)}%
+                                Fall{' '}
+                                {calculatePercentages(
+                                    fullDigitList,
+                                    fullTickList,
+                                    predictionValue
+                                ).fallPercentage.toFixed(2)}
+                                %
                             </button>
                         </div>
                     </div>

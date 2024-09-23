@@ -207,3 +207,106 @@
         gap: 5px;
     }
 }
+
+.digit-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.digit-item {
+    position: relative;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: #222;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s;
+    text-align: center;
+    margin: 5px;
+}
+
+.digit-item.selected {
+    background-color: #007bff;
+}
+
+.digit-item:hover {
+    transform: scale(1.1);
+}
+
+.digit-item h3 {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    z-index: 1;
+    font-weight: 500;
+    margin: 0;
+}
+
+.digit-item h4 {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    font-size: 0.9rem;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    font-weight: 500;
+    color: #fff;
+}
+
+.digit-item:after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    background: #222;
+}
+
+/* Media Query for small screens (mobile) */
+@media (max-width: 768px) {
+    .digit-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .digit-item {
+        flex: 1 1 calc(20% - 10px); /* Flex to take 1/5th of the row (20%) minus margin */
+        max-width: 55px;
+        height: 55px;
+        margin: 5px;
+    }
+    .digit-item h3 {
+        font-size: 1rem;
+    }
+    .digit-item h4 {
+        font-size: 0.8rem;
+    }
+}
+
+/* Media Query for laptop screens */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .digit-item {
+        width: 55px;
+        height: 55px;
+    }
+    .digit-item h3 {
+        font-size: 1.1rem;
+    }
+    .digit-item h4 {
+        font-size: 0.85rem;
+    }
+}
+
+.digit-item.selected:after {
+    background-color: #2a3052; /* Purple background for the selected digit */
+}
+
