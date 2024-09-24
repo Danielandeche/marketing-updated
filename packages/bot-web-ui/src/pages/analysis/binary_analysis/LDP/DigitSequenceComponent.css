@@ -45,6 +45,17 @@
 }
 
 /* Styles for even and odd digit boxes */
+.over {
+    background-color: #09dfd4;
+}
+
+.under {
+    background-color: #f60740;
+}
+
+.same {
+    background-color: #555;
+}
 .even {
     background-color: #008000;
 }
@@ -53,6 +64,9 @@
     background-color: #ff0000;
 }
 
+.blue {
+    background-color: #888;
+}
 /* Styles for rise and fall boxes */
 .rise-ldp {
     background-color: #0000ff;
@@ -268,7 +282,7 @@
     position: absolute;
     inset: 5px;
     border-radius: 50%;
-    background: #222;
+    background: #333;
 }
 
 /* Media Query for small screens (mobile) */
@@ -307,6 +321,6 @@
 }
 
 .digit-item.selected:after {
-    background-color: #fd9903; /* Purple background for the selected digit */
+    background-color: #a117c7; /* Purple background for the selected digit */
 }
 

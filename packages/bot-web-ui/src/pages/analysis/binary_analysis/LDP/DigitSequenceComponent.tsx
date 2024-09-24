@@ -54,22 +54,31 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const leastPercentageDigit = percentages.indexOf(sortedPercentages[sortedPercentages.length - 1]);
     const secondLeastPercentageDigit = percentages.indexOf(sortedPercentages[sortedPercentages.length - 2]);
 
-    // Get background color based on percentage rankings
     const getBackgroundColor = (digit: number): string => {
+        let gradientPercentage: number;
+        let color: string;
+    
         if (digit === highestPercentageDigit) {
-            return 'linear-gradient(to top, #00a79e 55%, #777 45%)';
+            gradientPercentage = 40; // Percentage where the solid color starts
+            color = '#00a79e'; // Top solid color
+        } else if (digit === secondHighestPercentageDigit) {
+            gradientPercentage = 50;
+            color = '#070bf7';
+        } else if (digit === leastPercentageDigit) {
+            gradientPercentage = 40;
+            color = '#ff444f';
+        } else if (digit === secondLeastPercentageDigit) {
+            gradientPercentage = 50;
+            color = '#ffe644';
+        } else {
+            gradientPercentage = 50;
+            color = '#777';
         }
-        if (digit === secondHighestPercentageDigit) {
-            return 'linear-gradient(to top, #070bf7 35%, #777 65%)';
-        }
-        if (digit === leastPercentageDigit) {
-            return 'linear-gradient(to top, #ff444f 55%, #777 45%)';
-        }
-        if (digit === secondLeastPercentageDigit) {
-            return 'linear-gradient(to top, #ffe644 35%, #777 65%)';
-        }
-        return '#666'; // Default background color
+    
+        // Construct the background with a solid color and a transparent gradient
+        return `#444 linear-gradient(to bottom, transparent ${gradientPercentage}%, ${color} 0)`;
     };
+    
 
     // Generate Even/Odd sequence
     const getEvenOddSequence = () => {
@@ -135,11 +144,25 @@ const DigitSequenceComponent: React.FC<Props> = ({
 
                     {/* Digit boxes (last 10 digits only) */}
                     <div className='all_digit_boxes'>
-                        {digitList.map((digit, index) => (
-                            <div key={index} className={`digit-box ${digit % 2 === 0 ? 'even' : 'odd'}`}>
-                                {digit}
-                            </div>
-                        ))}
+                    {digitList.map((digit, index) => {
+                        let className = '';
+
+                        if (typeof customPrediction === 'number') {
+                        if (digit > customPrediction) {
+                            className = 'over';
+                        } else if (digit < customPrediction) {
+                            className = 'under';
+                        } else {
+                            className = 'same';
+                        }
+                        }
+
+                        return (
+                        <div key={index} className={`digit-box ${className}`}>
+                            {digit}
+                        </div>
+                        );
+                    })}
                     </div>
                 </div>
 
