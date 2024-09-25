@@ -336,3 +336,48 @@
     background-color: #a117c7; /* Purple background for the selected digit */
 }
 
+.custom-trade-form {
+    display: flex; /* Change to flex to align items in a row */
+    align-items: center; /* Center items vertically */
+    margin: 20px 0; /* Add some margin to separate from other elements */
+    padding: 10px;
+    border: 1px solid #fc0202; /* Optional: Add a border */
+    border-radius: 5px; /* Optional: Round corners */
+}
+
+.custom-trade-form label {
+    margin-right: 10px; /* Space between label and input/select */
+    font-weight: bold; /* Make labels bold */
+}
+
+.custom-trade-form input[type='number'] {
+    margin-right: 10px; /* Space between input and select */
+    padding: 5px;
+    border: 1px solid #ccc; /* Border for the input */
+    border-radius: 3px; /* Round corners for the input */
+    width: 60px; /* Fixed width for better alignment */
+}
+
+.custom-trade-form select {
+    margin-right: 10px; /* Space between selects */
+    padding: 5px;
+    border: 1px solid #ccc; /* Border for select */
+    border-radius: 3px; /* Round corners for select */
+    width: 150px; /* Fixed width for better alignment */
+}
+
+.auto-trade-controls {
+    margin-left: 10px; /* Space on the left of the button */
+}
+
+.auto-trade-controls button {
+    padding: 10px 15px; /* Padding for the button */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Round corners for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.auto-trade-controls button:hover {
+    opacity: 0.9; /* Slightly reduce opacity on hover */
+}

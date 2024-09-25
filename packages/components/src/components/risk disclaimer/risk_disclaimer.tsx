@@ -43,9 +43,6 @@ const RiskDisclaimer = observer(() => {
                         </ul>
                         <p>You should never trade with borrowed money or with money that you cannot afford to lose.</p>
                         <div className='bottom_btn'>
-                            <button className='dont_show_again' onClick={() => setDontShowAgain()}>
-                                Dont Show Again
-                            </button>
                             <button className='close_btn' onClick={togglePopup}>
                                 Close
                             </button>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { calculatePercentages } from './calculatePercentage';
 import './DigitSequenceComponent.css';
 
@@ -23,9 +23,58 @@ const DigitSequenceComponent: React.FC<Props> = ({
     buy_contract_differs,
     handleCustomPredictionInputChange,
 }) => {
-    const predictionValue = typeof customPrediction === 'string' ? parseInt(customPrediction) : customPrediction;
+    const [numDigits, setNumDigits] = useState<number | string>(3); // Allow both number and string
+    const [comparisonOperator, setComparisonOperator] = useState('greater than');
+    const [tradeAction, setTradeAction] = useState('DIGITOVER');
+    const [isAutoTrading, setIsAutoTrading] = useState(false); // State for auto-trading
+    const [tradeExecuted, setTradeExecuted] = useState(false); // Track if trade has been executed
 
-    // Calculate percentages based on digitList, tickList, and customPrediction (predictionValue)
+    const handleNumDigitsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setNumDigits(value === '' ? '' : Number(value)); // Set to empty string if cleared
+    };
+
+    const handleComparisonOperatorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setComparisonOperator(event.target.value);
+    };
+
+    const handleTradeActionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setTradeAction(event.target.value);
+    };
+
+    const predictionValue = typeof customPrediction === 'string' ? parseInt(customPrediction) : customPrediction;
+    const lastNDigits = digitList.slice(-numDigits);
+
+    const shouldTriggerTrade = lastNDigits.every(digit => {
+        switch (comparisonOperator) {
+            case 'greater than':
+                return digit > predictionValue;
+            case 'less than':
+                return digit < predictionValue;
+            case 'equal to':
+                return digit === predictionValue;
+            default:
+                return false;
+        }
+    });
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+
+        if (isAutoTrading) {
+            interval = setInterval(() => {
+                if (shouldTriggerTrade && !tradeExecuted) {
+                    buy_contract_differs(tradeAction); // Take the trade if conditions are met
+                    setTradeExecuted(true); // Mark trade as executed
+                } else if (!shouldTriggerTrade) {
+                    setTradeExecuted(false); // Reset trade execution if conditions are not met
+                }
+            }, 1000); // Adjust the interval time as needed
+        }
+
+        return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
+    }, [buy_contract_differs, isAutoTrading, shouldTriggerTrade, tradeAction, tradeExecuted]);
+
     const {
         evenPercentage,
         oddPercentage,
@@ -37,17 +86,14 @@ const DigitSequenceComponent: React.FC<Props> = ({
         fallPercentage,
     } = calculatePercentages(digitList, tickList, predictionValue);
 
-    // Limit both lists to the last 10 items
     digitList = digitList.slice(-10);
     tickList = tickList.slice(-10);
 
-    // Calculate percentages for each digit (0-9)
     const percentages = Array.from(
         { length: 10 },
         (_, digit) => calculatePercentages(digitList, tickList, digit).matchesPercentage
     );
 
-    // Find the highest, second highest, least, and second least percentages
     const sortedPercentages = [...percentages].slice().sort((a, b) => b - a);
     const highestPercentageDigit = percentages.indexOf(sortedPercentages[0]);
     const secondHighestPercentageDigit = percentages.indexOf(sortedPercentages[1]);
@@ -58,8 +104,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
         let gradientPercentage: number, color: string;
 
         if (digit === highestPercentageDigit) {
-            gradientPercentage = 40; // Percentage where the solid color starts
-            color = '#00a79e'; // Top solid color
+            gradientPercentage = 40;
+            color = '#00a79e';
         } else if (digit === secondHighestPercentageDigit) {
             gradientPercentage = 50;
             color = '#070bf7';
@@ -74,11 +120,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
             color = '#777';
         }
 
-        // Construct the background with a solid color and a transparent gradient
         return `#444 linear-gradient(to bottom, transparent ${gradientPercentage}%, ${color} 0)`;
     };
 
-    // Generate Even/Odd sequence
     const getEvenOddSequence = () => {
         return digitList.map((digit, index) => (
             <div key={index} className={`digit-box ${digit % 2 === 0 ? 'even' : 'odd'}`}>
@@ -87,7 +131,6 @@ const DigitSequenceComponent: React.FC<Props> = ({
         ));
     };
 
-    // Generate Rise/Fall sequence
     const getRiseFallSequence = () => {
         const riseFallSequence: string[] = [];
         for (let i = 1; i < tickList.length; i++) {
@@ -116,10 +159,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         {selectTickList()}
                     </div>
 
-                    {/* Digit list with individual match percentages */}
                     <div className='digit-list'>
                         {Array.from({ length: 10 }, (_, digit) => {
-                            // Calculate the match percentage for the current digit (0-9)
                             const individualMatchPercentage = calculatePercentages(
                                 digitList,
                                 tickList,
@@ -144,7 +185,6 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         })}
                     </div>
 
-                    {/* Digit boxes (last 10 digits only) */}
                     <div className='all_digit_boxes'>
                         {digitList.map((digit, index) => {
                             let className = '';
@@ -165,6 +205,33 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 </div>
                             );
                         })}
+                    </div>
+                </div>
+
+                <div className='custom-trade-form'>
+                    <label>
+                        If the last
+                        <input type='number' value={numDigits} onChange={handleNumDigitsChange} />
+                        digits are
+                    </label>
+                    <select value={comparisonOperator} onChange={handleComparisonOperatorChange}>
+                        <option value='greater than'>greater than</option>
+                        <option value='less than'>less than</option>
+                        <option value='equal to'>equal to</option>
+                    </select>
+                    <label>LDP, it trades </label>
+                    <select value={tradeAction} onChange={handleTradeActionChange}>
+                        <option value='DIGITOVER'>Digit Over</option>
+                        <option value='DIGITUNDER'>Digit Under</option>
+                        <option value='DIGITDIFF'>Digit Differs</option>
+                    </select>
+                    <div className='auto-trade-controls'>
+                        <button
+                            style={{ backgroundColor: isAutoTrading ? 'red' : 'green', color: '#fff' }}
+                            onClick={() => setIsAutoTrading(prev => !prev)}
+                        >
+                            {isAutoTrading ? 'Stop Auto Trading' : 'Start Auto Trading'}
+                        </button>
                     </div>
                 </div>
 
