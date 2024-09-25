@@ -8,8 +8,6 @@ import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
 import { rudderstackDashboardClose, rudderstackDashboardOpen } from './analytics/rudderstack-dashboard';
 import Local from './load-bot-preview/local';
 import Cards from './cards';
-import InfoPanel from './info-panel';
-import UserGuide from './user-guide';
 import './style.css';
 type TMobileIconGuide = {
     handleTabChange: (active_number: number) => void;
@@ -51,11 +49,6 @@ const BinaryToolsBots = observer(({ handleTabChange }: TMobileIconGuide) => {
                 })}
             >
                 <div className='tab__dashboard__content'>
-                    <UserGuide
-                        is_mobile={is_mobile}
-                        handleTabChange={handleTabChange}
-                        setActiveTabTutorial={setActiveTabTutorial}
-                    />
                     <div className='quick-panel'>
                         <div
                             className={classNames('tab__dashboard__header', {
@@ -98,7 +91,6 @@ const BinaryToolsBots = observer(({ handleTabChange }: TMobileIconGuide) => {
                     </div>
                 </div>
             </div>
-            <InfoPanel />
             {active_tab === 0 && <OnboardTourHandler is_mobile={is_mobile} />}
         </React.Fragment>
     );

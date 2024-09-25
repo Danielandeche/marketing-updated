@@ -55,9 +55,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const secondLeastPercentageDigit = percentages.indexOf(sortedPercentages[sortedPercentages.length - 2]);
 
     const getBackgroundColor = (digit: number): string => {
-        let gradientPercentage: number;
-        let color: string;
-    
+        let gradientPercentage: number, color: string;
+
         if (digit === highestPercentageDigit) {
             gradientPercentage = 40; // Percentage where the solid color starts
             color = '#00a79e'; // Top solid color
@@ -74,11 +73,10 @@ const DigitSequenceComponent: React.FC<Props> = ({
             gradientPercentage = 50;
             color = '#777';
         }
-    
+
         // Construct the background with a solid color and a transparent gradient
         return `#444 linear-gradient(to bottom, transparent ${gradientPercentage}%, ${color} 0)`;
     };
-    
 
     // Generate Even/Odd sequence
     const getEvenOddSequence = () => {
@@ -122,7 +120,11 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     <div className='digit-list'>
                         {Array.from({ length: 10 }, (_, digit) => {
                             // Calculate the match percentage for the current digit (0-9)
-                            const individualMatchPercentage = calculatePercentages(digitList, tickList, digit).matchesPercentage;
+                            const individualMatchPercentage = calculatePercentages(
+                                digitList,
+                                tickList,
+                                digit
+                            ).matchesPercentage;
                             const backgroundColor = getBackgroundColor(digit);
 
                             return (
@@ -144,40 +146,40 @@ const DigitSequenceComponent: React.FC<Props> = ({
 
                     {/* Digit boxes (last 10 digits only) */}
                     <div className='all_digit_boxes'>
-                    {digitList.map((digit, index) => {
-                        let className = '';
+                        {digitList.map((digit, index) => {
+                            let className = '';
 
-                        if (typeof customPrediction === 'number') {
-                        if (digit > customPrediction) {
-                            className = 'over';
-                        } else if (digit < customPrediction) {
-                            className = 'under';
-                        } else {
-                            className = 'same';
-                        }
-                        }
+                            if (typeof customPrediction === 'number') {
+                                if (digit > customPrediction) {
+                                    className = 'over';
+                                } else if (digit < customPrediction) {
+                                    className = 'under';
+                                } else {
+                                    className = 'same';
+                                }
+                            }
 
-                        return (
-                        <div key={index} className={`digit-box ${className}`}>
-                            {digit}
-                        </div>
-                        );
-                    })}
+                            return (
+                                <div key={index} className={`digit-box ${className}`}>
+                                    {digit}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
                 <div className='metrics'>
                     {/* Metric buttons */}
-                    <button className='metric even' onClick={() => buy_contract_differs('DIGITOVER')}>
+                    <button className='metric over' onClick={() => buy_contract_differs('DIGITOVER')}>
                         Over {overPercentage.toFixed(2)}%
                     </button>
-                    <button className='metric odd' onClick={() => buy_contract_differs('DIGITUNDER')}>
+                    <button className='metric under' onClick={() => buy_contract_differs('DIGITUNDER')}>
                         Under {underPercentage.toFixed(2)}%
                     </button>
-                    <button className='metric even' onClick={() => buy_contract_differs('DIGITMATCH')}>
+                    <button className='metric match' onClick={() => buy_contract_differs('DIGITMATCH')}>
                         Matches {matchesPercentage.toFixed(2)}%
                     </button>
-                    <button className='metric odd' onClick={() => buy_contract_differs('DIGITDIFF')}>
+                    <button className='metric under' onClick={() => buy_contract_differs('DIGITDIFF')}>
                         Differ {differsPercentage.toFixed(2)}%
                     </button>
                 </div>

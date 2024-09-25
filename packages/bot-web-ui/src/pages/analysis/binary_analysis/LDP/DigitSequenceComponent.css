@@ -103,6 +103,18 @@
     background-color: #ff0000;
 }
 
+.metric.over {
+    background-color: #09dfd4;
+}
+
+.metric.under {
+    background-color: #f60740;
+}
+
+.metric.match {
+    background-color: #555;
+}
+
 .metric:hover {
     opacity: 0.9;
 }
@@ -188,7 +200,7 @@
 
 @media (max-width: 480px) {
     .ldp_max_container {
-        width: 90%;
+        width: 100%;
         align-items: center;
         margin: auto;
         margin-bottom: 80%;
@@ -213,7 +225,7 @@
     }
 
     .metric {
-        padding: 6px 12px;
+        padding: 6px 4px;
         font-size: 10px;
     }
 

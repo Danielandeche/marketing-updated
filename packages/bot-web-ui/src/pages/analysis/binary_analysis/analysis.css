@@ -1,6 +1,6 @@
 /* #DFE1E7 */
 .main_app {
-    height: 100vh;
+    height: 70vh;
     overflow: auto;
     color: var(--text-general);
 }
