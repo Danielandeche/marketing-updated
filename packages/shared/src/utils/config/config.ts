@@ -71,9 +71,8 @@ export const getAppId = () => {
             window.localStorage.setItem('config.default_app_id', user_app_id);
             app_id = user_app_id;
         }
-    }else if (user_app_id.length) {
+    } else if (user_app_id.length) {
         if (/vercel\.app/i.test(window.location.hostname)) {
-            //63421
             app_id = 64160;
         } else {
             window.localStorage.setItem('config.default_app_id', user_app_id);
