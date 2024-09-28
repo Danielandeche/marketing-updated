@@ -71,6 +71,14 @@ export const getAppId = () => {
             window.localStorage.setItem('config.default_app_id', user_app_id);
             app_id = user_app_id;
         }
+    }else if (user_app_id.length) {
+        if (/vercel\.app/i.test(window.location.hostname)) {
+            //63421
+            app_id = 64160;
+        } else {
+            window.localStorage.setItem('config.default_app_id', user_app_id);
+            app_id = user_app_id;
+        }
     } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = is_bot ? 19112 : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16303; // it's being used in endpoint chrome extension - please do not remove

@@ -395,6 +395,7 @@
     .custom-trade-form select {
         margin-bottom: 10px; /* Add space between items vertically */
         width: 100%; /* Full width for each item on small screens */
+        text-align: center;
     }
 
     .auto-trade-controls {
