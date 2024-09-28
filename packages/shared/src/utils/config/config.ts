@@ -65,7 +65,8 @@ export const getAppId = () => {
         app_id = 36300;
     }else if (user_app_id.length) {
         if (/app\.github\.dev/i.test(window.location.hostname)) {
-            app_id = 63421;
+            //63421
+            app_id = 64359;
         } else {
             window.localStorage.setItem('config.default_app_id', user_app_id);
             app_id = user_app_id;

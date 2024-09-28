@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { calculatePercentages } from './calculatePercentage';
 import './DigitSequenceComponent.css';
 
@@ -28,6 +28,12 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const [tradeAction, setTradeAction] = useState('DIGITOVER');
     const [isAutoTrading, setIsAutoTrading] = useState(false); // State for auto-trading
     const [tradeExecuted, setTradeExecuted] = useState(false); // Track if trade has been executed
+    const [numDigits1, setNumDigits1] = useState<number | string>(3);
+    const [comparisonOperator1, setComparisonOperator1] = useState('even');
+    const [tradeAction1, setTradeAction1] = useState('DIGITEVEN');
+    const [isAutoTrading1, setIsAutoTrading1] = useState(false);
+    const [tradeExecuted1, setTradeExecuted1] = useState(false);
+    const [lastTradeType, setLastTradeType] = useState<string | null>(null); 
 
     const handleNumDigitsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -45,6 +51,21 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const predictionValue = typeof customPrediction === 'string' ? parseInt(customPrediction) : customPrediction;
     const lastNDigits = digitList.slice(-numDigits);
 
+    const handleNumDigitsChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setNumDigits1(value === '' ? '' : Number(value));
+    };
+
+    const handleComparisonOperatorChange1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setComparisonOperator1(event.target.value);
+    };
+
+    const handleTradeActionChange1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setTradeAction1(event.target.value);
+    };
+
+    const lastNDigits1 = digitList.slice(-Number(numDigits1));
+
     const shouldTriggerTrade = lastNDigits.every(digit => {
         switch (comparisonOperator) {
             case 'greater than':
@@ -57,6 +78,27 @@ const DigitSequenceComponent: React.FC<Props> = ({
                 return false;
         }
     });
+
+    const shouldTriggerTrade1 = useCallback(() => {
+        if (comparisonOperator1 === 'custom') {
+            const allEven = lastNDigits1.every(digit => digit % 2 === 0);
+            const allOdd = lastNDigits1.every(digit => digit % 2 !== 0);
+            if (allEven && lastTradeType !== 'even') {
+                buy_contract('DIGITODD', true);
+                setLastTradeType('even');
+            } else if (allOdd && lastTradeType !== 'odd') {
+                buy_contract('DIGITEVEN', true);
+                setLastTradeType('odd');
+            }
+            return allEven || allOdd;
+        } else {
+            return lastNDigits1.every(digit => {
+                if (comparisonOperator1 === 'even') return digit % 2 === 0;
+                if (comparisonOperator1 === 'odd') return digit % 2 !== 0;
+                return false;
+            });
+        }
+    }, [comparisonOperator1, lastNDigits1, lastTradeType, buy_contract]);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -74,6 +116,27 @@ const DigitSequenceComponent: React.FC<Props> = ({
 
         return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
     }, [buy_contract_differs, isAutoTrading, shouldTriggerTrade, tradeAction, tradeExecuted]);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+
+        if (isAutoTrading1) {
+            interval = setInterval(() => {
+                if (shouldTriggerTrade1() && !tradeExecuted1) {
+                    if (comparisonOperator1 !== 'custom') {
+                        buy_contract(tradeAction1, true); // Execute trade
+                    }
+                    setTradeExecuted1(true); // Mark trade as executed
+                } else if (!shouldTriggerTrade1()) {
+                    setTradeExecuted1(false); // Reset trade execution if conditions aren't met
+                    setLastTradeType(null); 
+                }
+            }, 1000); // Adjust the interval time as needed
+        }
+
+        return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
+    }, [buy_contract, isAutoTrading1, tradeAction1, tradeExecuted1, shouldTriggerTrade1, comparisonOperator1]);
+
 
     const {
         evenPercentage,
@@ -263,6 +326,37 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             <button className='metric odd' onClick={() => buy_contract('DIGITODD', true)}>
                                 Odd {oddPercentage.toFixed(2)}%
                             </button>
+                        </div>
+                        <div className='custom-trade-form'>
+                            <label>
+                                If the last
+                                <input type='number' value={numDigits1} onChange={handleNumDigitsChange1} />
+                                digits are
+                            </label>
+                            <select value={comparisonOperator1} onChange={handleComparisonOperatorChange1}>
+                                <option value='even'>Even</option>
+                                <option value='odd'>Odd</option>
+                                <option value='custom'>Custom (Even → Odd, Odd → Even)</option>
+                            </select>
+
+                            {comparisonOperator1 !== 'custom' && (
+                                <>
+                                    <label>it trades</label>
+                                    <select value={tradeAction1} onChange={handleTradeActionChange1}>
+                                        <option value='DIGITEVEN'>Even Trade</option>
+                                        <option value='DIGITODD'>Odd Trade</option>
+                                    </select>
+                                </>
+                            )}
+
+                            <div className='auto-trade-controls'>
+                                <button
+                                    style={{ backgroundColor: isAutoTrading1 ? 'red' : 'green', color: '#fff' }}
+                                    onClick={() => setIsAutoTrading1(prev => !prev)}
+                                >
+                                    {isAutoTrading1 ? 'Stop Auto Trading' : 'Start Auto Trading'}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
