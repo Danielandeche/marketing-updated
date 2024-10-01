@@ -618,6 +618,7 @@ const BinaryAnalysisPage = observer(() => {
                 <DigitSequenceComponent
                     digitList={getLastDigitList()}
                     tickList={getTickList()}
+                    CirclesDigitList={getLastDigitList()}
                     customPrediction={customPrediction}
                     handleCustomPredictionInputChange={handleCustomPredictionInputChange}
                     is_dark_mode_on={is_dark_mode_on}

@@ -5,6 +5,7 @@ import './DigitSequenceComponent.css';
 type Props = {
     digitList: number[];
     tickList: number[];
+    CirclesDigitList: number[];
     customPrediction: string | number;
     is_dark_mode_on: boolean;
     selectTickList: () => JSX.Element;
@@ -16,6 +17,7 @@ type Props = {
 const DigitSequenceComponent: React.FC<Props> = ({
     digitList,
     tickList,
+    CirclesDigitList,
     customPrediction,
     is_dark_mode_on,
     selectTickList,
@@ -28,7 +30,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const [tradeAction, setTradeAction] = useState('DIGITOVER');
     const [isAutoTrading, setIsAutoTrading] = useState(false); // State for auto-trading
     const [tradeExecuted, setTradeExecuted] = useState(false); // Track if trade has been executed
-    const [numDigits1, setNumDigits1] = useState<number | string>(3);
+    const [numDigits1, setNumDigits1] = useState<number | string>(5);
     const [comparisonOperator1, setComparisonOperator1] = useState('even');
     const [tradeAction1, setTradeAction1] = useState('DIGITEVEN');
     const [isAutoTrading1, setIsAutoTrading1] = useState(false);
@@ -151,10 +153,11 @@ const DigitSequenceComponent: React.FC<Props> = ({
 
     digitList = digitList.slice(-10);
     tickList = tickList.slice(-10);
+    CirclesDigitList = CirclesDigitList.slice(-1000);
 
     const percentages = Array.from(
         { length: 10 },
-        (_, digit) => calculatePercentages(digitList, tickList, digit).matchesPercentage
+        (_, digit) => calculatePercentages(CirclesDigitList, tickList, digit).matchesPercentage
     );
 
     const sortedPercentages = [...percentages].slice().sort((a, b) => b - a);
@@ -212,7 +215,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
             <div className='container-ldp' style={{ color: is_dark_mode_on ? '#fff' : '#000' }}>
                 <div className='digit-container-ldp'>
                     <div className='last_p'>
-                        <label htmlFor=''>Last Digit Prediction:</label>
+                        <label htmlFor=''>LDP:</label>
                         <input
                             className='custom_prediction'
                             type='number'
@@ -225,7 +228,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     <div className='digit-list'>
                         {Array.from({ length: 10 }, (_, digit) => {
                             const individualMatchPercentage = calculatePercentages(
-                                digitList,
+                                CirclesDigitList,
                                 tickList,
                                 digit
                             ).matchesPercentage;
@@ -278,14 +281,14 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         digits are
                     </label>
                     <select value={comparisonOperator} onChange={handleComparisonOperatorChange}>
+                        <option value='less than'>lesser than</option>
                         <option value='greater than'>greater than</option>
-                        <option value='less than'>less than</option>
                         <option value='equal to'>equal to</option>
                     </select>
                     <label>LDP, it trades </label>
                     <select value={tradeAction} onChange={handleTradeActionChange}>
-                        <option value='DIGITOVER'>Digit Over</option>
                         <option value='DIGITUNDER'>Digit Under</option>
+                        <option value='DIGITOVER'>Digit Over</option>
                         <option value='DIGITDIFF'>Digit Differs</option>
                     </select>
                     <div className='auto-trade-controls'>
@@ -334,9 +337,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 digits are
                             </label>
                             <select value={comparisonOperator1} onChange={handleComparisonOperatorChange1}>
-                                <option value='even'>Even</option>
                                 <option value='odd'>Odd</option>
-                                <option value='custom'>Custom (Even → Odd, Odd → Even)</option>
+                                <option value='even'>Even</option>
+                                <option value='custom'>If Even → Odd, Odd → Even</option>
                             </select>
 
                             {comparisonOperator1 !== 'custom' && (
