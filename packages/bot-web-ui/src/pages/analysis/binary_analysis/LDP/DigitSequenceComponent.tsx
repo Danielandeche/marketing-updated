@@ -21,11 +21,13 @@ const DigitSequenceComponent: React.FC<Props> = ({
     tickList,
     CirclesDigitList,
     is_dark_mode_on,
+    customPrediction,
     martingaleValueRef,
     handleMartingaleInputChange,
     selectTickList,
     buy_contract,
     buy_contract_differs,
+    handleCustomPredictionInputChange,
 }) => {
     const [numDigits, setNumDigits] = useState<number | string>(3); // Allow both number and string
     const [comparisonOperator, setComparisonOperator] = useState('greater than');
@@ -38,13 +40,6 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const [isAutoTrading1, setIsAutoTrading1] = useState(false);
     const [tradeExecuted1, setTradeExecuted1] = useState(false);
     const [lastTradeType, setLastTradeType] = useState<string | null>(null);
-    const [customPrediction, setCustomPrediction] = useState<number>(1); // Default to 1
-
-    const handleCustomPredictionInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setCustomPrediction(value === '' ? 1 : Number(value)); // Ensure it defaults to 1 if cleared
-        // Call any additional handler if necessary
-    };
 
     const handleNumDigitsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
