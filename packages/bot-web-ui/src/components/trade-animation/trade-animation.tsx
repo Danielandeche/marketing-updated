@@ -9,6 +9,7 @@ import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
 import CircularWrapper from './circular-wrapper';
 import ContractStageText from './contract-stage-text';
+import { DBOT_TABS } from 'Constants/bot-contents';
 
 type TTradeAnimation = {
     className?: string;
@@ -16,7 +17,8 @@ type TTradeAnimation = {
 };
 
 const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnimation) => {
-    const { run_panel, summary_card } = useDBotStore();
+    const { run_panel, summary_card, dashboard } = useDBotStore();
+    const { active_tab } = dashboard;
     const { client } = useStore();
     const { is_contract_completed, profit } = summary_card;
     const {
@@ -29,6 +31,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         show_bot_stop_message,
     } = run_panel;
     const { account_status } = client;
+    const { ANALYSISPAGE } = DBOT_TABS;
     const cashier_validation = account_status?.cashier_validation;
     const [shouldDisable, setShouldDisable] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
@@ -78,23 +81,28 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     const show_overlay = should_show_overlay && is_contract_completed;
     return (
         <div className={classNames('animation__wrapper', className)}>
-            <Button
-                is_disabled={is_disabled && !is_unavailable_for_payment_agent}
-                className='animation__button'
-                id={button_props.id}
-                text={button_props.text}
-                icon={<Icon icon={button_props.icon} color='active' />}
-                onClick={() => {
-                    setShouldDisable(true);
-                    if (is_stop_button_visible) {
-                        onStopBotClick();
-                        return;
-                    }
-                    onRunButtonClick();
-                }}
-                has_effect
-                {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}
-            />
+            {active_tab !== ANALYSISPAGE && (
+                <Button
+                    is_disabled={is_disabled && !is_unavailable_for_payment_agent}
+                    className='animation__button'
+                    id={button_props.id}
+                    text={button_props.text}
+                    icon={<Icon icon={button_props.icon} color='active' />}
+                    onClick={() => {
+                        setShouldDisable(true);
+                        if (is_stop_button_visible) {
+                            onStopBotClick();
+                            return;
+                        }
+                        onRunButtonClick();
+                    }}
+                    has_effect
+                    {...(is_stop_button_visible || !is_unavailable_for_payment_agent
+                        ? { primary: true }
+                        : { green: true })}
+                />
+            )}
+
             {show_bot_stop_message && <BotStopNotification />}
             <div
                 className={classNames('animation__container', className, {

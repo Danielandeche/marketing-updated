@@ -107,12 +107,13 @@ const BinaryAnalysisPage = observer(() => {
 
     const { ui } = useStore();
     const DBotStores = useDBotStore();
-    const { transactions } = DBotStores;
-
+    const { transactions, run_panel } = DBotStores;
+    const { registerBotListeners, unregisterBotListeners } = run_panel;
     const { is_mobile, is_dark_mode_on } = ui;
     const { updateResultsCompletedContract } = transactions;
 
     useEffect(() => {
+        registerBotListeners();
         startApi();
         // Setting up local saves
         const no_of_ticks = localStorage.getItem('no_of_ticks');
@@ -124,6 +125,10 @@ const BinaryAnalysisPage = observer(() => {
         if (active_card !== null) {
             setActiveCard(active_card);
         }
+
+        return () => {
+            unregisterBotListeners();
+        };
     }, []);
 
     useEffect(() => {
@@ -348,6 +353,17 @@ const BinaryAnalysisPage = observer(() => {
 
     const getLastDigitList = () => {
         const requiredItems = allLastDigitList.slice(-numberOfTicks);
+        const returnedList: number[] = [];
+        requiredItems.forEach((tick: number) => {
+            const last_digit = getLastDigits(tick, pip_size);
+            returnedList.push(last_digit);
+        });
+
+        return returnedList;
+    };
+
+    const getLast1000DigitList = () => {
+        const requiredItems = allLastDigitList.slice(-1000);
         const returnedList: number[] = [];
         requiredItems.forEach((tick: number) => {
             const last_digit = getLastDigits(tick, pip_size);
@@ -618,13 +634,15 @@ const BinaryAnalysisPage = observer(() => {
                 <DigitSequenceComponent
                     digitList={getLastDigitList()}
                     tickList={getTickList()}
-                    CirclesDigitList={getLastDigitList()}
+                    CirclesDigitList={getLast1000DigitList()}
                     customPrediction={customPrediction}
                     handleCustomPredictionInputChange={handleCustomPredictionInputChange}
                     is_dark_mode_on={is_dark_mode_on}
                     buy_contract={buy_contract}
                     buy_contract_differs={buy_contract_differs}
                     selectTickList={selectTickList}
+                    handleMartingaleInputChange={handleMartingaleInputChange}
+                    martingaleValueRef={martingaleValueRef}
                 />
             )}
             {/* Middle Cards */}

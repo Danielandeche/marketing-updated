@@ -11,6 +11,18 @@
     font-family: 'Arial', sans-serif;
 }
 
+.martingale_ldp {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.martingale_ldp input {
+    padding: 5px 0px;
+    width: 60px;
+    text-align: center;
+}
+
 /* Digit container styles */
 .digit-container-ldp {
     display: flex;
@@ -290,7 +302,7 @@
 }
 
 .digit-item:after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 5px;
     border-radius: 50%;

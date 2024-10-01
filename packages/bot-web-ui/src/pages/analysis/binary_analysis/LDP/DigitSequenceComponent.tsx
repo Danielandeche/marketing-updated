@@ -8,6 +8,8 @@ type Props = {
     CirclesDigitList: number[];
     customPrediction: string | number;
     is_dark_mode_on: boolean;
+    martingaleValueRef: React.MutableRefObject<string | number>
+    handleMartingaleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     selectTickList: () => JSX.Element;
     handleCustomPredictionInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     buy_contract_differs: (contract_type: string, isOverUnder?: boolean) => void;
@@ -19,6 +21,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
     tickList,
     CirclesDigitList,
     is_dark_mode_on,
+    martingaleValueRef,
+    handleMartingaleInputChange,
     selectTickList,
     buy_contract,
     buy_contract_differs,
@@ -41,7 +45,6 @@ const DigitSequenceComponent: React.FC<Props> = ({
         setCustomPrediction(value === '' ? 1 : Number(value)); // Ensure it defaults to 1 if cleared
         // Call any additional handler if necessary
     };
- 
 
     const handleNumDigitsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -137,14 +140,13 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     setTradeExecuted1(true); // Mark trade as executed
                 } else if (!shouldTriggerTrade1()) {
                     setTradeExecuted1(false); // Reset trade execution if conditions aren't met
-                    setLastTradeType(null); 
+                    setLastTradeType(null);
                 }
             }, 1000); // Adjust the interval time as needed
         }
 
         return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
     }, [buy_contract, isAutoTrading1, tradeAction1, tradeExecuted1, shouldTriggerTrade1, comparisonOperator1]);
-
 
     const {
         evenPercentage,
@@ -229,6 +231,15 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             onChange={handleCustomPredictionInputChange}
                         />
                         {selectTickList()}
+                        <div className='martingale_ldp'>
+                            
+                            <input
+                                type='number'
+                                value={martingaleValueRef.current}
+                                onChange={handleMartingaleInputChange}
+                            />
+                            <small>Martingale</small>
+                        </div>
                     </div>
 
                     <div className='digit-list'>

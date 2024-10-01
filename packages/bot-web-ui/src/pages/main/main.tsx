@@ -4,7 +4,7 @@ import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
-import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
+import { DesktopWrapper, Dialog, InstallAppPrompt, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -156,6 +156,7 @@ const AppWrapper = observer(() => {
     return (
         <React.Fragment>
             <div className='main'>
+                <InstallAppPrompt />
                 <div
                     className={classNames('main__container', {
                         'main__container--active': active_tour && active_tab === DASHBOARD && is_mobile,
