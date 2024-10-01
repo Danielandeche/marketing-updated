@@ -18,12 +18,10 @@ const DigitSequenceComponent: React.FC<Props> = ({
     digitList,
     tickList,
     CirclesDigitList,
-    customPrediction,
     is_dark_mode_on,
     selectTickList,
     buy_contract,
     buy_contract_differs,
-    handleCustomPredictionInputChange,
 }) => {
     const [numDigits, setNumDigits] = useState<number | string>(3); // Allow both number and string
     const [comparisonOperator, setComparisonOperator] = useState('greater than');
@@ -35,7 +33,15 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const [tradeAction1, setTradeAction1] = useState('DIGITEVEN');
     const [isAutoTrading1, setIsAutoTrading1] = useState(false);
     const [tradeExecuted1, setTradeExecuted1] = useState(false);
-    const [lastTradeType, setLastTradeType] = useState<string | null>(null); 
+    const [lastTradeType, setLastTradeType] = useState<string | null>(null);
+    const [customPrediction, setCustomPrediction] = useState<number>(1); // Default to 1
+
+    const handleCustomPredictionInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setCustomPrediction(value === '' ? 1 : Number(value)); // Ensure it defaults to 1 if cleared
+        // Call any additional handler if necessary
+    };
+ 
 
     const handleNumDigitsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -70,10 +76,10 @@ const DigitSequenceComponent: React.FC<Props> = ({
 
     const shouldTriggerTrade = lastNDigits.every(digit => {
         switch (comparisonOperator) {
-            case 'greater than':
-                return digit > predictionValue;
             case 'less than':
                 return digit < predictionValue;
+            case 'greater than':
+                return digit > predictionValue;
             case 'equal to':
                 return digit === predictionValue;
             default:
@@ -287,8 +293,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     </select>
                     <label>LDP, it trades </label>
                     <select value={tradeAction} onChange={handleTradeActionChange}>
-                        <option value='DIGITUNDER'>Digit Under</option>
                         <option value='DIGITOVER'>Digit Over</option>
+                        <option value='DIGITUNDER'>Digit Under</option>
                         <option value='DIGITDIFF'>Digit Differs</option>
                     </select>
                     <div className='auto-trade-controls'>
@@ -337,8 +343,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 digits are
                             </label>
                             <select value={comparisonOperator1} onChange={handleComparisonOperatorChange1}>
-                                <option value='odd'>Odd</option>
                                 <option value='even'>Even</option>
+                                <option value='odd'>Odd</option>
                                 <option value='custom'>If Even → Odd, Odd → Even</option>
                             </select>
 
@@ -346,8 +352,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 <>
                                     <label>it trades</label>
                                     <select value={tradeAction1} onChange={handleTradeActionChange1}>
-                                        <option value='DIGITEVEN'>Even Trade</option>
                                         <option value='DIGITODD'>Odd Trade</option>
+                                        <option value='DIGITEVEN'>Even Trade</option>
                                     </select>
                                 </>
                             )}
