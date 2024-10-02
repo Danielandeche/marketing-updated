@@ -74,11 +74,15 @@ const DigitSequenceComponent: React.FC<Props> = ({
 
     const shouldTriggerTrade = lastNDigits.every(digit => {
         switch (comparisonOperator) {
-            case 'less than':
+            case 'less than LDP':
+                return digit < predictionValue;
+            case 'less or equal to LDP':
                 return digit <= predictionValue;
-            case 'greater than':
+            case 'greater than LDP':
+                return digit > predictionValue;
+            case 'greater or equal to LDP':
                 return digit >= predictionValue;
-            case 'equal to':
+            case 'equal to LDP':
                 return digit === predictionValue;
             default:
                 return false;
@@ -293,11 +297,13 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         digits are
                     </label>
                     <select value={comparisonOperator} onChange={handleComparisonOperatorChange}>
-                        <option value='greater than'>greater than</option>
-                        <option value='less than'>less than</option>
-                        <option value='equal to'>equal to</option>
+                        <option value='less than LDP'>Less than LDP</option>
+                        <option value='less or equal to LDP'>Less or equal to LDP</option>
+                        <option value='greater than LDP'>Greater than LDP</option>
+                        <option value='greater or equal to LDP'>Greater or equal to LDP</option>
+                        <option value='equal to'>Equal to LDP</option>
                     </select>
-                    <label>LDP, it trades </label>
+                    <label>it trades </label>
                     <select value={tradeAction} onChange={handleTradeActionChange}>
                         <option value='DIGITOVER'>Digit Over</option>
                         <option value='DIGITUNDER'>Digit Under</option>
