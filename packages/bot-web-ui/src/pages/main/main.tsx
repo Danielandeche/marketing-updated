@@ -52,9 +52,9 @@ const AppWrapper = observer(() => {
     const { ui } = useStore();
     const { url_hashed_values, is_mobile } = ui;
     const hash = [
-        'dashboard',
-        'bot_builder',
         'pro-analysistool',
+        'bot_builder',      
+        'dashboard',
         'ai_bots',
         'binarytools_bots',
         'analysistool',
@@ -168,13 +168,13 @@ const AppWrapper = observer(() => {
                         onTabItemChange={onEntered}
                         onTabItemClick={handleTabChange}
                         top
-                    >
+                    >                       
                         <div
-                            icon='IcDashboardComponentTab'
-                            label={<Localize i18n_default_text='Dashboard' />}
-                            id='id-dbot-dashboard'
+                            icon='IcDbotViewDetail'
+                            label={<Localize i18n_default_text='Pro-Analysistool' />}
+                            id={'id-analysis-page'}
                         >
-                            <Dashboard handleTabChange={handleTabChange} />
+                            <AnalysisPage />
                         </div>
                         <div
                             icon='IcBotBuilderTabIcon'
@@ -182,11 +182,11 @@ const AppWrapper = observer(() => {
                             id='id-bot-builder'
                         />
                         <div
-                            icon='IcDbotViewDetail'
-                            label={<Localize i18n_default_text='Pro-Analysistool' />}
-                            id={'id-analysis-page'}
+                            icon='IcDashboardComponentTab'
+                            label={<Localize i18n_default_text='Dashboard' />}
+                            id='id-dbot-dashboard'
                         >
-                            <AnalysisPage />
+                            <Dashboard handleTabChange={handleTabChange} />
                         </div>
                         <div
                             icon='IcDbotViewDetail'

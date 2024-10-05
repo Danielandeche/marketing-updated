@@ -643,7 +643,10 @@ const BinaryAnalysisPage = observer(() => {
                     selectTickList={selectTickList}
                     handleMartingaleInputChange={handleMartingaleInputChange}
                     martingaleValueRef={martingaleValueRef}
+                    enableCopyDemo={enableCopyDemo}
+                    liveAccCR={liveAccCR}
                 />
+                
             )}
             {/* Middle Cards */}
             {(activeCard === 'rise_fall' || activeCard === 'over_under') && (

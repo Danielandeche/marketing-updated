@@ -1,14 +1,13 @@
-import React from 'react';
+import React from 'react'; 
 import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import BotStopNotification from 'Components/bot-stop-notification';
-import ContractResultOverlay from 'Components/contract-result-overlay';
-import { contract_stages } from 'Constants/contract-stage';
-import { useDBotStore } from 'Stores/useDBotStore';
 import CircularWrapper from './circular-wrapper';
 import ContractStageText from './contract-stage-text';
+import { contract_stages } from 'Constants/contract-stage';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { DBOT_TABS } from 'Constants/bot-contents';
 
 type TTradeAnimation = {
@@ -31,22 +30,22 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         show_bot_stop_message,
     } = run_panel;
     const { account_status } = client;
-    const { ANALYSISPAGE } = DBOT_TABS;
+    const { ANALYSISPAGE, RANDOMBOTS } = DBOT_TABS;
     const cashier_validation = account_status?.cashier_validation;
     const [shouldDisable, setShouldDisable] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
 
-    // perform self-exclusion checks which will be stored under the self-exclusion-store
+    // Perform self-exclusion checks
     React.useEffect(() => {
         performSelfExclusionCheck();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [performSelfExclusionCheck]);
 
     React.useEffect(() => {
         if (shouldDisable) {
-            setTimeout(() => {
+            const timer = setTimeout(() => {
                 setShouldDisable(false);
             }, 1000);
+            return () => clearTimeout(timer);
         }
     }, [shouldDisable]);
 
@@ -78,10 +77,12 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         }
         return { id: 'db-animation__run-button', text: localize('Run'), icon: 'IcPlay' };
     }, [is_stop_button_visible]);
+
     const show_overlay = should_show_overlay && is_contract_completed;
+
     return (
         <div className={classNames('animation__wrapper', className)}>
-            {active_tab !== ANALYSISPAGE && (
+            {(active_tab !== ANALYSISPAGE && active_tab !== RANDOMBOTS) && (
                 <Button
                     is_disabled={is_disabled && !is_unavailable_for_payment_agent}
                     className='animation__button'

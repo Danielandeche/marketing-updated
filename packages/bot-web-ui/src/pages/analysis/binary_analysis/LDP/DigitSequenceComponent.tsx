@@ -222,22 +222,23 @@ const DigitSequenceComponent: React.FC<Props> = ({
             <div className='container-ldp' style={{ color: is_dark_mode_on ? '#fff' : '#000' }}>
                 <div className='digit-container-ldp'>
                     <div className='last_p'>
-                        <label htmlFor=''>LDP:</label>
-                        <input
-                            className='custom_prediction'
-                            type='number'
-                            value={customPrediction}
-                            onChange={handleCustomPredictionInputChange}
-                        />
+                        <div className='martingale_ldp'>
+                            <label htmlFor=''>LDP:</label>
+                            <input
+                                className='custom_prediction'
+                                type='number'
+                                value={customPrediction}
+                                onChange={handleCustomPredictionInputChange}
+                            />
+                        </div>
                         {selectTickList()}
                         <div className='martingale_ldp'>
-                            
+                            <small>Martingale</small>                          
                             <input
                                 type='number'
                                 value={martingaleValueRef.current}
                                 onChange={handleMartingaleInputChange}
                             />
-                            <small>Martingale</small>
                         </div>
                     </div>
 
