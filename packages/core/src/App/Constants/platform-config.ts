@@ -12,10 +12,10 @@ type TPlatformConfig = {
 
 const platform_config: TPlatformConfig[] = [
     {
-        icon: 'IcRebrandingBinarytoolsLogo',
+        icon: 'IcRebrandingDerivTrader',
         title: () => getPlatformSettings('trader').name,
-        name: 'BT Trader',
-        description: () => localize('Binarytool D-Trader.'),
+        name: getPlatformSettings('trader').name,
+        description: () => localize('Binarytool D-trader.'),
         link_to: routes.trade,
     },
     {
