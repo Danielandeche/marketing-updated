@@ -511,7 +511,7 @@ const BinaryAnalysisPage = observer(() => {
     const selectTickList = () => {
         return (
             <>
-                <div className='oneclick_amout'>
+                <div className='oneclick_amout' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}>
                     <h3>Ticks</h3>
                     <select name='intervals' id='contract_duration' onChange={handleDurationSelect}>
                         <option value='1'>1</option>
@@ -525,10 +525,9 @@ const BinaryAnalysisPage = observer(() => {
                         <option value='9'>9</option>
                     </select>
                 </div>
-                <div className='oneclick_amout'>
+                <div className='oneclick_amout' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}>
                     <h3>Stake</h3>
                     <input type='number' value={oneClickAmount} onChange={handleOneClickAmountInputChange} />
-                    <h3 className='user_currency'>{accountCurrency}</h3>
                 </div>
             </>
         );
@@ -643,8 +642,6 @@ const BinaryAnalysisPage = observer(() => {
                     selectTickList={selectTickList}
                     handleMartingaleInputChange={handleMartingaleInputChange}
                     martingaleValueRef={martingaleValueRef}
-                    enableCopyDemo={enableCopyDemo}
-                    liveAccCR={liveAccCR}
                 />
                 
             )}
