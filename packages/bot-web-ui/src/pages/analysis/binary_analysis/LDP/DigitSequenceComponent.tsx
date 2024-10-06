@@ -302,7 +302,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         <option value='less or equal to LDP'>Less or equal to LDP</option>
                         <option value='greater than LDP'>Greater than LDP</option>
                         <option value='greater or equal to LDP'>Greater or equal to LDP</option>
-                        <option value='equal to'>Equal to LDP</option>
+                        <option value='equal to LDP'>Equal to LDP</option>
                     </select>
                     <label>it trades </label>
                     <select value={tradeAction} onChange={handleTradeActionChange}>
