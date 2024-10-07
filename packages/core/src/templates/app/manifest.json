@@ -4,7 +4,7 @@
     "description": "Binarytool gives everyone an easy way to participate in the financial markets.",
     "id": "/",
     "start_url": "/bot",
-    "display": "fullscreen",  // Changed from "standalone" to "fullscreen"
+    "display": "standalone",
     "orientation": "portrait",
     "icons": [
         {
