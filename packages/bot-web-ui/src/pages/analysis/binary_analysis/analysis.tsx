@@ -230,6 +230,7 @@ const BinaryAnalysisPage = observer(() => {
                             console.log('Martingale Status', enable_disable_martingale.current);
                             if (proposal_open_contract.status === 'lost') {
                                 if (!current_contractids.current.includes(proposal_open_contract.contract_id)) {
+                                    current_contractids.current.push(proposal_open_contract.contract_id);
                                     totalLostAmount.current += Math.abs(proposal_open_contract.profit);
                                     let newStake;
                                     if (enable_disable_martingale.current) {
