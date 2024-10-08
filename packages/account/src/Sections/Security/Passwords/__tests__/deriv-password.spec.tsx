@@ -45,7 +45,7 @@ describe('<DerivPassword />', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                /use the to log in to deriv\.com, deriv go, deriv trader, smarttrader, Binarytool Bot and deriv ctrader\./i
+                /use the to log in to deriv\.com, deriv go, D-Trader, smarttrader, Binarytool Bot and deriv ctrader\./i
             )
         ).toBeInTheDocument();
         expect(screen.queryByText(/BrandDerivRed/i)).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe('<DerivPassword />', () => {
         });
         renderComponent({ store_config });
 
-        expect(screen.getByText(/use the to log in to deriv\.com, deriv trader and deriv go\./i));
+        expect(screen.getByText(/use the to log in to deriv\.com, D-Trader and deriv go\./i));
 
         const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
         // expect popover to have length of 4
@@ -77,7 +77,7 @@ describe('<DerivPassword />', () => {
         });
         renderComponent({ store_config });
 
-        expect(screen.getByText(/use the to log in to deriv\.com and deriv trader\./i)).toBeInTheDocument();
+        expect(screen.getByText(/use the to log in to deriv\.com and D-Trader\./i)).toBeInTheDocument();
 
         const popover_wrapper = screen.getByTestId('dt_popover_wrapper');
 

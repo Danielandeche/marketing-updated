@@ -29,7 +29,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         icon: <IconComponent icon='DTrader' />,
         redirect: '/',
         smallIcon: <IconComponent height={32} icon='DTrader' width={32} />,
-        title: 'Deriv Trader',
+        title: 'D-Trader',
     },
     {
         description: 'Automate your trading, no coding needed.',

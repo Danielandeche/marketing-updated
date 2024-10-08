@@ -12,7 +12,7 @@
     },
     "platforms": {
         "trader": {
-            "name": "Deriv Trader",
+            "name": "D-Trader",
             "icon": "IcRebrandingDerivTrader"
         },
         "dbot": {
@@ -46,7 +46,7 @@
     },
     "platforms_appstore": {
         "trader": {
-            "name": "Deriv Trader",
+            "name": "D-Trader",
             "icon": "DTrader",
             "availability": "All"
         },

@@ -32,7 +32,7 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
     ) => {
         event.persist();
         switch (title) {
-            case 'Deriv Trader':
+            case 'D-Trader':
                 window.open(getDerivStaticURL(`/dtrader`));
                 break;
             case 'Binarytool Bot':
@@ -103,7 +103,7 @@ const OptionsAndMultipliersContent = () => {
     const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 
     const filteredContent = isEU
-        ? getoptionsAndMultipliersContent.filter(account => account.title === 'Deriv Trader')
+        ? getoptionsAndMultipliersContent.filter(account => account.title === 'D-Trader')
         : getoptionsAndMultipliersContent;
 
     if (!isRegulationAccessible)

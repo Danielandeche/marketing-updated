@@ -927,7 +927,7 @@ export default class NotificationStore extends BaseStore {
             },
             flutter_chart: {
                 key: 'flutter_chart',
-                header: localize('Trade Smarter with Deriv Trader Chart v2.0:'),
+                header: localize('Trade Smarter with D-Trader Chart v2.0:'),
                 message: localize('Get real-time data, advanced charting tools, and customisable views.'),
                 action: {
                     onClick: () => {

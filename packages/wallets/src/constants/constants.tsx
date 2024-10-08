@@ -13,7 +13,7 @@ export const optionsAndMultipliersContent = [
         icon: <IcAppstoreDerivTrader />,
         redirect: '/',
         smallIcon: <IcAppstoreDerivTrader height='3.2rem' width='3.2rem' />,
-        title: i18n.t('Deriv Trader'),
+        title: i18n.t('D-Trader'),
     },
     {
         description: i18n.t('Automate your trading, no coding needed.'),

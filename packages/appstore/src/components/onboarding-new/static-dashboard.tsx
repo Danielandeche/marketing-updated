@@ -265,7 +265,7 @@ const StaticDashboard = observer(
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon='DTrader'
-                                        name='Deriv Trader'
+                                        name='D-Trader'
                                         description={
                                             eu_user
                                                 ? localize('Multipliers trading platform.')

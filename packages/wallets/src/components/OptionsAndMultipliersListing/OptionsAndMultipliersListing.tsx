@@ -24,7 +24,7 @@ const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
     const handleClick = (event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         event.persist();
         switch (title) {
-            case 'Deriv Trader':
+            case 'D-Trader':
                 window.open(getStaticUrl(`/dtrader`));
                 break;
             case 'Binarytool Bot':
