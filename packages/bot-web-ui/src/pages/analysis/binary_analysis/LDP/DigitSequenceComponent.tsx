@@ -8,12 +8,15 @@ type Props = {
     CirclesDigitList: number[];
     customPrediction: string | number;
     is_dark_mode_on: boolean;
-    martingaleValueRef: React.MutableRefObject<string | number>
-    handleMartingaleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    martingaleValueRef: React.MutableRefObject<string | number>;
+    isTradeActive: boolean;
+    guideElement: () => JSX.Element;
+    handleMartingaleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     selectTickList: () => JSX.Element;
     handleCustomPredictionInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     buy_contract_differs: (contract_type: string, isOverUnder?: boolean) => void;
     buy_contract: (contract_type: string, isTradeActive: boolean) => void;
+    setIsTradeActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const DigitSequenceComponent: React.FC<Props> = ({
@@ -23,6 +26,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
     is_dark_mode_on,
     customPrediction,
     martingaleValueRef,
+    isTradeActive,
+    guideElement,
+    setIsTradeActive,
     handleMartingaleInputChange,
     selectTickList,
     buy_contract,
@@ -217,6 +223,19 @@ const DigitSequenceComponent: React.FC<Props> = ({
         ));
     };
 
+    const handle_buy_contract_differs = (contract_type: string) => {
+        if (!isTradeActive) {
+            setIsTradeActive(true);
+            buy_contract_differs(contract_type);
+        }
+    };
+    const handle_buy_contract = (contract_type: string) => {
+        if (!isTradeActive) {
+            setIsTradeActive(true);
+            buy_contract(contract_type, true);
+        }
+    };
+
     return (
         <div className='ldp_max_container'>
             <div className='container-ldp' style={{ color: is_dark_mode_on ? '#fff' : '#000' }}>
@@ -233,13 +252,14 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         </div>
                         {selectTickList()}
                         <div className='martingale_ldp'>
-                            <small>Martingale</small>                          
+                            <small>Martingale</small>
                             <input
                                 type='number'
                                 value={martingaleValueRef.current}
                                 onChange={handleMartingaleInputChange}
                             />
                         </div>
+                        {guideElement()}
                     </div>
 
                     <div className='digit-list'>
@@ -322,16 +342,16 @@ const DigitSequenceComponent: React.FC<Props> = ({
 
                 <div className='metrics'>
                     {/* Metric buttons */}
-                    <button className='metric over' onClick={() => buy_contract_differs('DIGITOVER')}>
+                    <button className='metric over' onClick={() => handle_buy_contract_differs('DIGITOVER')}>
                         Over {overPercentage.toFixed(2)}%
                     </button>
-                    <button className='metric under' onClick={() => buy_contract_differs('DIGITUNDER')}>
+                    <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITUNDER')}>
                         Under {underPercentage.toFixed(2)}%
                     </button>
-                    <button className='metric match' onClick={() => buy_contract_differs('DIGITMATCH')}>
+                    <button className='metric match' onClick={() => handle_buy_contract_differs('DIGITMATCH')}>
                         Matches {matchesPercentage.toFixed(2)}%
                     </button>
-                    <button className='metric under' onClick={() => buy_contract_differs('DIGITDIFF')}>
+                    <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITDIFF')}>
                         Differ {differsPercentage.toFixed(2)}%
                     </button>
                 </div>
@@ -342,10 +362,10 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         <h4>Even Odd</h4>
                         <div className='sequence-container'>{getEvenOddSequence()}</div>
                         <div className='metrics'>
-                            <button className='metric even' onClick={() => buy_contract('DIGITEVEN', true)}>
+                            <button className='metric even' onClick={() => handle_buy_contract('DIGITEVEN')}>
                                 Even {evenPercentage.toFixed(2)}%
                             </button>
-                            <button className='metric odd' onClick={() => buy_contract('DIGITODD', true)}>
+                            <button className='metric odd' onClick={() => handle_buy_contract('DIGITODD')}>
                                 Odd {oddPercentage.toFixed(2)}%
                             </button>
                         </div>
@@ -387,10 +407,10 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         <h4>Rise/Fall</h4>
                         <div className='sequence-container'>{getRiseFallSequence()}</div>
                         <div className='metrics'>
-                            <button className='metric even' onClick={() => buy_contract('CALL', true)}>
+                            <button className='metric even' onClick={() => handle_buy_contract('CALL')}>
                                 Rise {risePercentage.toFixed(2)}%
                             </button>
-                            <button className='metric odd' onClick={() => buy_contract('PUT', true)}>
+                            <button className='metric odd' onClick={() => handle_buy_contract('PUT')}>
                                 Fall {fallPercentage.toFixed(2)}%
                             </button>
                         </div>

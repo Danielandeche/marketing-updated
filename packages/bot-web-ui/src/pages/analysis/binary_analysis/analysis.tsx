@@ -237,17 +237,19 @@ const BinaryAnalysisPage = observer(() => {
                                         newStake = totalLostAmount.current * parseFloat(martingaleValueRef.current);
                                         setOneClickAmount(parseFloat(newStake.toFixed(2)));
                                     }
+                                    isTradeActiveRef.current = false;
+                                    setIsTradeActive(false);
                                 }
                             } else {
                                 totalLostAmount.current = 0;
                                 setOneClickAmount(oneClickDefaultAmount.current);
+                                isTradeActiveRef.current = false;
+                                setIsTradeActive(false);
                             }
                             if (
                                 isTradeActiveRef.current &&
                                 !current_contractids.current.includes(proposal_open_contract.contract_id)
                             ) {
-                                isTradeActiveRef.current = false;
-                                setIsTradeActive(false);
                                 current_contractids.current.push(proposal_open_contract.contract_id);
                             }
                         }
@@ -512,7 +514,10 @@ const BinaryAnalysisPage = observer(() => {
     const selectTickList = () => {
         return (
             <>
-                <div className='oneclick_amout' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}>
+                <div
+                    className='oneclick_amout'
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
+                >
                     <h3>Ticks</h3>
                     <select name='intervals' id='contract_duration' onChange={handleDurationSelect}>
                         <option value='1'>1</option>
@@ -526,11 +531,22 @@ const BinaryAnalysisPage = observer(() => {
                         <option value='9'>9</option>
                     </select>
                 </div>
-                <div className='oneclick_amout' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}>
+                <div
+                    className='oneclick_amout'
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
+                >
                     <h3>Stake</h3>
                     <input type='number' value={oneClickAmount} onChange={handleOneClickAmountInputChange} />
                 </div>
             </>
+        );
+    };
+
+    const guideElement = () => {
+        return (
+            <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
+                <TbSettingsDollar />
+            </div>
         );
     };
     function updateActiveProgress() {
@@ -603,7 +619,7 @@ const BinaryAnalysisPage = observer(() => {
                         setEnableDisableMartingale={setEnableDisableMartingale}
                     />
                 )}
-                <div className='buttons'>                  
+                <div className='buttons'>
                     <button
                         className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
                         onClick={() => handleSetActiveCard('LDP')}
@@ -643,8 +659,10 @@ const BinaryAnalysisPage = observer(() => {
                     selectTickList={selectTickList}
                     handleMartingaleInputChange={handleMartingaleInputChange}
                     martingaleValueRef={martingaleValueRef}
+                    isTradeActive={isTradeActive}
+                    setIsTradeActive={setIsTradeActive}
+                    guideElement={guideElement}
                 />
-                
             )}
             {/* Middle Cards */}
             {(activeCard === 'rise_fall' || activeCard === 'over_under') && (
