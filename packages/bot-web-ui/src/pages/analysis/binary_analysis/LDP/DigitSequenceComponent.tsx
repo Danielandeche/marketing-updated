@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { calculatePercentages } from './calculatePercentage';
 import './DigitSequenceComponent.css';
+import Modal from 'react-modal';
+import { FaYoutube } from 'react-icons/fa';
 
 type Props = {
     digitList: number[];
@@ -115,6 +117,19 @@ const DigitSequenceComponent: React.FC<Props> = ({
             });
         }
     }, [comparisonOperator1, lastNDigits1, lastTradeType, buy_contract]);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [videoUrl, setVideoUrl] = useState('');
+
+    const openModal = (url: string) => {
+        setVideoUrl(url);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setVideoUrl('');
+    };
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -311,6 +326,30 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     </div>
                 </div>
 
+                <div className='metrics'>
+                    {/* Metric buttons */}
+                    <button className='metric over' onClick={() => handle_buy_contract_differs('DIGITOVER')}>
+                        Over {overPercentage.toFixed(2)}%
+                    </button>
+                    <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITUNDER')}>
+                        Under {underPercentage.toFixed(2)}%
+                    </button>
+                    <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
+                        <FaYoutube size={30} style={{ color: '#FF0000' }} />
+                    </button>
+                </div>
+                <div className='metrics'>
+                    <button className='metric match' onClick={() => handle_buy_contract_differs('DIGITMATCH')}>
+                        Matches {matchesPercentage.toFixed(2)}%
+                    </button>
+                    <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITDIFF')}>
+                        Differ {differsPercentage.toFixed(2)}%
+                    </button>
+                    <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
+                        <FaYoutube size={30} style={{ color: '#FF0000' }} />
+                    </button>
+                </div>
+
                 <div className='custom-trade-form'>
                     <label>
                         If the last
@@ -337,24 +376,57 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         >
                             {isAutoTrading ? 'Stop Auto Trading' : 'Start Auto Trading'}
                         </button>
+                        <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
+                            <FaYoutube size={30} style={{ color: '#FF0000' }} />
+                        </button>
                     </div>
                 </div>
 
-                <div className='metrics'>
-                    {/* Metric buttons */}
-                    <button className='metric over' onClick={() => handle_buy_contract_differs('DIGITOVER')}>
-                        Over {overPercentage.toFixed(2)}%
+
+                {/* Modal for YouTube Video */}
+                <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={closeModal}
+                    style={{
+                        overlay: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark background
+                            zIndex: 1000, // High z-index for overlay
+                        },
+                        content: {
+                            top: '50%', // Center vertically
+                            left: '50%', // Center horizontally
+                            right: 'auto',
+                            bottom: 'auto',
+                            transform: 'translate(-50%, -50%)', // Adjust positioning
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '8px',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                            background: '#fff', // Background color
+                            zIndex: 1001, // Higher z-index for content
+                        },
+                    }}
+                >
+                    <h2 style={{ color: '#000', fontSize: '20px', textAlign: 'center', margin: '5px 0' }}>
+                    Video Tutorial
+                </h2>
+                    <iframe
+                        width="560"
+                        height="315"
+                        src={videoUrl}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    />
+                    <button 
+                        onClick={closeModal} 
+                        style={{ display: 'block', margin: '5px auto', backgroundColor: 'red', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}
+                    >
+                        Close
                     </button>
-                    <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITUNDER')}>
-                        Under {underPercentage.toFixed(2)}%
-                    </button>
-                    <button className='metric match' onClick={() => handle_buy_contract_differs('DIGITMATCH')}>
-                        Matches {matchesPercentage.toFixed(2)}%
-                    </button>
-                    <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITDIFF')}>
-                        Differ {differsPercentage.toFixed(2)}%
-                    </button>
-                </div>
+
+                </Modal>
 
                 <div className='sequences'>
                     {/* Even Odd Sequences */}
@@ -367,6 +439,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             </button>
                             <button className='metric odd' onClick={() => handle_buy_contract('DIGITODD')}>
                                 Odd {oddPercentage.toFixed(2)}%
+                            </button>
+                            <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
+                                <FaYoutube size={30} style={{ color: '#FF0000' }} />
                             </button>
                         </div>
                         <div className='custom-trade-form'>
@@ -398,6 +473,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 >
                                     {isAutoTrading1 ? 'Stop Auto Trading' : 'Start Auto Trading'}
                                 </button>
+                                <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
+                                    <FaYoutube size={30} style={{ color: '#FF0000' }} />
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -412,6 +490,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             </button>
                             <button className='metric odd' onClick={() => handle_buy_contract('PUT')}>
                                 Fall {fallPercentage.toFixed(2)}%
+                            </button>
+                            <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
+                                <FaYoutube size={30} style={{ color: '#FF0000' }} />
                             </button>
                         </div>
                     </div>
