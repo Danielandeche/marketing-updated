@@ -121,6 +121,22 @@ const BotSettings = ({
                 </div>
             </div>
             <div className='bot_options'>
+            <div className='active_inactive'>
+                    <label htmlFor='enable_tp_sl'>
+                        <Text as='p' align='left' size='xs' color='prominent'>
+                            {localize('Use Take Profit')}
+                        </Text>
+                    </label>
+                    <label className='switch'>
+                        <input
+                            type='checkbox'
+                            checked={enableSlTpValue}
+                            id='enable_tp_sl'
+                            onChange={handleIsActiveInActive}
+                        />
+                        <span className='slider round'></span>
+                    </label>
+                </div>
                 <div className='tp'>
                     <label htmlFor='take_profit'>
                         <Text as='p' align='left' size='xs' color='prominent'>
@@ -138,25 +154,9 @@ const BotSettings = ({
                     <input type='text' value={stopLossValue} id='stop_loss' onChange={handleSlChange} />
                 </div>
                 <div className='active_inactive'>
-                    <label htmlFor='enable_tp_sl'>
-                        <Text as='p' align='left' size='xs' color='prominent'>
-                            {localize('Enable/Disable')}
-                        </Text>
-                    </label>
-                    <label className='switch'>
-                        <input
-                            type='checkbox'
-                            checked={enableSlTpValue}
-                            id='enable_tp_sl'
-                            onChange={handleIsActiveInActive}
-                        />
-                        <span className='slider round'></span>
-                    </label>
-                </div>
-                <div className='active_inactive'>
                     <label htmlFor='enable_disbale_martingale'>
                         <Text as='p' align='left' size='xs' color='prominent'>
-                            {localize('Enable/Disable Martingale')}
+                            {localize('Use Martingale')}
                         </Text>
                     </label>
                     <label className='switch'>
@@ -172,7 +172,7 @@ const BotSettings = ({
                 <div className='copy_demo_trades'>
                     <label htmlFor='copy_demo'>
                         <Text as='p' align='left' size='xs' color='prominent'>
-                            {localize('Copy Demo Status:')}
+                            {localize('Allow Demo Real Copytrading:')}
                         </Text>
                     </label>
                     <label className='switch'>

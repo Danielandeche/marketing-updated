@@ -353,6 +353,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     </div>
                 </div>
 
+                <h4>Over Under Differ LDP Auto</h4>
                 <div className='custom-trade-form'>
                     <label>
                         If the last
@@ -379,9 +380,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         >
                             {isAutoTrading ? 'Stop Auto Trading' : 'Start Auto Trading'}
                         </button>
-                        <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                            <FaYoutube size={40} style={{ color: '#FF0000' }} />
-                        </div>
+                    </div>
+                    <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
                     </div>
                 </div>
 
@@ -410,7 +411,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     }}
                 >
                     <h2 style={{ color: '#000', fontSize: '20px', textAlign: 'center', margin: '5px 0' }}>
-                    Video Tutorial
+                    Pro Analysistool Tutorial
                 </h2>
                     <iframe
                         width="560"
@@ -446,6 +447,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 <FaYoutube size={40} style={{ color: '#FF0000' }} />
                             </div>
                         </div>
+                        <h4>Even Odd Auto bot</h4>
                         <div className='custom-trade-form'>
                             <label>
                                 If the last
@@ -475,9 +477,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 >
                                     {isAutoTrading1 ? 'Stop Auto Trading' : 'Start Auto Trading'}
                                 </button>
-                                <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                    <FaYoutube size={40} style={{ color: '#FF0000' }} />
-                                </div>
+                            </div>
+                            <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                <FaYoutube size={40} style={{ color: '#FF0000' }} />
                             </div>
                         </div>
                     </div>
