@@ -275,6 +275,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             />
                         </div>
                         {guideElement()}
+                        <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                            <FaYoutube size={35} style={{ color: '#FF0000' }} />
+                        </div>
                     </div>
 
                     <div className='digit-list'>
@@ -334,9 +337,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITUNDER')}>
                         Under {underPercentage.toFixed(2)}%
                     </button>
-                    <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
-                        <FaYoutube size={30} style={{ color: '#FF0000' }} />
-                    </button>
+                    <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                    </div>
                 </div>
                 <div className='metrics'>
                     <button className='metric match' onClick={() => handle_buy_contract_differs('DIGITMATCH')}>
@@ -345,9 +348,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITDIFF')}>
                         Differ {differsPercentage.toFixed(2)}%
                     </button>
-                    <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
-                        <FaYoutube size={30} style={{ color: '#FF0000' }} />
-                    </button>
+                    <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                    </div>
                 </div>
 
                 <div className='custom-trade-form'>
@@ -376,12 +379,11 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         >
                             {isAutoTrading ? 'Stop Auto Trading' : 'Start Auto Trading'}
                         </button>
-                        <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
-                            <FaYoutube size={30} style={{ color: '#FF0000' }} />
-                        </button>
+                        <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                            <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                        </div>
                     </div>
                 </div>
-
 
                 {/* Modal for YouTube Video */}
                 <Modal
@@ -440,9 +442,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             <button className='metric odd' onClick={() => handle_buy_contract('DIGITODD')}>
                                 Odd {oddPercentage.toFixed(2)}%
                             </button>
-                            <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
-                                <FaYoutube size={30} style={{ color: '#FF0000' }} />
-                            </button>
+                            <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                            </div>
                         </div>
                         <div className='custom-trade-form'>
                             <label>
@@ -473,9 +475,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 >
                                     {isAutoTrading1 ? 'Stop Auto Trading' : 'Start Auto Trading'}
                                 </button>
-                                <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
-                                    <FaYoutube size={30} style={{ color: '#FF0000' }} />
-                                </button>
+                                <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                    <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -491,9 +493,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             <button className='metric odd' onClick={() => handle_buy_contract('PUT')}>
                                 Fall {fallPercentage.toFixed(2)}%
                             </button>
-                            <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')}>
-                                <FaYoutube size={30} style={{ color: '#FF0000' }} />
-                            </button>
+                            <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                            </div>
                         </div>
                     </div>
                 </div>

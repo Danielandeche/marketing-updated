@@ -11,6 +11,8 @@ import PieChart from './components/pie_chart';
 import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
+import { FaYoutube } from 'react-icons/fa';
+import Modal from 'react-modal';
 
 function sleep(milliseconds: any) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -549,6 +551,18 @@ const BinaryAnalysisPage = observer(() => {
             </div>
         );
     };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [videoUrl, setVideoUrl] = useState('');
+
+    const openModal = (url: string) => {
+        setVideoUrl(url);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setVideoUrl('');
+    };
     function updateActiveProgress() {
         document.querySelectorAll('.differs_container .progress .active-svg').forEach(svg => svg.remove());
 
@@ -704,6 +718,9 @@ const BinaryAnalysisPage = observer(() => {
                                         <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
                                             <TbSettingsDollar />
                                         </div>
+                                        <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                            <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                        </div>
                                     </div>
                                     <div className='over_under_settings'>
                                         <div className='ct_types_ou'>
@@ -740,7 +757,7 @@ const BinaryAnalysisPage = observer(() => {
                                                 value={percentageValue}
                                                 onChange={handlePercentageInputChange}
                                             />
-                                        </div>
+                                        </div>                                     
                                     </div>
                                 </div>
                             </div>
@@ -811,6 +828,9 @@ const BinaryAnalysisPage = observer(() => {
                                                 >
                                                     <TbSettingsDollar />
                                                 </div>
+                                                <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                                    <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                                </div>
                                             </div>
                                         )}
                                     </div>
@@ -825,28 +845,6 @@ const BinaryAnalysisPage = observer(() => {
                             <RiseFallBarChart allDigitList={getLastDigitList()} is_mobile={is_mobile} />
                         </div>
                     )}
-                    {/* {activeCard === 'over_under' && (
-                        <div className='guidevideo card5'>
-                            <iframe
-                                src='https://www.youtube.com/embed/VIDEO_ID'
-                                title='YouTube video player'
-                                frameBorder='0'
-                                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                                allowfullscreen
-                            />
-                        </div>
-                    )} */}
-                    {/* {activeCard === 'rise_fall' && (
-                        <div className='guidevideo card5'>
-                            <iframe
-                                src='https://www.youtube.com/embed/VIDEO_ID'
-                                title='YouTube video player'
-                                frameBorder='0'
-                                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                                allowfullscreen
-                            />
-                        </div>
-                    )} */}
                 </div>
             )}
             {/* Bottom Cards */}
@@ -924,6 +922,9 @@ const BinaryAnalysisPage = observer(() => {
                                     <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
                                         <TbSettingsDollar />
                                     </div>
+                                    <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -987,6 +988,9 @@ const BinaryAnalysisPage = observer(() => {
                                 <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
                                     <TbSettingsDollar />
                                 </div>
+                                <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                    <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                </div>
                             </div>
                             <div className='same_diff'>
                                 <select onChange={handleSameDiffEvenOddContractSelect}>
@@ -1017,46 +1021,50 @@ const BinaryAnalysisPage = observer(() => {
                     </div>
                 </div>
             )}
-            {/* {activeCard === 'tutorial' && (
-                <div className='tutorial'>
-                    <div className='guidevideo card5'>
-                        <iframe
-                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
-                            title='YouTube video player'
-                            frameBorder='0'
-                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                            allowFullScreen
-                        />
-                    </div>
-                    <div className='guidevideo card5'>
-                        <iframe
-                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
-                            title='YouTube video player'
-                            frameBorder='0'
-                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                            allowFullScreen
-                        />
-                    </div>
-                    <div className='guidevideo card5'>
-                        <iframe
-                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
-                            title='YouTube video player'
-                            frameBorder='0'
-                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                            allowFullScreen
-                        />
-                    </div>
-                    <div className='guidevideo card5'>
-                        <iframe
-                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
-                            title='YouTube video player'
-                            frameBorder='0'
-                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                            allowFullScreen
-                        />
-                    </div>
-                </div>
-            )} */}
+            {/* Modal for YouTube Video */}
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                style={{
+                    overlay: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark background
+                        zIndex: 1000, // High z-index for overlay
+                    },
+                    content: {
+                        top: '50%', // Center vertically
+                        left: '50%', // Center horizontally
+                        right: 'auto',
+                        bottom: 'auto',
+                        transform: 'translate(-50%, -50%)', // Adjust positioning
+                        border: 'none',
+                        borderRadius: '8px',
+                        padding: '8px',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                        background: '#fff', // Background color
+                        zIndex: 1001, // Higher z-index for content
+                    },
+                }}
+            >
+                <h2 style={{ color: '#000', fontSize: '20px', textAlign: 'center', margin: '5px 0' }}>
+                Video Tutorial
+            </h2>
+                <iframe
+                    width="560"
+                    height="315"
+                    src={videoUrl}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                />
+                <button 
+                    onClick={closeModal} 
+                    style={{ display: 'block', margin: '5px auto', backgroundColor: 'red', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}
+                >
+                    Close
+                </button>
+
+            </Modal>
         </div>
     );
 });
