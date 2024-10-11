@@ -126,13 +126,13 @@
 
 .ena_DC {
   font-size: medium;
-  color: #fff;
+  color: var(--text-general);
   display: flex;
   flex-direction: column;
   gap: 5px;
   align-items: center;
-  background: #4169e1;
-  width: 80%;
+  border:solid 2px #4169e1;
+  width: auto;
   border-radius: 4px;
   padding: 5px;
 }

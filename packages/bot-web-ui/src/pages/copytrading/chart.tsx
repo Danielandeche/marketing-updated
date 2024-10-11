@@ -1,5 +1,5 @@
-import React from 'react';
-import { FaRegPlusSquare, FaTrash } from 'react-icons/fa';
+import React, {useState } from 'react';
+import { FaRegPlusSquare, FaTrash, FaYoutube } from 'react-icons/fa';
 import {
     addCtProgramTokens,
     api_base,
@@ -19,6 +19,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import './style.css';
+import Modal from 'react-modal';
 
 const CopyTrading = observer(() => {
     const store = useStore();
@@ -209,6 +210,19 @@ const CopyTrading = observer(() => {
         }
     };
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [videoUrl, setVideoUrl] = useState('');
+
+    const openModal = (url: string) => {
+        setVideoUrl(url);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setVideoUrl('');
+    };
+
     return (
         <div className='main_copy'>
             {shouldShowError && (
@@ -303,6 +317,9 @@ const CopyTrading = observer(() => {
                         <span className='slider round' />
                     </label>
                     <Localize i18n_default_text='Enable Demo to Real Copy Trading' />
+                    <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                    </div>
                 </div>
                 {enableDC && (
                     <select value={selectedAccount} onChange={handleLiveAccountsChange}>
@@ -316,7 +333,7 @@ const CopyTrading = observer(() => {
             </div>
 
             <header className={`title ${is_dark_mode_on && 'dark_active'}`}>
-                <h1>{localize('Add Tokens to your Copy Trading List')}</h1>
+                <h1>{localize('Add API Tokens to your Copy Trading List. Replicate your trades with multiple accounts')}</h1>
             </header>
 
             <div className={`input_content ${is_dark_mode_on && 'dark_active'}`}>
@@ -324,6 +341,9 @@ const CopyTrading = observer(() => {
                     <input type='text' value={tokenInputValue} onChange={handleTokenInputChange} />
                     <button onClick={() => addToken()}>
                         <FaRegPlusSquare />
+                    </button>                   
+                    <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                        <FaYoutube style={{ color: '#FF0000' }} />
                     </button>
                 </div>
 
@@ -333,7 +353,7 @@ const CopyTrading = observer(() => {
                             <input type='checkbox' checked={config.copy_trading.is_active} onChange={handleCPChange} />
                             <span className='slider round' />
                         </label>
-                        <Localize i18n_default_text='Enable CP' />
+                        <Localize i18n_default_text='Start Replicating trades' />
                     </div>
                     <div className='sync_data'>
                         <button onClick={() => handleSyncData(false)}>{syncing ? 'Syncing...' : 'Sync'}</button>
@@ -359,11 +379,55 @@ const CopyTrading = observer(() => {
                         ))
                     ) : (
                         <div className={`token_info ${is_dark_mode_on && 'dark_active'}`}>
-                            {localize('No tokens available, add new tokens')}
+                            {localize('Add Clients API Tokens to replicate trades')}
                         </div>
                     )}
                 </ul>
             </div>
+            {/* Modal for YouTube Video */}
+            <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={closeModal}
+                    style={{
+                        overlay: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark background
+                            zIndex: 1000, // High z-index for overlay
+                        },
+                        content: {
+                            top: '50%', // Center vertically
+                            left: '50%', // Center horizontally
+                            right: 'auto',
+                            bottom: 'auto',
+                            transform: 'translate(-50%, -50%)', // Adjust positioning
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '8px',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                            background: '#fff', // Background color
+                            zIndex: 1001, // Higher z-index for content
+                        },
+                    }}
+                >
+                    <h2 style={{ color: '#000', fontSize: '20px', textAlign: 'center', margin: '5px 0' }}>
+                    Copytrading Tutorial
+                </h2>
+                    <iframe
+                        width="560"
+                        height="315"
+                        src={videoUrl}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    />
+                    <button 
+                        onClick={closeModal} 
+                        style={{ display: 'block', margin: '5px auto', backgroundColor: 'red', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}
+                    >
+                        Close
+                    </button>
+
+                </Modal>
         </div>
     );
 });
