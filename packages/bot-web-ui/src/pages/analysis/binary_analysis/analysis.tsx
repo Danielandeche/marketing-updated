@@ -11,7 +11,7 @@ import PieChart from './components/pie_chart';
 import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
-import { FaYoutube } from 'react-icons/fa';
+import { FaYoutube, FaUpload, FaDownload } from 'react-icons/fa';
 import Modal from 'react-modal';
 
 function sleep(milliseconds: any) {

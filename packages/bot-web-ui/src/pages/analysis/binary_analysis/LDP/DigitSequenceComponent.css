@@ -420,3 +420,57 @@
         width: 100%; /* Button fills the available width */
     }
 }
+
+
+.settings-controls {
+    display: flex;                /* Use flexbox for layout */
+    align-items: center;         /* Center items vertically */
+    margin: 16px;                /* Margin around the controls */
+    padding: 10px;               /* Inner padding for better spacing */
+    border: 1px solid #ddd;      /* Border around the control section */
+    border-radius: 5px;          /* Rounded corners */
+    background-color: #f9f9f9;   /* Light background color */
+}
+
+.download-settings, .upload-settings {
+    display: flex;                /* Use flexbox for aligning icon and text */
+    align-items: center;         /* Center items vertically */
+    margin-right: 20px;          /* Spacing between controls */
+}
+
+.preset-name-input {
+    border: 1px solid #ccc;      /* Border for input fields */
+    border-radius: 4px;          /* Rounded corners for inputs */
+    padding: 8px;                /* Inner padding for inputs */
+    width: 200px;                /* Fixed width for consistency */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.file-upload-input {
+    display: none;                /* Hide the default file input */
+}
+
+.download-label, .upload-label {
+    display: flex;                /* Flexbox for icon and text alignment */
+    cursor: pointer;              /* Pointer cursor for clickable label */
+}
+
+.icon {
+    color: #007bff;               /* Icon color */
+    margin-right: 8px;           /* Space between icon and text */
+    transition: transform 0.2s;  /* Smooth transition for hover effects */
+}
+
+.icon:hover {
+    transform: scale(1.1);        /* Scale icon on hover for effect */
+}
+
+span {
+    cursor: pointer;              /* Pointer cursor for text */
+    color: #333;                  /* Text color */
+    transition: color 0.2s;       /* Smooth transition for hover effects */
+}
+
+span:hover {
+    color: #007bff;               /* Change text color on hover */
+}

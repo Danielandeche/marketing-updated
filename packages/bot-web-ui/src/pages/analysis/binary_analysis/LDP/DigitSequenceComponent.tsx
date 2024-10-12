@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { calculatePercentages } from './calculatePercentage';
 import './DigitSequenceComponent.css';
 import Modal from 'react-modal';
-import { FaYoutube } from 'react-icons/fa';
+import { FaYoutube, FaCloudUploadAlt, FaCloudDownloadAlt } from 'react-icons/fa';
 
 type Props = {
     digitList: number[];
@@ -48,6 +48,57 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const [isAutoTrading1, setIsAutoTrading1] = useState(false);
     const [tradeExecuted1, setTradeExecuted1] = useState(false);
     const [lastTradeType, setLastTradeType] = useState<string | null>(null);
+    const [presetName, setPresetName] = useState('');
+    const [fileInputKey, setFileInputKey] = useState(0); 
+
+    // Function to download settings as a JSON file
+    const downloadSettings = () => {
+        const name = window.prompt("Enter the name for your settings file:", presetName);
+        if (name) {
+            const settings = {
+                numDigits,
+                comparisonOperator,
+                tradeAction,
+                customPrediction,
+                martingaleValue: martingaleValueRef.current,
+                isAutoTrading,
+                numDigits1,
+                comparisonOperator1,
+                tradeAction1,
+            };
+    
+            const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${name}.json`; // Use the entered name
+            a.click();
+            URL.revokeObjectURL(url); // Cleanup
+        }
+    };
+
+    // Function to upload settings from a JSON file
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const uploadedSettings = JSON.parse(e.target?.result as string);
+                setNumDigits(uploadedSettings.numDigits || 3);
+                setComparisonOperator(uploadedSettings.comparisonOperator || 'greater than');
+                setTradeAction(uploadedSettings.tradeAction || 'DIGITOVER');
+                handleCustomPredictionInputChange({ target: { value: uploadedSettings.customPrediction || 0 } } as any);
+                martingaleValueRef.current = uploadedSettings.martingaleValue || '';
+                setIsAutoTrading(uploadedSettings.isAutoTrading || false);
+                setNumDigits1(uploadedSettings.numDigits1 || 3);
+                setComparisonOperator1(uploadedSettings.comparisonOperator1 || 'odd');
+                setTradeAction1(uploadedSettings.tradeAction1 || 'DIGITODD');
+            };
+            reader.readAsText(file);
+            setFileInputKey(prev => prev + 1); // Reset input value
+        }
+    };
+    
 
     const handleNumDigitsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -274,8 +325,29 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
                             <FaYoutube size={35} style={{ color: '#FF0000' }} />
                         </div>
+                        <div className='settings-controls'>
+                            <div className='download-settings'>
+                                <label onClick={downloadSettings} className='download-label'>
+                                    <FaCloudDownloadAlt className='icon' />
+                                    <span>Download</span>
+                                </label>
+                            </div>
+                            <div className='upload-settings'>
+                                <label htmlFor='file-upload' className='upload-label'>
+                                    <FaCloudUploadAlt className='icon' />
+                                    <span>Upload</span>
+                                </label>
+                                <input
+                                    id='file-upload'
+                                    key={fileInputKey} // Reset file input on upload
+                                    type='file'
+                                    accept='.json'
+                                    onChange={handleFileUpload}
+                                    className='file-upload-input'
+                                />
+                            </div>
+                        </div>
                     </div>
-
                     <div className='digit-list'>
                         {Array.from({ length: 10 }, (_, digit) => {
                             const individualMatchPercentage = calculatePercentages(

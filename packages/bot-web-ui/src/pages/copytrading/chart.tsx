@@ -317,7 +317,7 @@ const CopyTrading = observer(() => {
                         <span className='slider round' />
                     </label>
                     <Localize i18n_default_text='Enable Demo to Real Copy Trading' />
-                    <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                    <div onClick={() => openModal('https://www.youtube.com/embed/QiJw3zY6UyM')} style={{ cursor: 'pointer' }}>
                         <FaYoutube size={40} style={{ color: '#FF0000' }} />
                     </div>
                 </div>
@@ -342,7 +342,7 @@ const CopyTrading = observer(() => {
                     <button onClick={() => addToken()}>
                         <FaRegPlusSquare />
                     </button>                   
-                    <button onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                    <button onClick={() => openModal('https://www.youtube.com/embed/1oIuMsIFHn8')} style={{ cursor: 'pointer' }}>
                         <FaYoutube style={{ color: '#FF0000' }} />
                     </button>
                 </div>
