@@ -11,7 +11,7 @@ import PieChart from './components/pie_chart';
 import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
-import { FaYoutube, FaDownload, FaUpload } from 'react-icons/fa';
+import { FaYoutube } from 'react-icons/fa';
 import Modal from 'react-modal';
 
 function sleep(milliseconds: any) {
@@ -90,7 +90,6 @@ const BinaryAnalysisPage = observer(() => {
     const [enableCopyDemo, setCopyDemo] = useState<boolean>(false);
     const [liveAccCR, setLiveAccCr] = useState<string>('');
     const [overUnderManual, setOverUnderManual] = useState<boolean>(false);
-    const [templateFile, setTemplateFile] = useState<File | null>(null);
 
     // Refs
     const martingaleValueRef = useRef<string | number>(martingaleValue);
@@ -114,55 +113,6 @@ const BinaryAnalysisPage = observer(() => {
     const { registerBotListeners, unregisterBotListeners } = run_panel;
     const { is_mobile, is_dark_mode_on } = ui;
     const { updateResultsCompletedContract } = transactions;
-
-    // Function to load template and apply settings
-    const loadTemplate = (template: any) => {
-        if (template.overValue !== undefined) setOverValue(template.overValue);
-        if (template.underValue !== undefined) setUnderValue(template.underValue);
-        if (template.martingaleValue !== undefined) setMartingaleValue(template.martingaleValue);
-        if (template.oneClickAmount !== undefined) setOneClickAmount(template.oneClickAmount);
-        if (template.customPrediction !== undefined) setCustomPrediction(template.customPrediction);
-        // Add more state updates here for other settings
-    };
-
-    // Handle file upload (Preset template)
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setTemplateFile(file);
-            const reader = new FileReader();
-            reader.onload = () => {
-                const content = reader.result;
-                if (content) {
-                    try {
-                        const parsedContent = JSON.parse(content as string); // Assuming JSON format
-                        loadTemplate(parsedContent); // Load the template settings
-                    } catch (error) {
-                        console.error('Error parsing the uploaded template:', error);
-                    }
-                }
-            };
-            reader.readAsText(file);
-        }
-    };
-
-    // Download current settings as template
-    const handleDownloadTemplate = () => {
-        const currentSettings = {
-            overValue,
-            underValue,
-            martingaleValue,
-            oneClickAmount,
-            customPrediction,
-            // Add more settings that you want to export
-        };
-        const fileName = `template_${Date.now()}.json`;
-        const fileToDownload = new Blob([JSON.stringify(currentSettings, null, 2)], { type: 'application/json' });
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(fileToDownload);
-        downloadLink.download = fileName;
-        downloadLink.click();
-    };
 
     useEffect(() => {
         registerBotListeners();
@@ -707,26 +657,6 @@ const BinaryAnalysisPage = observer(() => {
                         onClick={() => handleSetActiveCard('rise_fall')}
                     >
                         Rise/Fall
-                    </button>
-                </div>
-                {/* Upload Button */}
-                <div className='file_upload'>
-                    <label htmlFor="upload_template">
-                        <FaUpload size={20} style={{ cursor: 'pointer' }} />
-                        <input
-                            type="file"
-                            id="upload_template"
-                            accept=".json"
-                            style={{ display: 'none' }}
-                            onChange={handleFileUpload}
-                        />
-                        Upload Template
-                    </label>
-                </div>
-                {/* Download Button */}
-                <div className='file_download'>
-                    <button onClick={handleDownloadTemplate}>
-                        <FaDownload size={20} /> Download Current Template
                     </button>
                 </div>
             </div>
