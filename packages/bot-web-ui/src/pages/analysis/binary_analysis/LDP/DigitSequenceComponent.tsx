@@ -37,11 +37,11 @@ const DigitSequenceComponent: React.FC<Props> = ({
     buy_contract_differs,
     handleCustomPredictionInputChange,
 }) => {
-    const [numDigits, setNumDigits] = useState<number | string>(3); // Allow both number and string
+    const [numDigits, setNumDigits] = useState<number | string>(3);
     const [comparisonOperator, setComparisonOperator] = useState('greater than');
     const [tradeAction, setTradeAction] = useState('DIGITOVER');
-    const [isAutoTrading, setIsAutoTrading] = useState(false); // State for auto-trading
-    const [tradeExecuted, setTradeExecuted] = useState(false); // Track if trade has been executed
+    const [isAutoTrading, setIsAutoTrading] = useState(false);
+    const [tradeExecuted, setTradeExecuted] = useState(false);
     const [numDigits1, setNumDigits1] = useState<number | string>(5);
     const [comparisonOperator1, setComparisonOperator1] = useState('even');
     const [tradeAction1, setTradeAction1] = useState('DIGITEVEN');
@@ -102,10 +102,10 @@ const DigitSequenceComponent: React.FC<Props> = ({
             const allEven = lastNDigits1.every(digit => digit % 2 === 0);
             const allOdd = lastNDigits1.every(digit => digit % 2 !== 0);
             if (allEven && lastTradeType !== 'even') {
-                buy_contract('DIGITODD', true);
+                handle_buy_contract('DIGITODD');
                 setLastTradeType('even');
             } else if (allOdd && lastTradeType !== 'odd') {
-                buy_contract('DIGITEVEN', true);
+                handle_buy_contract('DIGITEVEN');
                 setLastTradeType('odd');
             }
             return allEven || allOdd;
@@ -133,40 +133,36 @@ const DigitSequenceComponent: React.FC<Props> = ({
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
-
         if (isAutoTrading) {
             interval = setInterval(() => {
                 if (shouldTriggerTrade && !tradeExecuted) {
-                    buy_contract_differs(tradeAction); // Take the trade if conditions are met
-                    setTradeExecuted(true); // Mark trade as executed
+                    handle_buy_contract_differs(tradeAction);
+                    setTradeExecuted(true);
                 } else if (!shouldTriggerTrade) {
-                    setTradeExecuted(false); // Reset trade execution if conditions are not met
+                    setTradeExecuted(false);
                 }
-            }, 1000); // Adjust the interval time as needed
+            }, 1000);
         }
-
-        return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
+        return () => clearInterval(interval);
     }, [buy_contract_differs, isAutoTrading, shouldTriggerTrade, tradeAction, tradeExecuted]);
 
     useEffect(() => {
-        let interval: NodeJS.Timeout;
-
+        let interval: NodeJS.Timeout;   
         if (isAutoTrading1) {
             interval = setInterval(() => {
                 if (shouldTriggerTrade1() && !tradeExecuted1) {
                     if (comparisonOperator1 !== 'custom') {
-                        buy_contract(tradeAction1, true); // Execute trade
+                        handle_buy_contract(tradeAction1);
+                        setTradeExecuted1(true);
                     }
-                    setTradeExecuted1(true); // Mark trade as executed
-                } else if (!shouldTriggerTrade1()) {
-                    setTradeExecuted1(false); // Reset trade execution if conditions aren't met
+                } else if (!shouldTriggerTrade1() && tradeExecuted1) {
+                    setTradeExecuted1(false);
                     setLastTradeType(null);
                 }
-            }, 1000); // Adjust the interval time as needed
-        }
-
-        return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
-    }, [buy_contract, isAutoTrading1, tradeAction1, tradeExecuted1, shouldTriggerTrade1, comparisonOperator1]);
+            }, 1000);
+        }   
+        return () => clearInterval(interval);
+    }, [buy_contract, isAutoTrading1, tradeAction1, tradeExecuted1, shouldTriggerTrade1, comparisonOperator1]);    
 
     const {
         evenPercentage,
@@ -384,52 +380,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
                         <FaYoutube size={40} style={{ color: '#FF0000' }} />
                     </div>
-                </div>
-
-                {/* Modal for YouTube Video */}
-                <Modal
-                    isOpen={isModalOpen}
-                    onRequestClose={closeModal}
-                    style={{
-                        overlay: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark background
-                            zIndex: 1000, // High z-index for overlay
-                        },
-                        content: {
-                            top: '50%', // Center vertically
-                            left: '50%', // Center horizontally
-                            right: 'auto',
-                            bottom: 'auto',
-                            transform: 'translate(-50%, -50%)', // Adjust positioning
-                            border: 'none',
-                            borderRadius: '8px',
-                            padding: '8px',
-                            boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-                            background: '#fff', // Background color
-                            zIndex: 1001, // Higher z-index for content
-                        },
-                    }}
-                >
-                    <h2 style={{ color: '#000', fontSize: '20px', textAlign: 'center', margin: '5px 0' }}>
-                    Pro Analysistool Tutorial
-                </h2>
-                    <iframe
-                        width="560"
-                        height="315"
-                        src={videoUrl}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                    />
-                    <button 
-                        onClick={closeModal} 
-                        style={{ display: 'block', margin: '5px auto', backgroundColor: 'red', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}
-                    >
-                        Close
-                    </button>
-
-                </Modal>
+                </div>              
 
                 <div className='sequences'>
                     {/* Even Odd Sequences */}
@@ -501,6 +452,51 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         </div>
                     </div>
                 </div>
+
+                {/* Modal for YouTube Video */}
+                <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={closeModal}
+                    style={{
+                        overlay: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark background
+                            zIndex: 1000, // High z-index for overlay
+                        },
+                        content: {
+                            top: '50%', // Center vertically
+                            left: '50%', // Center horizontally
+                            right: 'auto',
+                            bottom: 'auto',
+                            transform: 'translate(-50%, -50%)', // Adjust positioning
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '8px',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                            background: '#fff', // Background color
+                            zIndex: 1001, // Higher z-index for content
+                        },
+                    }}
+                >
+                    <h2 style={{ color: '#000', fontSize: '20px', textAlign: 'center', margin: '5px 0' }}>
+                    Pro Analysistool Tutorial
+                </h2>
+                    <iframe
+                        width="560"
+                        height="315"
+                        src={videoUrl}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    />
+                    <button 
+                        onClick={closeModal} 
+                        style={{ display: 'block', margin: '5px auto', backgroundColor: 'red', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}
+                    >
+                        Close
+                    </button>
+
+                </Modal>
             </div>
         </div>
     );
