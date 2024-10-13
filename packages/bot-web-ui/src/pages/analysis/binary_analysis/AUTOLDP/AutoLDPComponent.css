@@ -380,9 +380,7 @@
     width: 150px; /* Fixed width for alignment */
 }
 
-.auto-trade-controls {
-    margin-left: 10px; /* Space between button and form */
-}
+
 
 .auto-trade-controls button {
     padding: 10px 15px; /* Button padding */
@@ -453,6 +451,7 @@
 
 .auto-trade-controls {
     margin-top: 16px;
+    margin-left: 10px;
 }
 
 .settings-controls {
