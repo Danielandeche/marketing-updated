@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { calculatePercentages } from './calculatePercentage';
 import './DigitSequenceComponent.css';
 import Modal from 'react-modal';
-import { FaYoutube } from 'react-icons/fa';
+import { FaYoutube} from 'react-icons/fa';
 
 type Props = {
     digitList: number[];
@@ -38,6 +38,8 @@ const DigitSequenceComponent: React.FC<Props> = ({
     handleCustomPredictionInputChange,
 }) => {
 
+    const predictionValue = typeof customPrediction === 'string' ? parseInt(customPrediction) : customPrediction;
+    
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [videoUrl, setVideoUrl] = useState('');
 
@@ -49,7 +51,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
     const closeModal = () => {
         setIsModalOpen(false);
         setVideoUrl('');
-    };   
+    };
 
     const {
         evenPercentage,
@@ -60,7 +62,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
         differsPercentage,
         risePercentage,
         fallPercentage,
-    } = calculatePercentages(digitList, tickList);
+    } = calculatePercentages(digitList, tickList, predictionValue);
 
     digitList = digitList.slice(-10);
     tickList = tickList.slice(-10);
@@ -214,20 +216,16 @@ const DigitSequenceComponent: React.FC<Props> = ({
                 <div className='metrics'>
                     {/* Metric buttons */}
                     <button className='metric over' onClick={() => handle_buy_contract_differs('DIGITOVER')}>
-                        Over 
-                        {overPercentage.toFixed(2)}%
+                        Over {overPercentage.toFixed(2)}%
                     </button>
                     <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITUNDER')}>
-                        Under 
-                        {underPercentage.toFixed(2)}%
+                        Under {underPercentage.toFixed(2)}%
                     </button>
                     <button className='metric match' onClick={() => handle_buy_contract_differs('DIGITMATCH')}>
-                        Matches 
-                        {matchesPercentage.toFixed(2)}%
+                        Matches {matchesPercentage.toFixed(2)}%
                     </button>
                     <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITDIFF')}>
-                        Differ 
-                        {differsPercentage.toFixed(2)}%
+                        Differ {differsPercentage.toFixed(2)}%
                     </button>
                     <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
                         <FaYoutube size={40} style={{ color: '#FF0000' }} />
