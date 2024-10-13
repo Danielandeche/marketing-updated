@@ -310,16 +310,12 @@ const AutoLDPComponent: React.FC<Props> = ({
         const storedComparisonOperator = localStorage.getItem('comparisonOperator');
         const storedTradeAction = localStorage.getItem('tradeAction');
         const storedCustomPrediction = localStorage.getItem('customPrediction');
-        const storedMartingaleValue = localStorage.getItem('martingaleValue');
         const storedIsAutoTrading = localStorage.getItem('isAutoTrading');
         const storedNumDigits1 = localStorage.getItem('numDigits1');
         const storedComparisonOperator1 = localStorage.getItem('comparisonOperator1');
         const storedTradeAction1 = localStorage.getItem('tradeAction1');
         const storedIsCustomTradeFormVisible = localStorage.getItem('isCustomTradeFormVisible');
         const storedIsSequencesVisible = localStorage.getItem('isSequencesVisible');
-        if (storedMartingaleValue) {
-            martingaleValueRef.current = JSON.parse(storedMartingaleValue);
-        }
     
         setNumDigits(storedNumDigits ? JSON.parse(storedNumDigits) : 3);
         setComparisonOperator(storedComparisonOperator || 'greater than');
@@ -345,15 +341,11 @@ const AutoLDPComponent: React.FC<Props> = ({
         localStorage.setItem('tradeAction1', tradeAction1);
         localStorage.setItem('isCustomTradeFormVisible', JSON.stringify(isCustomTradeFormVisible));
         localStorage.setItem('isSequencesVisible', JSON.stringify(isSequencesVisible));
-        if (martingaleValueRef.current !== null && martingaleValueRef.current !== undefined) {
-            localStorage.setItem('martingaleValue', JSON.stringify(martingaleValueRef.current));
-        }
     }, [
         numDigits,
         comparisonOperator,
         tradeAction,
         customPrediction,
-        martingaleValueRef.current,
         isAutoTrading,
         numDigits1,
         comparisonOperator1,
