@@ -304,6 +304,20 @@ const AutoLDPComponent: React.FC<Props> = ({
         }
     };
 
+    // Load visibility settings from localStorage on mount
+    useEffect(() => {
+        const customTradeFormVisible = localStorage.getItem('isCustomTradeFormVisible');
+        const sequencesVisible = localStorage.getItem('isSequencesVisible');
+        setIsCustomTradeFormVisible(customTradeFormVisible ? JSON.parse(customTradeFormVisible) : true);
+        setIsSequencesVisible(sequencesVisible ? JSON.parse(sequencesVisible) : true);
+    }, []);
+
+    // Save visibility settings to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem('isCustomTradeFormVisible', JSON.stringify(isCustomTradeFormVisible));
+        localStorage.setItem('isSequencesVisible', JSON.stringify(isSequencesVisible));
+    }, [isCustomTradeFormVisible, isSequencesVisible]);
+
     return (
         <div className='ldp_max_container'>
             <div className='container-ldp' style={{ color: is_dark_mode_on ? '#fff' : '#000' }}>
