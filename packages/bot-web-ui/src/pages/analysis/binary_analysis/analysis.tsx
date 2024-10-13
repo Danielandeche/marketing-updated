@@ -11,7 +11,8 @@ import PieChart from './components/pie_chart';
 import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
-import { FaYoutube, FaUpload, FaDownload } from 'react-icons/fa';
+import AutoLDPComponent from './AUTOLDP/AutoLDPComponent';
+import { FaYoutube} from 'react-icons/fa';
 import Modal from 'react-modal';
 
 function sleep(milliseconds: any) {
@@ -50,7 +51,7 @@ type ActiveSymbolTypes = {
 };
 
 const BinaryAnalysisPage = observer(() => {
-    const [activeCard, setActiveCard] = useState('LDP');
+    const [activeCard, setActiveCard] = useState('AUTOLDP');
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [currentTick, setCurrentTick] = useState<number | string>('Updating...');
     const [allLastDigitList, setAllLastDigitList] = useState<number[]>([]);
@@ -634,32 +635,44 @@ const BinaryAnalysisPage = observer(() => {
                     />
                 )}
                 <div className='buttons'>
+                <button
+                        className={`button ${activeCard === 'AUTOLDP' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('AUTOLDP')}
+                    >
+                        Auto LDP
+                    </button>
                     <button
                         className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
                         onClick={() => handleSetActiveCard('LDP')}
                     >
-                        LDP
+                        Manual LDP
                     </button>
                     <button
-                        className={`button ${activeCard === 'pie_diff' ? 'active' : ''}`}
-                        onClick={() => handleSetActiveCard('pie_diff')}
+                        className={`button ${activeCard === 'PROTOOL' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('PROTOOL')}
                     >
-                        Digits
-                    </button>
-                    <button
-                        className={`button ${activeCard === 'over_under' ? 'active' : ''}`}
-                        onClick={() => handleSetActiveCard('over_under')}
-                    >
-                        Over/Under
-                    </button>
-                    <button
-                        className={`button ${activeCard === 'rise_fall' ? 'active' : ''}`}
-                        onClick={() => handleSetActiveCard('rise_fall')}
-                    >
-                        Rise/Fall
+                        PRO TOOL
                     </button>
                 </div>
             </div>
+            {activeCard === 'AUTOLDP' && (
+                <AutoLDPComponent
+                    digitList={getLastDigitList()}
+                    tickList={getTickList()}
+                    CirclesDigitList={getLast1000DigitList()}
+                    customPrediction={customPrediction}
+                    handleCustomPredictionInputChange={handleCustomPredictionInputChange}
+                    is_dark_mode_on={is_dark_mode_on}
+                    buy_contract={buy_contract}
+                    buy_contract_differs={buy_contract_differs}
+                    selectTickList={selectTickList}
+                    handleMartingaleInputChange={handleMartingaleInputChange}
+                    martingaleValueRef={martingaleValueRef}
+                    isTradeActive={isTradeActive}
+                    setIsTradeActive={setIsTradeActive}
+                    guideElement={guideElement}
+                />
+            )}
             {activeCard === 'LDP' && (
                 <DigitSequenceComponent
                     digitList={getLastDigitList()}
@@ -678,43 +691,221 @@ const BinaryAnalysisPage = observer(() => {
                     guideElement={guideElement}
                 />
             )}
-            {/* Middle Cards */}
-            {(activeCard === 'rise_fall' || activeCard === 'over_under') && (
-                <div className='rf_ou'>
-                    {activeCard === 'over_under' && (
-                        <div className='over_under card1'>
-                            <div className='over_under_options'>
-                                {/* <h2 className='analysis_title'>Over/Under</h2> */}
-                                <div className='digit_inputs'>
-                                    <div className='over_digit'>
-                                        <label htmlFor='over_input'>Over</label>
-                                        <input type='number' value={overValue} onChange={handleOverInputChange} />
+            {activeCard === 'PROTOOL' && (
+                <><div className='rf_ou'>
+                    <div className='over_under card1'>
+                        <div className='over_under_options'>
+                            {/* <h2 className='analysis_title'>Over/Under</h2> */}
+                            <div className='digit_inputs'>
+                                <div className='over_digit'>
+                                    <label htmlFor='over_input'>Over</label>
+                                    <input type='number' value={overValue} onChange={handleOverInputChange} />
+                                </div>
+                                <div className='under_digit'>
+                                    <label htmlFor='under_input'>Under</label>
+                                    <input type='number' value={underValue} onChange={handleUnderInputChange} />
+                                </div>
+                            </div>
+                            <div className='over_oct_container'>
+                                <div className='over_oct'>
+                                    {overUnderManual ? (
+                                        <button
+                                            onClick={() => buy_contract_differs(overUnderContract, true)}
+                                            className='overunder_buy_btn'
+                                        >
+                                            Buy
+                                        </button>
+                                    ) : (
+                                        <label className='switch'>
+                                            <input
+                                                type='checkbox'
+                                                checked={isOverUnderOneClickActive}
+                                                onChange={handleIsOverUnderOneClick} />
+                                            <span className='slider round' />
+                                        </label>
+                                    )}
+                                    {selectTickList()}
+                                    <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
+                                        <TbSettingsDollar />
                                     </div>
-                                    <div className='under_digit'>
-                                        <label htmlFor='under_input'>Under</label>
-                                        <input type='number' value={underValue} onChange={handleUnderInputChange} />
+                                    <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
                                     </div>
                                 </div>
-                                <div className='over_oct_container'>
-                                    <div className='over_oct'>
-                                        {overUnderManual ? (
-                                            <button
-                                                onClick={() => buy_contract_differs(overUnderContract, true)}
-                                                className='overunder_buy_btn'
-                                            >
-                                                Buy
-                                            </button>
-                                        ) : (
-                                            <label className='switch'>
-                                                <input
-                                                    type='checkbox'
-                                                    checked={isOverUnderOneClickActive}
-                                                    onChange={handleIsOverUnderOneClick}
-                                                />
-                                                <span className='slider round' />
-                                            </label>
-                                        )}
+                                <div className='over_under_settings'>
+                                    <div className='ct_types_ou'>
+                                        <select
+                                            name='ct_types'
+                                            id='contract_types'
+                                            onChange={handleOverUnderContractSelect}
+                                        >
+                                            <option value='DIGITOVER'>Over</option>
+                                            <option value='DIGITUNDER'>Under</option>
+                                        </select>
+                                        <select
+                                            name='tt_options'
+                                            id='tt_options'
+                                            onChange={handleOverUnderDirectionSelect}
+                                        >
+                                            <option value='SAME'>Same</option>
+                                            <option value='OPPOSITE'>Opposite</option>
+                                            <option value='MANUAL'>Manual</option>
+                                        </select>
+                                    </div>
+                                    <div className='martingale'>
+                                        <small>martingale</small>
+                                        <input
+                                            type='number'
+                                            value={martingaleValueRef.current}
+                                            onChange={handleMartingaleInputChange} />
+                                    </div>
+                                    <div className='percentage_value'>
+                                        <small>% value</small>
+                                        <input
+                                            type='number'
+                                            value={percentageValue}
+                                            onChange={handlePercentageInputChange} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <OverUnderBarChart
+                            overUnderList={getLastDigitList()}
+                            overValue={overValue}
+                            underValue={underValue}
+                            is_mobile={is_mobile}
+                            active_symbol={active_symbol}
+                            isOverUnderOneClickActive={isOverUnderOneClickActive}
+                            oneClickAmount={oneClickAmount}
+                            oneClickDuration={oneClickDuration}
+                            isTradeActive={isTradeActive}
+                            percentageValue={percentageValue}
+                            overUnderContract={overUnderContract}
+                            overUnderDirection={overUnderDirection}
+                            setIsTradeActive={setIsTradeActive}
+                            isTradeActiveRef={isTradeActiveRef}
+                            enableCopyDemo={enableCopyDemo}
+                            liveAccCR={liveAccCR} />
+                    </div>
+                    <div className='line_chart card2'>
+                        <div className='linechat_oct'>
+                            <select name='' id='linechat_oct_options' onChange={handleLineChartSelectChange}>
+                                <option value='risefall'>Rise/Fall Chart</option>
+                                <option value='lastdigit'>Last Digits Chart</option>
+                            </select>
+                            {!isTickChart && <h2 className='analysis_title'>Last Digits Chart</h2>}
+                            {isTickChart && (
+                                <div className='oct_trading_options'>
+                                    <div className='details_options'>
+                                        <small>Enable</small>
+                                        <label className='switch'>
+                                            <input
+                                                type='checkbox'
+                                                checked={isRiseFallOneClickActive}
+                                                onChange={handleIsRiseFallOneClick} />
+                                            <span className='slider round' />
+                                        </label>
+                                    </div>
+                                    <div className='rise_fall_buttons'>
+                                        <button
+                                            className='rise_btn'
+                                            onClick={() => buy_contract('CALL', isRiseFallOneClickActive)}
+                                        >
+                                            Rise
+                                        </button>
+                                        <button
+                                            className='fall_btn'
+                                            onClick={() => buy_contract('PUT', isRiseFallOneClickActive)}
+                                        >
+                                            Fall
+                                        </button>
                                         {selectTickList()}
+                                        <div
+                                            className='guide'
+                                            onClick={() => setShowBotSettings(!showBotSettings)}
+                                        >
+                                            <TbSettingsDollar />
+                                        </div>
+                                        <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
+                                            <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        <ApolloLineChart data={getLineChartList()} />
+                    </div>
+                    <div className='rise_fall card1'>
+                        <h2 className='analysis_title'>Rise/Fall</h2>
+                        <RiseFallBarChart allDigitList={getLastDigitList()} is_mobile={is_mobile} />
+                    </div>
+                </div><div className='pie_diff'>
+                        <div className='digit_diff card3'>
+                            <h2 className='analysis_title'>Differs/Matches</h2>
+                            <div className='title_oc_trader'>
+                                <div className='oneclick_trader'>
+                                    {tradingDiffType === 'MANUAL' ? (
+                                        <button
+                                            className='custom_buy_btn'
+                                            onClick={() => buy_contract_differs(oneClickContract)}
+                                        >
+                                            Buy
+                                        </button>
+                                    ) : (
+                                        oneClickContract === 'DIGITDIFF' && (
+                                            <>
+                                                <div className='differs_choices'>
+                                                    <div className='auto_clicker'>
+                                                        <h4>Enable</h4>
+                                                        <label className='switch'>
+                                                            <input
+                                                                type='checkbox'
+                                                                checked={isOneClickActive}
+                                                                onChange={handleIsOneClick} />
+                                                            <span className='slider round' />
+                                                        </label>
+                                                    </div>
+                                                    <div className='auto_clicker'>
+                                                        <small>Auto Differ</small>
+                                                        <label className='switch'>
+                                                            <input
+                                                                type='checkbox'
+                                                                checked={isAutoClickerActive}
+                                                                onChange={handleIsAutoClicker} />
+                                                            <span className='slider round' />
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )
+                                    )}
+                                    <div className='diff_options'>
+                                        <select name='ct_types' id='contract_types' onChange={handleContractSelect}>
+                                            <option value='DIGITDIFF'>Differs</option>
+                                            <option value='DIGITMATCH'>Matches</option>
+                                        </select>
+                                        <select name='td_options' id='trading_options' onChange={handleTradingDiffType}>
+                                            <option value='AUTO'>Auto</option>
+                                            <option value='MANUAL'>Manual</option>
+                                        </select>
+                                    </div>
+                                    {tradingDiffType === 'MANUAL' && (
+                                        <input
+                                            className='custom_prediction'
+                                            type='number'
+                                            value={customPrediction}
+                                            onChange={handleCustomPredictionInputChange} />
+                                    )}
+                                    {selectTickList()}
+                                    <div className='differs_setting'>
+                                        <div className='martingale'>
+                                            <small>Martingale</small>
+                                            <input
+                                                type='number'
+                                                value={martingaleValueRef.current}
+                                                onChange={handleMartingaleInputChange} />
+                                        </div>
                                         <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
                                             <TbSettingsDollar />
                                         </div>
@@ -722,202 +913,60 @@ const BinaryAnalysisPage = observer(() => {
                                             <FaYoutube size={40} style={{ color: '#FF0000' }} />
                                         </div>
                                     </div>
-                                    <div className='over_under_settings'>
-                                        <div className='ct_types_ou'>
-                                            <select
-                                                name='ct_types'
-                                                id='contract_types'
-                                                onChange={handleOverUnderContractSelect}
-                                            >
-                                                <option value='DIGITOVER'>Over</option>
-                                                <option value='DIGITUNDER'>Under</option>
-                                            </select>
-                                            <select
-                                                name='tt_options'
-                                                id='tt_options'
-                                                onChange={handleOverUnderDirectionSelect}
-                                            >
-                                                <option value='SAME'>Same</option>
-                                                <option value='OPPOSITE'>Opposite</option>
-                                                <option value='MANUAL'>Manual</option>
-                                            </select>
-                                        </div>
-                                        <div className='martingale'>
-                                            <small>martingale</small>
-                                            <input
-                                                type='number'
-                                                value={martingaleValueRef.current}
-                                                onChange={handleMartingaleInputChange}
-                                            />
-                                        </div>
-                                        <div className='percentage_value'>
-                                            <small>% value</small>
-                                            <input
-                                                type='number'
-                                                value={percentageValue}
-                                                onChange={handlePercentageInputChange}
-                                            />
-                                        </div>                                     
-                                    </div>
                                 </div>
                             </div>
-
-                            <OverUnderBarChart
-                                overUnderList={getLastDigitList()}
-                                overValue={overValue}
-                                underValue={underValue}
-                                is_mobile={is_mobile}
+                            <DiffersBalls
+                                lastDigitList={getLastDigitList()}
+                                active_last={lastDigit}
                                 active_symbol={active_symbol}
-                                isOverUnderOneClickActive={isOverUnderOneClickActive}
-                                oneClickAmount={oneClickAmount}
-                                oneClickDuration={oneClickDuration}
+                                contract_type={oneClickContract}
+                                duration={oneClickDuration}
+                                isOneClickActive={isOneClickActive}
+                                stake_amount={oneClickAmount}
+                                prevLowestValue={prevLowestValue}
+                                isAutoClickerActive={isAutoClickerActive}
+                                digitDiffHigh={digitDiffHigh}
+                                digitDiffLow={digitDiffLow}
                                 isTradeActive={isTradeActive}
-                                percentageValue={percentageValue}
-                                overUnderContract={overUnderContract}
-                                overUnderDirection={overUnderDirection}
-                                setIsTradeActive={setIsTradeActive}
                                 isTradeActiveRef={isTradeActiveRef}
+                                setIsTradeActive={setIsTradeActive}
+                                setPrevLowestValue={setPrevLowestValue}
+                                tradingDiffType={tradingDiffType}
                                 enableCopyDemo={enableCopyDemo}
-                                liveAccCR={liveAccCR}
-                            />
+                                liveAccCR={liveAccCR} />
                         </div>
-                    )}
-                    {(activeCard === 'rise_fall' || activeCard === 'over_under') && (
-                        <div className='line_chart card2'>
-                            <div className='linechat_oct'>
-                                <select name='' id='linechat_oct_options' onChange={handleLineChartSelectChange}>
-                                    {activeCard === 'rise_fall' && <option value='risefall'>Rise/Fall Chart</option>}
-                                    {activeCard === 'over_under' && (
-                                        <option value='lastdigit'>Last Digits Chart</option>
-                                    )}
-                                </select>
-                                {!isTickChart && <h2 className='analysis_title'>Last Digits Chart</h2>}
-                                {isTickChart && (
-                                    <div className='oct_trading_options'>
-                                        {activeCard === 'rise_fall' && (
-                                            <div className='details_options'>
-                                                <small>Enable</small>
-                                                <label className='switch'>
-                                                    <input
-                                                        type='checkbox'
-                                                        checked={isRiseFallOneClickActive}
-                                                        onChange={handleIsRiseFallOneClick}
-                                                    />
-                                                    <span className='slider round' />
-                                                </label>
-                                            </div>
-                                        )}
-                                        {activeCard === 'rise_fall' && (
-                                            <div className='rise_fall_buttons'>
-                                                <button
-                                                    className='rise_btn'
-                                                    onClick={() => buy_contract('CALL', isRiseFallOneClickActive)}
-                                                >
-                                                    Rise
-                                                </button>
-                                                <button
-                                                    className='fall_btn'
-                                                    onClick={() => buy_contract('PUT', isRiseFallOneClickActive)}
-                                                >
-                                                    Fall
-                                                </button>
-                                                {selectTickList()}
-                                                <div
-                                                    className='guide'
-                                                    onClick={() => setShowBotSettings(!showBotSettings)}
-                                                >
-                                                    <TbSettingsDollar />
-                                                </div>
-                                                <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                                    <FaYoutube size={40} style={{ color: '#FF0000' }} />
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                            <ApolloLineChart data={getLineChartList()} />
-                        </div>
-                    )}
-                    {activeCard === 'rise_fall' && (
-                        <div className='rise_fall card1'>
-                            <h2 className='analysis_title'>Rise/Fall</h2>
-                            <RiseFallBarChart allDigitList={getLastDigitList()} is_mobile={is_mobile} />
-                        </div>
-                    )}
-                </div>
-            )}
-            {/* Bottom Cards */}
-            {activeCard === 'pie_diff' && (
-                <div className='pie_diff'>
-                    <div className='digit_diff card3'>
-                        <h2 className='analysis_title'>Differs/Matches</h2>
-                        <div className='title_oc_trader'>
-                            <div className='oneclick_trader'>
-                                {tradingDiffType === 'MANUAL' ? (
-                                    <button
-                                        className='custom_buy_btn'
-                                        onClick={() => buy_contract_differs(oneClickContract)}
-                                    >
-                                        Buy
-                                    </button>
-                                ) : (
-                                    oneClickContract === 'DIGITDIFF' && (
-                                        <>
-                                            <div className='differs_choices'>
-                                                <div className='auto_clicker'>
-                                                    <h4>Enable</h4>
-                                                    <label className='switch'>
-                                                        <input
-                                                            type='checkbox'
-                                                            checked={isOneClickActive}
-                                                            onChange={handleIsOneClick}
-                                                        />
-                                                        <span className='slider round' />
-                                                    </label>
-                                                </div>
-                                                <div className='auto_clicker'>
-                                                    <small>Auto Differ</small>
-                                                    <label className='switch'>
-                                                        <input
-                                                            type='checkbox'
-                                                            checked={isAutoClickerActive}
-                                                            onChange={handleIsAutoClicker}
-                                                        />
-                                                        <span className='slider round' />
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </>
-                                    )
-                                )}
-                                <div className='diff_options'>
-                                    <select name='ct_types' id='contract_types' onChange={handleContractSelect}>
-                                        <option value='DIGITDIFF'>Differs</option>
-                                        <option value='DIGITMATCH'>Matches</option>
-                                    </select>
-                                    <select name='td_options' id='trading_options' onChange={handleTradingDiffType}>
-                                        <option value='AUTO'>Auto</option>
-                                        <option value='MANUAL'>Manual</option>
-                                    </select>
-                                </div>
-                                {tradingDiffType === 'MANUAL' && (
-                                    <input
-                                        className='custom_prediction'
-                                        type='number'
-                                        value={customPrediction}
-                                        onChange={handleCustomPredictionInputChange}
-                                    />
-                                )}
-                                {selectTickList()}
-                                <div className='differs_setting'>
+                        <div className='pie card4'>
+                            <div className='odd_even_info'>
+                                <h2 className='analysis_title'>Even/Odd</h2>
+                                <div className='odd_even_settings'>
                                     <div className='martingale'>
-                                        <small>Martingale</small>
+                                        <small>Enable</small>
+                                        <label className='switch'>
+                                            <input
+                                                type='checkbox'
+                                                checked={isEvenOddOneClickActive}
+                                                onChange={handleIsEvenOddOneClick} />
+                                            <span className='slider round' />
+                                        </label>
+                                    </div>
+                                    <select name='ct_types' id='contract_types' onChange={handleEvenOddContractSelect}>
+                                        <option value='DIGITEVEN'>Even</option>
+                                        <option value='DIGITODD'>Odd</option>
+                                        <option value='BOTH'>Both</option>
+                                    </select>
+                                    <div className='martingale'>
+                                        <small>martingale</small>
                                         <input
                                             type='number'
                                             value={martingaleValueRef.current}
-                                            onChange={handleMartingaleInputChange}
-                                        />
+                                            onChange={handleMartingaleInputChange} />
+                                    </div>
+                                    <div className='percentage_value'>
+                                        <small>% value</small>
+                                        <input
+                                            type='number'
+                                            value={percentageValue}
+                                            onChange={handlePercentageInputChange} />
                                     </div>
                                     <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
                                         <TbSettingsDollar />
@@ -926,100 +975,33 @@ const BinaryAnalysisPage = observer(() => {
                                         <FaYoutube size={40} style={{ color: '#FF0000' }} />
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <DiffersBalls
-                            lastDigitList={getLastDigitList()}
-                            active_last={lastDigit}
-                            active_symbol={active_symbol}
-                            contract_type={oneClickContract}
-                            duration={oneClickDuration}
-                            isOneClickActive={isOneClickActive}
-                            stake_amount={oneClickAmount}
-                            prevLowestValue={prevLowestValue}
-                            isAutoClickerActive={isAutoClickerActive}
-                            digitDiffHigh={digitDiffHigh}
-                            digitDiffLow={digitDiffLow}
-                            isTradeActive={isTradeActive}
-                            isTradeActiveRef={isTradeActiveRef}
-                            setIsTradeActive={setIsTradeActive}
-                            setPrevLowestValue={setPrevLowestValue}
-                            tradingDiffType={tradingDiffType}
-                            enableCopyDemo={enableCopyDemo}
-                            liveAccCR={liveAccCR}
-                        />
-                    </div>
-                    <div className='pie card4'>
-                        <div className='odd_even_info'>
-                            <h2 className='analysis_title'>Even/Odd</h2>
-                            <div className='odd_even_settings'>
-                                <div className='martingale'>
-                                    <small>Enable</small>
-                                    <label className='switch'>
-                                        <input
-                                            type='checkbox'
-                                            checked={isEvenOddOneClickActive}
-                                            onChange={handleIsEvenOddOneClick}
-                                        />
-                                        <span className='slider round' />
-                                    </label>
-                                </div>
-                                <select name='ct_types' id='contract_types' onChange={handleEvenOddContractSelect}>
-                                    <option value='DIGITEVEN'>Even</option>
-                                    <option value='DIGITODD'>Odd</option>
-                                    <option value='BOTH'>Both</option>
-                                </select>
-                                <div className='martingale'>
-                                    <small>martingale</small>
-                                    <input
-                                        type='number'
-                                        value={martingaleValueRef.current}
-                                        onChange={handleMartingaleInputChange}
-                                    />
-                                </div>
-                                <div className='percentage_value'>
-                                    <small>% value</small>
-                                    <input
-                                        type='number'
-                                        value={percentageValue}
-                                        onChange={handlePercentageInputChange}
-                                    />
-                                </div>
-                                <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
-                                    <TbSettingsDollar />
-                                </div>
-                                <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                    <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                <div className='same_diff'>
+                                    <select onChange={handleSameDiffEvenOddContractSelect}>
+                                        <option value='SAME'>Same</option>
+                                        <option value='OPPOSITE'>Opposite</option>
+                                    </select>
+                                    <div className='tick_stake'>{selectTickList()}</div>
                                 </div>
                             </div>
-                            <div className='same_diff'>
-                                <select onChange={handleSameDiffEvenOddContractSelect}>
-                                    <option value='SAME'>Same</option>
-                                    <option value='OPPOSITE'>Opposite</option>
-                                </select>
-                                <div className='tick_stake'>{selectTickList()}</div>
-                            </div>
-                        </div>
 
-                        <div className='pie_container'>
-                            <PieChart
-                                allDigitList={getLastDigitList()}
-                                contract_type={evenOddContract}
-                                isEvenOddOneClickActive={isEvenOddOneClickActive}
-                                percentageValue={percentageValue}
-                                active_symbol={active_symbol}
-                                isTradeActive={isTradeActive}
-                                isTradeActiveRef={isTradeActiveRef}
-                                oneClickAmount={oneClickAmount}
-                                oneClickDuration={oneClickDuration}
-                                setIsTradeActive={setIsTradeActive}
-                                enableCopyDemo={enableCopyDemo}
-                                liveAccCR={liveAccCR}
-                                sameDiffEvenOdd={sameDiffEvenOdd}
-                            />
+                            <div className='pie_container'>
+                                <PieChart
+                                    allDigitList={getLastDigitList()}
+                                    contract_type={evenOddContract}
+                                    isEvenOddOneClickActive={isEvenOddOneClickActive}
+                                    percentageValue={percentageValue}
+                                    active_symbol={active_symbol}
+                                    isTradeActive={isTradeActive}
+                                    isTradeActiveRef={isTradeActiveRef}
+                                    oneClickAmount={oneClickAmount}
+                                    oneClickDuration={oneClickDuration}
+                                    setIsTradeActive={setIsTradeActive}
+                                    enableCopyDemo={enableCopyDemo}
+                                    liveAccCR={liveAccCR}
+                                    sameDiffEvenOdd={sameDiffEvenOdd} />
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </div></>
             )}
             {/* Modal for YouTube Video */}
             <Modal

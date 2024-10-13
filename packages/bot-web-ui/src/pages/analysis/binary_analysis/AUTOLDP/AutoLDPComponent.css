@@ -35,7 +35,6 @@
 .all_digit_boxes {
     display: flex;
     gap: 10px;
-    justify-content: center;
 }
 
 .last_p {
@@ -421,3 +420,96 @@
         width: 100%; /* Button fills the available width */
     }
 }
+
+.card-container {
+    width: 99%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.card-body {
+    margin-top: 16px;
+}
+
+.toggle-icon {
+    cursor: pointer;
+}
+
+.custom-trade-form label, .custom-trade-form select, .custom-trade-form input {
+    margin-right: 8px;
+}
+
+.auto-trade-controls {
+    margin-top: 16px;
+}
+
+.settings-controls {
+    display: flex;
+    gap: 4px;
+    align-items: flex-start;
+
+.download-settings, .upload-settings {
+    display: flex;
+    flex-direction: column;       /* Stack icon and text vertically */
+    align-items: center;          /* Center items horizontally */
+}
+
+.preset-name-input {
+    border: 1px solid #ccc;      /* Border for input fields */
+    border-radius: 4px;          /* Rounded corners for inputs */
+    padding: 8px;                /* Inner padding for inputs */
+    width: 200px;                /* Fixed width for consistency */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.file-upload-input {
+    display: none;                /* Hide the default file input */
+}
+
+.download-label, .upload-label {
+    display: flex;                /* Flexbox for icon and text alignment */
+    flex-direction: column;       /* Stack icon and text vertically */
+    align-items: center;          /* Center align */
+    cursor: pointer;              /* Pointer cursor for clickable label */
+}
+
+.iconu {
+    color: #800080;
+    font-size: 2.5rem;
+    margin-bottom: 2px;
+    transition: transform 0.2s;
+}
+
+.icond {
+    color: #ffa500;
+    font-size: 2.5rem;
+    margin-bottom: 2px;
+    transition: transform 0.2s;
+}
+
+.icon:hover {
+    transform: scale(1.1);        /* Scale icon on hover for effect */
+}
+
+span {
+    cursor: pointer;              /* Pointer cursor for text */
+    color: #333;                  /* Text color */
+    font-size: 0.7rem;            /* Font size for the text */
+    transition: color 0.2s;       /* Smooth transition for hover effects */
+}
+
+span:hover {
+    color: #007bff;               /* Change text color on hover */
+}}
