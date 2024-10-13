@@ -304,19 +304,59 @@ const AutoLDPComponent: React.FC<Props> = ({
         }
     };
 
-    // Load visibility settings from localStorage on mount
     useEffect(() => {
-        const customTradeFormVisible = localStorage.getItem('isCustomTradeFormVisible');
-        const sequencesVisible = localStorage.getItem('isSequencesVisible');
-        setIsCustomTradeFormVisible(customTradeFormVisible ? JSON.parse(customTradeFormVisible) : true);
-        setIsSequencesVisible(sequencesVisible ? JSON.parse(sequencesVisible) : true);
+        // Load settings from localStorage on mount
+        const storedNumDigits = localStorage.getItem('numDigits');
+        const storedComparisonOperator = localStorage.getItem('comparisonOperator');
+        const storedTradeAction = localStorage.getItem('tradeAction');
+        const storedCustomPrediction = localStorage.getItem('customPrediction');
+        const storedMartingaleValue = localStorage.getItem('martingaleValue');
+        const storedIsAutoTrading = localStorage.getItem('isAutoTrading');
+        const storedNumDigits1 = localStorage.getItem('numDigits1');
+        const storedComparisonOperator1 = localStorage.getItem('comparisonOperator1');
+        const storedTradeAction1 = localStorage.getItem('tradeAction1');
+        const storedIsCustomTradeFormVisible = localStorage.getItem('isCustomTradeFormVisible');
+        const storedIsSequencesVisible = localStorage.getItem('isSequencesVisible');
+    
+        setNumDigits(storedNumDigits ? JSON.parse(storedNumDigits) : 3);
+        setComparisonOperator(storedComparisonOperator || 'greater than');
+        setTradeAction(storedTradeAction || 'DIGITOVER');
+        handleCustomPredictionInputChange({ target: { value: storedCustomPrediction || 0 } } as any);
+        martingaleValueRef.current = storedMartingaleValue || '';
+        setIsAutoTrading(storedIsAutoTrading ? JSON.parse(storedIsAutoTrading) : false);
+        setNumDigits1(storedNumDigits1 ? JSON.parse(storedNumDigits1) : 3);
+        setComparisonOperator1(storedComparisonOperator1 || 'odd');
+        setTradeAction1(storedTradeAction1 || 'DIGITODD');
+        setIsCustomTradeFormVisible(storedIsCustomTradeFormVisible ? JSON.parse(storedIsCustomTradeFormVisible) : true);
+        setIsSequencesVisible(storedIsSequencesVisible ? JSON.parse(storedIsSequencesVisible) : true);
     }, []);
-
-    // Save visibility settings to localStorage whenever they change
+    
     useEffect(() => {
+        // Save settings to localStorage whenever they change
+        localStorage.setItem('numDigits', JSON.stringify(numDigits));
+        localStorage.setItem('comparisonOperator', comparisonOperator);
+        localStorage.setItem('tradeAction', tradeAction);
+        localStorage.setItem('customPrediction', JSON.stringify(customPrediction));
+        localStorage.setItem('martingaleValue', JSON.stringify(martingaleValueRef.current));
+        localStorage.setItem('isAutoTrading', JSON.stringify(isAutoTrading));
+        localStorage.setItem('numDigits1', JSON.stringify(numDigits1));
+        localStorage.setItem('comparisonOperator1', comparisonOperator1);
+        localStorage.setItem('tradeAction1', tradeAction1);
         localStorage.setItem('isCustomTradeFormVisible', JSON.stringify(isCustomTradeFormVisible));
         localStorage.setItem('isSequencesVisible', JSON.stringify(isSequencesVisible));
-    }, [isCustomTradeFormVisible, isSequencesVisible]);
+    }, [
+        numDigits,
+        comparisonOperator,
+        tradeAction,
+        customPrediction,
+        martingaleValueRef,
+        isAutoTrading,
+        numDigits1,
+        comparisonOperator1,
+        tradeAction1,
+        isCustomTradeFormVisible,
+        isSequencesVisible,
+    ]);    
 
     return (
         <div className='ldp_max_container'>
