@@ -317,12 +317,14 @@ const AutoLDPComponent: React.FC<Props> = ({
         const storedTradeAction1 = localStorage.getItem('tradeAction1');
         const storedIsCustomTradeFormVisible = localStorage.getItem('isCustomTradeFormVisible');
         const storedIsSequencesVisible = localStorage.getItem('isSequencesVisible');
+        if (storedMartingaleValue) {
+            martingaleValueRef.current = JSON.parse(storedMartingaleValue);
+        }
     
         setNumDigits(storedNumDigits ? JSON.parse(storedNumDigits) : 3);
         setComparisonOperator(storedComparisonOperator || 'greater than');
         setTradeAction(storedTradeAction || 'DIGITOVER');
         handleCustomPredictionInputChange({ target: { value: storedCustomPrediction || 0 } } as any);
-        martingaleValueRef.current = storedMartingaleValue || '';
         setIsAutoTrading(storedIsAutoTrading ? JSON.parse(storedIsAutoTrading) : false);
         setNumDigits1(storedNumDigits1 ? JSON.parse(storedNumDigits1) : 3);
         setComparisonOperator1(storedComparisonOperator1 || 'odd');
@@ -337,19 +339,21 @@ const AutoLDPComponent: React.FC<Props> = ({
         localStorage.setItem('comparisonOperator', comparisonOperator);
         localStorage.setItem('tradeAction', tradeAction);
         localStorage.setItem('customPrediction', JSON.stringify(customPrediction));
-        localStorage.setItem('martingaleValue', JSON.stringify(martingaleValueRef.current));
         localStorage.setItem('isAutoTrading', JSON.stringify(isAutoTrading));
         localStorage.setItem('numDigits1', JSON.stringify(numDigits1));
         localStorage.setItem('comparisonOperator1', comparisonOperator1);
         localStorage.setItem('tradeAction1', tradeAction1);
         localStorage.setItem('isCustomTradeFormVisible', JSON.stringify(isCustomTradeFormVisible));
         localStorage.setItem('isSequencesVisible', JSON.stringify(isSequencesVisible));
+        if (martingaleValueRef.current !== null && martingaleValueRef.current !== undefined) {
+            localStorage.setItem('martingaleValue', JSON.stringify(martingaleValueRef.current));
+        }
     }, [
         numDigits,
         comparisonOperator,
         tradeAction,
         customPrediction,
-        martingaleValueRef,
+        martingaleValueRef.current,
         isAutoTrading,
         numDigits1,
         comparisonOperator1,
