@@ -60,7 +60,7 @@ const BinaryAnalysisPage = observer(() => {
     const [numberOfTicks, setNumberOfTicks] = useState<string | number>(1000);
     const [optionsList, setOptions] = useState<SymbolData[]>([]);
     const [overValue, setOverValue] = useState<string | number>(4);
-    const [martingaleValue, setMartingaleValue] = useState<string | number>(1.2);
+    const [martingaleValue, setMartingaleValue] = useState<number | string>(Number(localStorage.getItem('martingaleValue')) || 1.2);
     const [percentageValue, setPercentageValue] = useState<string | number>(60);
     const [underValue, setUnderValue] = useState<string | number>(4);
     const [isOneClickActive, setIsOneClickActive] = useState(false);
@@ -92,6 +92,12 @@ const BinaryAnalysisPage = observer(() => {
     const [liveAccCR, setLiveAccCr] = useState<string>('');
     const [overUnderManual, setOverUnderManual] = useState<boolean>(false);
 
+    useEffect(() => {
+        localStorage.setItem('martingaleValue', martingaleValue.toString());
+    }, [
+        martingaleValue
+    ]);
+
     // Refs
     const martingaleValueRef = useRef<string | number>(martingaleValue);
     const isTradeActiveRef = useRef(isTradeActive);
@@ -110,7 +116,7 @@ const BinaryAnalysisPage = observer(() => {
 
     const { ui } = useStore();
     const DBotStores = useDBotStore();
-    const { transactions, run_panel } = DBotStores;
+    const { transactions, run_panel, } = DBotStores;
     const { registerBotListeners, unregisterBotListeners } = run_panel;
     const { is_mobile, is_dark_mode_on } = ui;
     const { updateResultsCompletedContract } = transactions;
@@ -128,11 +134,12 @@ const BinaryAnalysisPage = observer(() => {
         if (active_card !== null) {
             setActiveCard(active_card);
         }
-
+    
         return () => {
             unregisterBotListeners();
         };
     }, []);
+    
 
     useEffect(() => {
         if (prev_symbol !== active_symbol) {
