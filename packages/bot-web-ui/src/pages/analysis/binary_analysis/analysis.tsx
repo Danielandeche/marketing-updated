@@ -51,46 +51,90 @@ type ActiveSymbolTypes = {
 };
 
 const BinaryAnalysisPage = observer(() => {
-    const [activeCard, setActiveCard] = useState('AUTOLDP');
+    const [activeCard, setActiveCard] = useState(localStorage.getItem('activeCard') || 'AUTOLDP');
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [currentTick, setCurrentTick] = useState<number | string>('Updating...');
     const [allLastDigitList, setAllLastDigitList] = useState<number[]>([]);
-    const [isTickChart, setIsTickChart] = useState(true);
+    const [isTickChart, setIsTickChart] = useState(localStorage.getItem('isTickChart') === 'true' || true);
     const [lastDigit, setLastDigit] = useState(0);
-    const [numberOfTicks, setNumberOfTicks] = useState<string | number>(1000);
+    const [numberOfTicks, setNumberOfTicks] = useState<number | string>(Number(localStorage.getItem('numberOfTicks')) || 1000);
     const [optionsList, setOptions] = useState<SymbolData[]>([]);
-    const [overValue, setOverValue] = useState<string | number>(4);
-    const [martingaleValue, setMartingaleValue] = useState<string | number>(1.2);
-    const [percentageValue, setPercentageValue] = useState<string | number>(60);
-    const [underValue, setUnderValue] = useState<string | number>(4);
-    const [isOneClickActive, setIsOneClickActive] = useState(false);
-    const [isAutoClickerActive, setIsAutoClickerActive] = useState(false);
-    const [isRiseFallOneClickActive, setIsRiseFallOneClickActive] = useState(false);
-    const [isEvenOddOneClickActive, setIsEvenOddOneClickActive] = useState(false);
-    const [isOverUnderOneClickActive, setIsOverUnderOneClickActive] = useState(false);
-    const [isTradeActive, setIsTradeActive] = useState(false);
-    const [oneClickContract, setOneClickContract] = useState('DIGITDIFF');
-    const [tradingDiffType, setTradingDiffType] = useState('AUTO');
-    const [overUnderContract, setOverUnderContract] = useState('DIGITOVER');
-    const [overUnderDirection, setOverUnderDirection] = useState('SAME');
-    const [evenOddContract, setEvenOddContract] = useState('DIGITEVEN');
-    const [sameDiffEvenOdd, setSameDiffEvenOdd] = useState('SAME');
-    const [oneClickDuration, setOneClickDuration] = useState(1);
-    const [oneClickAmount, setOneClickAmount] = useState<number | string>(0.5);
-    const [customPrediction, setCustomPrediction] = useState<number | string>(0);
-    const [accountCurrency, setAccountCurrency] = useState('');
-    const [active_symbol, setActiveSymbol] = useState('R_100');
-    const [prev_symbol, setPrevSymbol] = useState('R_100');
-    const [pip_size, setPipSize] = useState(2);
-    const [prevLowestValue, setPrevLowestValue] = useState<string | number>('');
-    const [showBotSettings, setShowBotSettings] = useState<boolean>(false);
-    const [takeProfitValue, setTakeProfitValue] = useState<string | number>(2);
-    const [stopLossValue, setStopLossValue] = useState<string | number>(2);
-    const [enableSlTpValue, setEnableSlTpValue] = useState<boolean>(false);
-    const [enableDisableMartingale, setEnableDisableMartingale] = useState<boolean>(true);
-    const [enableCopyDemo, setCopyDemo] = useState<boolean>(false);
-    const [liveAccCR, setLiveAccCr] = useState<string>('');
-    const [overUnderManual, setOverUnderManual] = useState<boolean>(false);
+    const [overValue, setOverValue] = useState<number | string>(Number(localStorage.getItem('overValue')) || 4);
+    const [martingaleValue, setMartingaleValue] = useState<number | string>(Number(localStorage.getItem('martingaleValue')) || 1.2);
+    const [percentageValue, setPercentageValue] = useState<number | string>(Number(localStorage.getItem('percentageValue')) || 60);
+    const [underValue, setUnderValue] = useState<number | string>(Number(localStorage.getItem('underValue')) || 4);
+    const [isOneClickActive, setIsOneClickActive] = useState(localStorage.getItem('isOneClickActive') === 'true' || false);
+    const [isAutoClickerActive, setIsAutoClickerActive] = useState(localStorage.getItem('isAutoClickerActive') === 'true' || false);
+    const [isRiseFallOneClickActive, setIsRiseFallOneClickActive] = useState(localStorage.getItem('isRiseFallOneClickActive') === 'true' || false);
+    const [isEvenOddOneClickActive, setIsEvenOddOneClickActive] = useState(localStorage.getItem('isEvenOddOneClickActive') === 'true' || false);
+    const [isOverUnderOneClickActive, setIsOverUnderOneClickActive] = useState(localStorage.getItem('isOverUnderOneClickActive') === 'true' || false);
+    const [isTradeActive, setIsTradeActive] = useState(localStorage.getItem('isTradeActive') === 'true' || false);
+    const [oneClickContract, setOneClickContract] = useState(localStorage.getItem('oneClickContract') || 'DIGITDIFF');
+    const [tradingDiffType, setTradingDiffType] = useState(localStorage.getItem('tradingDiffType') || 'AUTO');
+    const [overUnderContract, setOverUnderContract] = useState(localStorage.getItem('overUnderContract') || 'DIGITOVER');
+    const [overUnderDirection, setOverUnderDirection] = useState(localStorage.getItem('overUnderDirection') || 'SAME');
+    const [evenOddContract, setEvenOddContract] = useState(localStorage.getItem('evenOddContract') || 'DIGITEVEN');
+    const [sameDiffEvenOdd, setSameDiffEvenOdd] = useState(localStorage.getItem('sameDiffEvenOdd') || 'SAME');
+    const [oneClickDuration, setOneClickDuration] = useState<number>(Number(localStorage.getItem('oneClickDuration')) || 1);
+    const [oneClickAmount, setOneClickAmount] = useState<number | string>(Number(localStorage.getItem('oneClickAmount')) || 0.5);
+    const [customPrediction, setCustomPrediction] = useState<number | string>(Number(localStorage.getItem('customPrediction')) || 0);
+    const [accountCurrency, setAccountCurrency] = useState(localStorage.getItem('accountCurrency') || '');
+    const [active_symbol, setActiveSymbol] = useState(localStorage.getItem('active_symbol') || 'R_100');
+    const [prev_symbol, setPrevSymbol] = useState(localStorage.getItem('prev_symbol') || 'R_100');
+    const [pip_size, setPipSize] = useState<number>(Number(localStorage.getItem('pip_size')) || 2);
+    const [prevLowestValue, setPrevLowestValue] = useState<number | string>(localStorage.getItem('prevLowestValue') || '');
+    const [showBotSettings, setShowBotSettings] = useState<boolean>(localStorage.getItem('showBotSettings') === 'true' || false);
+    const [takeProfitValue, setTakeProfitValue] = useState<number | string>(Number(localStorage.getItem('takeProfitValue')) || 2);
+    const [stopLossValue, setStopLossValue] = useState<number | string>(Number(localStorage.getItem('stopLossValue')) || 2);
+    const [enableSlTpValue, setEnableSlTpValue] = useState<boolean>(localStorage.getItem('enableSlTpValue') === 'true' || false);
+    const [enableDisableMartingale, setEnableDisableMartingale] = useState<boolean>(localStorage.getItem('enableDisableMartingale') === 'true' || true);
+    const [enableCopyDemo, setCopyDemo] = useState<boolean>(localStorage.getItem('enableCopyDemo') === 'true' || false);
+    const [liveAccCR, setLiveAccCr] = useState(localStorage.getItem('liveAccCR') || '');
+    const [overUnderManual, setOverUnderManual] = useState<boolean>(localStorage.getItem('overUnderManual') === 'true' || false);
+
+    useEffect(() => {
+        localStorage.setItem('activeCard', activeCard);
+        localStorage.setItem('isTickChart', isTickChart.toString());
+        localStorage.setItem('numberOfTicks', numberOfTicks.toString());
+        localStorage.setItem('overValue', overValue.toString());
+        localStorage.setItem('martingaleValue', martingaleValue.toString());
+        localStorage.setItem('percentageValue', percentageValue.toString());
+        localStorage.setItem('underValue', underValue.toString());
+        localStorage.setItem('isOneClickActive', isOneClickActive.toString());
+        localStorage.setItem('isAutoClickerActive', isAutoClickerActive.toString());
+        localStorage.setItem('isRiseFallOneClickActive', isRiseFallOneClickActive.toString());
+        localStorage.setItem('isEvenOddOneClickActive', isEvenOddOneClickActive.toString());
+        localStorage.setItem('isOverUnderOneClickActive', isOverUnderOneClickActive.toString());
+        localStorage.setItem('isTradeActive', isTradeActive.toString());
+        localStorage.setItem('oneClickContract', oneClickContract);
+        localStorage.setItem('tradingDiffType', tradingDiffType);
+        localStorage.setItem('overUnderContract', overUnderContract);
+        localStorage.setItem('overUnderDirection', overUnderDirection);
+        localStorage.setItem('evenOddContract', evenOddContract);
+        localStorage.setItem('sameDiffEvenOdd', sameDiffEvenOdd);
+        localStorage.setItem('oneClickDuration', oneClickDuration.toString());
+        localStorage.setItem('oneClickAmount', oneClickAmount.toString());
+        localStorage.setItem('customPrediction', customPrediction.toString());
+        localStorage.setItem('accountCurrency', accountCurrency);
+        localStorage.setItem('active_symbol', active_symbol);
+        localStorage.setItem('prev_symbol', prev_symbol);
+        localStorage.setItem('pip_size', pip_size.toString());
+        localStorage.setItem('prevLowestValue', prevLowestValue.toString());
+        localStorage.setItem('showBotSettings', showBotSettings.toString());
+        localStorage.setItem('takeProfitValue', takeProfitValue.toString());
+        localStorage.setItem('stopLossValue', stopLossValue.toString());
+        localStorage.setItem('enableSlTpValue', enableSlTpValue.toString());
+        localStorage.setItem('enableDisableMartingale', enableDisableMartingale.toString());
+        localStorage.setItem('enableCopyDemo', enableCopyDemo.toString());
+        localStorage.setItem('liveAccCR', liveAccCR);
+        localStorage.setItem('overUnderManual', overUnderManual.toString());
+    }, [
+        activeCard, isTickChart, numberOfTicks, overValue, martingaleValue, percentageValue, underValue, isOneClickActive, 
+        isAutoClickerActive, isRiseFallOneClickActive, isEvenOddOneClickActive, isOverUnderOneClickActive, isTradeActive, 
+        oneClickContract, tradingDiffType, overUnderContract, overUnderDirection, evenOddContract, sameDiffEvenOdd, oneClickDuration, 
+        oneClickAmount, customPrediction, accountCurrency, active_symbol, prev_symbol, pip_size, prevLowestValue, showBotSettings, 
+        takeProfitValue, stopLossValue, enableSlTpValue, enableDisableMartingale, enableCopyDemo, liveAccCR, overUnderManual
+    ]);
 
     // Refs
     const martingaleValueRef = useRef<string | number>(martingaleValue);
