@@ -142,7 +142,7 @@
             height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
-            overflow: hidden;
+            overflow: auto;
             position: relative;
 
             @include desktop {

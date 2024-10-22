@@ -64,7 +64,7 @@ const BinaryToolsBots = observer(({ handleTabChange }: TMobileIconGuide) => {
                                     line_height='xxl'
                                     weight='bold'
                                 >
-                                    {localize('Load or build your bot')}
+                                    {localize('Load or Pick free bot')}
                                 </Text>
                             )}
                         </div>

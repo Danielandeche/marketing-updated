@@ -51,12 +51,11 @@ const AppWrapper = observer(() => {
     const init_render = React.useRef(true);
     const { ui } = useStore();
     const { url_hashed_values, is_mobile } = ui;
-    const hash = [
+    const hash = [      
+        'uploadbots',
+        'bot_builder',
         'pro-analysistool',
-        'bot_builder',      
-        'dashboard',
         'ai_bots',
-        'binarytools_bots',
         'analysistool',
         'copytrading',
         'chart',
@@ -168,7 +167,20 @@ const AppWrapper = observer(() => {
                         onTabItemChange={onEntered}
                         onTabItemClick={handleTabChange}
                         top
-                    >                       
+                    >
+                        
+                        <div
+                            icon='IcFullStar'
+                            label={<Localize i18n_default_text='Upload/Free Bots' />}
+                            id='id-dbot-upload-bots'
+                        >
+                            <BinaryToolsBots handleTabChange={handleTabChange} />
+                        </div>
+                        <div
+                            icon='IcBotBuilderTabIcon'
+                            label={<Localize i18n_default_text='Bot Builder' />}
+                            id='id-bot-builder'
+                        />                      
                         <div
                             icon='IcDbotViewDetail'
                             label={<Localize i18n_default_text='Pro-Analysistool' />}
@@ -177,30 +189,11 @@ const AppWrapper = observer(() => {
                             <AnalysisPage />
                         </div>
                         <div
-                            icon='IcBotBuilderTabIcon'
-                            label={<Localize i18n_default_text='Bot Builder' />}
-                            id='id-bot-builder'
-                        />
-                        <div
-                            icon='IcDashboardComponentTab'
-                            label={<Localize i18n_default_text='Dashboard' />}
-                            id='id-dbot-dashboard'
-                        >
-                            <Dashboard handleTabChange={handleTabChange} />
-                        </div>
-                        <div
                             icon='IcDbotViewDetail'
                             label={<Localize i18n_default_text='AI Bots' />}
                             id='id-random-bots'
                         >
                             <RandomBots />
-                        </div>
-                        <div
-                            icon='IcFullStar'
-                            label={<Localize i18n_default_text='Free Bot' />}
-                            id='id-dbot-binarytools-bots'
-                        >
-                            <BinaryToolsBots handleTabChange={handleTabChange} />
                         </div>
                         <div
                             icon='IcChartsTabDbot'
