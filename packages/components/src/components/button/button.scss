@@ -70,7 +70,7 @@
         background: transparent;
     }
     &--primary {
-        background: var(--button-primary-default);
+        background: #FFD700;
         color: var(--text-colored-background);
 
         &:hover:not([disabled]) {
@@ -130,7 +130,7 @@
         }
     }
     &--tertiary {
-        background: var(--button-tertiary-default);
+        background: #FFD700;
 
         &:hover:not([disabled]) {
             background: var(--button-tertiary-hover);

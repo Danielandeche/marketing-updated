@@ -300,7 +300,7 @@
             @include typeface(--title-left-normal-black);
             padding: 0.5em 0;
             position: relative;
-            color: var(--text-general);
+            color: #FFD700;
             @include colorIcon(var(--text-general), none, var(--text-general));
 
             &:before {
