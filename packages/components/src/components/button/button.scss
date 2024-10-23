@@ -74,10 +74,10 @@
         color: var(--text-colored-background);
 
         &:hover:not([disabled]) {
-            background: var(--button-primary-hover);
+            background: #FFD700;
         }
         &:active:not([disabled]) {
-            background: var(--button-primary-default);
+            background: #FFD700;
         }
         &:disabled,
         &[disabled] {

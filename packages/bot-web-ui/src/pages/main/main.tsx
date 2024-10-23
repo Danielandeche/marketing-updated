@@ -59,8 +59,6 @@ const AppWrapper = observer(() => {
         'analysistool',
         'copytrading',
         'chart',
-        'privacy&policy',
-        'tutorial',
     ];
 
     let tab_value: number | string = active_tab;
@@ -219,26 +217,6 @@ const AppWrapper = observer(() => {
                             }
                         >
                             <Chart />
-                        </div>
-                        <div
-                            icon='IcReports'
-                            label={<Localize i18n_default_text='Privacy-Policy' />}
-                            id={
-                                is_chart_modal_visible || is_trading_view_modal_visible
-                                    ? 'id-privacy-policy--disabled'
-                                    : 'id-privacy-policy'
-                            }
-                        >
-                            <PrivacyPolicy />
-                        </div>
-                        <div
-                            icon='IcTutorialsTabs'
-                            label={<Localize i18n_default_text='Tutorials' />}
-                            id='id-tutorials'
-                        >
-                            <div className='tutorials-wrapper'>
-                                <Tutorial handleTabChange={handleTabChange} />
-                            </div>
                         </div>
                     </Tabs>
                 </div>
