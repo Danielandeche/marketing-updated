@@ -392,7 +392,7 @@ const AutoLDPComponent: React.FC<Props> = ({
                             </div>
                         </div>
                         <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                            <FaYoutube size={35} style={{ color: '#FF0000' }} />
+                            <FaYoutube size={35} style={{ color: '#ff444f' }} />
                         </div>
                     </div>                  
     
@@ -478,7 +478,7 @@ const AutoLDPComponent: React.FC<Props> = ({
                                     </button>
                                 </div>
                                 <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                    <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                    <FaYoutube size={40} style={{ color: '#ff444f' }} />
                                 </div>
                             </div>
                         </div>
@@ -528,7 +528,7 @@ const AutoLDPComponent: React.FC<Props> = ({
                                         </button>
                                     </div>
                                     <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                        <FaYoutube size={40} style={{ color: '#ff444f' }} />
                                     </div>
                                 </div>
                             </div>

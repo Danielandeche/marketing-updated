@@ -161,7 +161,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         </div>
                         {guideElement()}
                         <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                            <FaYoutube size={35} style={{ color: '#FF0000' }} />
+                            <FaYoutube size={35} style={{ color: '#ff444f' }} />
                         </div>
                     </div>
                     <div className='digit-list'>
@@ -228,7 +228,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         Differ {differsPercentage.toFixed(2)}%
                     </button>
                     <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                        <FaYoutube size={40} style={{ color: '#ff444f' }} />
                     </div>
                 </div>            
 
@@ -245,7 +245,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 Odd {oddPercentage.toFixed(2)}%
                             </button>
                             <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                <FaYoutube size={40} style={{ color: '#ff444f' }} />
                             </div>
                         </div>
                     </div>
@@ -262,7 +262,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 Fall {fallPercentage.toFixed(2)}%
                             </button>
                             <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                <FaYoutube size={40} style={{ color: '#ff444f' }} />
                             </div>
                         </div>
                     </div>

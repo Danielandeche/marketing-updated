@@ -736,7 +736,7 @@ const BinaryAnalysisPage = observer(() => {
                                         <TbSettingsDollar />
                                     </div>
                                     <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                        <FaYoutube size={40} style={{ color: '#ff444f' }} />
                                     </div>
                                 </div>
                                 <div className='over_under_settings'>
@@ -835,7 +835,7 @@ const BinaryAnalysisPage = observer(() => {
                                             <TbSettingsDollar />
                                         </div>
                                         <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                            <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                            <FaYoutube size={40} style={{ color: '#ff444f' }} />
                                         </div>
                                     </div>
                                 </div>
@@ -917,7 +917,7 @@ const BinaryAnalysisPage = observer(() => {
                                             <TbSettingsDollar />
                                         </div>
                                         <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                            <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                            <FaYoutube size={40} style={{ color: '#ff444f' }} />
                                         </div>
                                     </div>
                                 </div>
@@ -979,7 +979,7 @@ const BinaryAnalysisPage = observer(() => {
                                         <TbSettingsDollar />
                                     </div>
                                     <div onClick={() => openModal('https://www.youtube.com/embed/gsWzKmslEnY')} style={{ cursor: 'pointer' }}>
-                                        <FaYoutube size={40} style={{ color: '#FF0000' }} />
+                                        <FaYoutube size={40} style={{ color: '#ff444f' }} />
                                     </div>
                                 </div>
                                 <div className='same_diff'>
