@@ -70,14 +70,14 @@
         background: transparent;
     }
     &--primary {
-        background: #FFD700;
+        background: var(--button-primary-default);
         color: var(--text-colored-background);
 
         &:hover:not([disabled]) {
-            background: #FFD700;
+            background: var(--button-primary-hover);
         }
         &:active:not([disabled]) {
-            background: #FFD700;
+            background: var(--button-primary-default);
         }
         &:disabled,
         &[disabled] {
@@ -111,7 +111,6 @@
     }
     &--secondary {
         background: transparent;
-        border: 1px solid var(--button-secondary-default);
 
         &:hover:not([disabled]) {
             background: var(--button-secondary-hover);
@@ -130,7 +129,9 @@
         }
     }
     &--tertiary {
-        background: #FFD700;
+        background: var(--button-tertiary-default);
+        border: 2px solid #ff0000; 
+        border-radius: 5px;
 
         &:hover:not([disabled]) {
             background: var(--button-tertiary-hover);
@@ -139,8 +140,8 @@
             background: var(--button-tertiary-default);
         }
         .dc-btn__text,
-        .dc-btn__icon {
-            color: var(--brand-red-coral);
+        .dc-btn__icon {         
+            color: #fff;
         }
         &:disabled,
         &[disabled] {

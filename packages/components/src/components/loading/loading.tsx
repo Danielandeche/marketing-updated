@@ -25,14 +25,12 @@ const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status,
         >
             <div id={id} className={classNames('initial-loader__barspinner', 'barspinner', theme_class)}>
                 <div className='container'>
-                    <div className='container-loader'>
-                        <div className='loaderb'>
-                            Loading...
-                            <span />
-                        </div>
-                        <div className='text-loader'>app.binarytool.site/bot</div>
+                <div className="loaderbt-container">
+                    <div className="loaderbt"></div>
+                    <p className="loaderbt-text">Loading...</p>
                     </div>
                 </div>
+                
             </div>
             {is_slow_loading &&
                 status?.map((text, inx) => (
