@@ -31,7 +31,7 @@ const RecentComponent = observer(() => {
                 <div className='load-strategy__recent__files'>
                     <div className='load-strategy__title'>
                         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
-                            <Localize i18n_default_text='Binarytool Bots:' />
+                            <Localize i18n_default_text='Free Binarytool Bots:' />
                         </Text>
                     </div>
                     <div className='binarytools-list__wrapper'>
