@@ -29,8 +29,7 @@ const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status,
                     <div className="loaderbt"></div>
                     <p className="loaderbt-text">Loading...</p>
                     </div>
-                </div>
-                
+                </div>               
             </div>
             {is_slow_loading &&
                 status?.map((text, inx) => (

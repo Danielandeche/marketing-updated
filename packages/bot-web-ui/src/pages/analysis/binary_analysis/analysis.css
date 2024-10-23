@@ -839,7 +839,7 @@
 }
 
 .button.active {
-    background-color: #3f000f; /* Blue color */
+    background-color: #ff0000; /* Blue color */
     color: #ffffff; /* White color */
 }
 
