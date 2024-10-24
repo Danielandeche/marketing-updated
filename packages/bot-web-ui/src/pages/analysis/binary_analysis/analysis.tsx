@@ -642,45 +642,30 @@ const BinaryAnalysisPage = observer(() => {
                     />
                 )}
                 <div className='buttons'>
-    <button
-        className={`button ${activeCard === 'AUTOLDP' ? 'active' : ''}`}
-        onClick={() => handleSetActiveCard('AUTOLDP')}
-    >
-        Auto LDP
-    </button>
-    <button
-        className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
-        onClick={() => handleSetActiveCard('LDP')}
-    >
-        Manual LDP
-    </button>
-    
-    {/* Dropdown for Pro Tool with active check */}
-    <select
-        className='button'
-        value={activeCard}
-        onChange={(e) => handleSetActiveCard(e.target.value)}
-    >
-        <option
-            className={activeCard === 'pie_diff' ? 'active' : ''}
-            value='pie_diff'
-        >
-            Digits
-        </option>
-        <option
-            className={activeCard === 'over_under' ? 'active' : ''}
-            value='over_under'
-        >
-            Over Under
-        </option>
-        <option
-            className={activeCard === 'rise_fall' ? 'active' : ''}
-            value='rise_fall'
-        >
-            Rise Fall
-        </option>
-    </select>
-</div>
+                <button
+                    className={`button ${activeCard === 'AUTOLDP' ? 'active' : ''}`}
+                    onClick={() => handleSetActiveCard('AUTOLDP')}
+                >
+                    Auto LDP
+                </button>
+                <button
+                    className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
+                    onClick={() => handleSetActiveCard('LDP')}
+                >
+                    Manual LDP
+                </button>
+                
+                {/* Dropdown for Pro Tool with active check */}
+                <select
+                    className={`button ${['pie_diff', 'over_under', 'rise_fall'].includes(activeCard) ? 'active' : ''}`}
+                    value={activeCard}
+                    onChange={(e) => handleSetActiveCard(e.target.value)}
+                >
+                    <option value='pie_diff'>Digits</option>
+                    <option value='over_under'>Over Under</option>
+                    <option value='rise_fall'>Rise Fall</option>
+                </select>
+            </div>
             </div>
             {activeCard === 'AUTOLDP' && (
                 <AutoLDPComponent
