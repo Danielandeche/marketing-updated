@@ -485,14 +485,14 @@
 
 .iconu {
     color: #800080;
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-bottom: 2px;
     transition: transform 0.2s;
 }
 
 .icond {
     color: #ffa500;
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-bottom: 2px;
     transition: transform 0.2s;
 }
@@ -504,7 +504,7 @@
 span {
     cursor: pointer;              /* Pointer cursor for text */
     color: #333;                  /* Text color */
-    font-size: 0.7rem;            /* Font size for the text */
+    font-size: 0.9rem;            /* Font size for the text */
     transition: color 0.2s;       /* Smooth transition for hover effects */
 }
 

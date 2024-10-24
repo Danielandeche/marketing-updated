@@ -12,7 +12,7 @@ import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
 import AutoLDPComponent from './AUTOLDP/AutoLDPComponent';
-import { FaYoutube} from 'react-icons/fa';
+import { FaYoutube, FaCloudUploadAlt, FaCloudDownloadAlt} from 'react-icons/fa';
 import Modal from 'react-modal';
 
 function sleep(milliseconds: any) {
@@ -51,7 +51,9 @@ type ActiveSymbolTypes = {
 };
 
 const BinaryAnalysisPage = observer(() => {
-    const [activeCard, setActiveCard] = useState('AUTOLDP');
+    const [activeCard, setActiveCard] = useState(() => {
+        return localStorage.getItem('activeCard') || 'AUTOLDP';
+    });
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [currentTick, setCurrentTick] = useState<number | string>('Updating...');
     const [allLastDigitList, setAllLastDigitList] = useState<number[]>([]);
@@ -91,6 +93,8 @@ const BinaryAnalysisPage = observer(() => {
     const [enableCopyDemo, setCopyDemo] = useState<boolean>(false);
     const [liveAccCR, setLiveAccCr] = useState<string>('');
     const [overUnderManual, setOverUnderManual] = useState<boolean>(false);
+    const [presetName, setPresetName] = useState('');
+    const [fileInputKey, setFileInputKey] = useState(0);
 
     useEffect(() => {
         localStorage.setItem('martingaleValue', martingaleValue.toString());
@@ -120,6 +124,16 @@ const BinaryAnalysisPage = observer(() => {
     const { registerBotListeners, unregisterBotListeners } = run_panel;
     const { is_mobile, is_dark_mode_on } = ui;
     const { updateResultsCompletedContract } = transactions;
+
+    // Save activeCard to localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem('activeCard', activeCard);
+    }, [activeCard]);
+
+    // Function to update activeCard
+    const handleCardChange = (newCard: string) => {
+        setActiveCard(newCard);  // Update activeCard state and automatically save to localStorage
+    };
 
     useEffect(() => {
         registerBotListeners();
@@ -571,6 +585,221 @@ const BinaryAnalysisPage = observer(() => {
         setIsModalOpen(false);
         setVideoUrl('');
     };
+
+    // Function to download bot settings as a JSON file
+    const downloadSettings = () => {
+        const name = window.prompt("Enter the name for your settings file:", "Template name");
+        if (name) {
+            const settings = {
+                activeCard,
+                isSubscribed,
+                currentTick,
+                allLastDigitList,
+                isTickChart,
+                lastDigit,
+                numberOfTicks,
+                optionsList,
+                overValue,
+                martingaleValue: martingaleValueRef.current,
+                percentageValue,
+                underValue,
+                isOneClickActive,
+                isAutoClickerActive,
+                isRiseFallOneClickActive,
+                isEvenOddOneClickActive,
+                isOverUnderOneClickActive,
+                isTradeActive,
+                oneClickContract,
+                tradingDiffType,
+                overUnderContract,
+                overUnderDirection,
+                evenOddContract,
+                sameDiffEvenOdd,
+                oneClickDuration,
+                oneClickAmount,
+                customPrediction,
+                accountCurrency,
+                active_symbol,
+                prev_symbol,
+                pip_size,
+                prevLowestValue,
+                showBotSettings,
+                takeProfitValue,
+                stopLossValue,
+                enableSlTpValue,
+                enableDisableMartingale,
+                enableCopyDemo,
+                liveAccCR,
+                overUnderManual,
+            };
+
+            const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${name}.json`;
+            a.click();
+            URL.revokeObjectURL(url); // Cleanup
+        }
+    };
+
+    // Function to upload settings from a JSON file
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const uploadedSettings = JSON.parse(e.target?.result as string);
+
+                setActiveCard(uploadedSettings.activeCard || 'AUTOLDP');
+                setIsSubscribed(uploadedSettings.isSubscribed || false);
+                setCurrentTick(uploadedSettings.currentTick || 'Updating...');
+                setAllLastDigitList(uploadedSettings.allLastDigitList || []);
+                setIsTickChart(uploadedSettings.isTickChart || true);
+                setLastDigit(uploadedSettings.lastDigit || 0);
+                setNumberOfTicks(uploadedSettings.numberOfTicks || 1000);
+                setOptions(uploadedSettings.optionsList || []);
+                setOverValue(uploadedSettings.overValue || 4);
+                martingaleValueRef.current = uploadedSettings.martingaleValue || 1.2;
+                setPercentageValue(uploadedSettings.percentageValue || 60);
+                setUnderValue(uploadedSettings.underValue || 4);
+                setIsOneClickActive(uploadedSettings.isOneClickActive || false);
+                setIsAutoClickerActive(uploadedSettings.isAutoClickerActive || false);
+                setIsRiseFallOneClickActive(uploadedSettings.isRiseFallOneClickActive || false);
+                setIsEvenOddOneClickActive(uploadedSettings.isEvenOddOneClickActive || false);
+                setIsOverUnderOneClickActive(uploadedSettings.isOverUnderOneClickActive || false);
+                setIsTradeActive(uploadedSettings.isTradeActive || false);
+                setOneClickContract(uploadedSettings.oneClickContract || 'DIGITDIFF');
+                setTradingDiffType(uploadedSettings.tradingDiffType || 'AUTO');
+                setOverUnderContract(uploadedSettings.overUnderContract || 'DIGITOVER');
+                setOverUnderDirection(uploadedSettings.overUnderDirection || 'SAME');
+                setEvenOddContract(uploadedSettings.evenOddContract || 'DIGITEVEN');
+                setSameDiffEvenOdd(uploadedSettings.sameDiffEvenOdd || 'SAME');
+                setOneClickDuration(uploadedSettings.oneClickDuration || 1);
+                setOneClickAmount(uploadedSettings.oneClickAmount || 0.5);
+                setCustomPrediction(uploadedSettings.customPrediction || 0);
+                setAccountCurrency(uploadedSettings.accountCurrency || '');
+                setActiveSymbol(uploadedSettings.active_symbol || 'R_100');
+                setPrevSymbol(uploadedSettings.prev_symbol || 'R_100');
+                setPipSize(uploadedSettings.pip_size || 2);
+                setPrevLowestValue(uploadedSettings.prevLowestValue || '');
+                setShowBotSettings(uploadedSettings.showBotSettings || false);
+                setTakeProfitValue(uploadedSettings.takeProfitValue || 2);
+                setStopLossValue(uploadedSettings.stopLossValue || 2);
+                setEnableSlTpValue(uploadedSettings.enableSlTpValue || false);
+                setEnableDisableMartingale(uploadedSettings.enableDisableMartingale || true);
+                setCopyDemo(uploadedSettings.enableCopyDemo || false);
+                setLiveAccCr(uploadedSettings.liveAccCR || '');
+                setOverUnderManual(uploadedSettings.overUnderManual || false);
+            };
+            reader.readAsText(file);
+        }
+    };
+
+    // Example of storing in localStorage when values change
+    useEffect(() => {
+        const settings = {
+            activeCard,
+            isSubscribed,
+            currentTick,
+            allLastDigitList,
+            isTickChart,
+            lastDigit,
+            numberOfTicks,
+            optionsList,
+            overValue,
+            martingaleValue: martingaleValueRef.current,
+            percentageValue,
+            underValue,
+            isOneClickActive,
+            isAutoClickerActive,
+            isRiseFallOneClickActive,
+            isEvenOddOneClickActive,
+            isOverUnderOneClickActive,
+            isTradeActive,
+            oneClickContract,
+            tradingDiffType,
+            overUnderContract,
+            overUnderDirection,
+            evenOddContract,
+            sameDiffEvenOdd,
+            oneClickDuration,
+            oneClickAmount,
+            customPrediction,
+            accountCurrency,
+            active_symbol,
+            prev_symbol,
+            pip_size,
+            prevLowestValue,
+            showBotSettings,
+            takeProfitValue,
+            stopLossValue,
+            enableSlTpValue,
+            enableDisableMartingale,
+            enableCopyDemo,
+            liveAccCR,
+            overUnderManual,
+        };
+
+        localStorage.setItem('botSettings', JSON.stringify(settings));
+    }, [
+        activeCard, isSubscribed, currentTick, allLastDigitList, isTickChart, lastDigit, numberOfTicks,
+        optionsList, overValue, percentageValue, underValue, isOneClickActive, isAutoClickerActive,
+        isRiseFallOneClickActive, isEvenOddOneClickActive, isOverUnderOneClickActive, isTradeActive,
+        oneClickContract, tradingDiffType, overUnderContract, overUnderDirection, evenOddContract,
+        sameDiffEvenOdd, oneClickDuration, oneClickAmount, customPrediction, accountCurrency, active_symbol,
+        prev_symbol, pip_size, prevLowestValue, showBotSettings, takeProfitValue, stopLossValue,
+        enableSlTpValue, enableDisableMartingale, enableCopyDemo, liveAccCR, overUnderManual
+    ]);
+
+    useEffect(() => {
+        const savedSettings = localStorage.getItem('botSettings');
+        if (savedSettings) {
+            const parsedSettings = JSON.parse(savedSettings);
+
+            setActiveCard(parsedSettings.activeCard || 'AUTOLDP');
+            setIsSubscribed(parsedSettings.isSubscribed || false);
+            setCurrentTick(parsedSettings.currentTick || 'Updating...');
+            setAllLastDigitList(parsedSettings.allLastDigitList || []);
+            setIsTickChart(parsedSettings.isTickChart || true);
+            setLastDigit(parsedSettings.lastDigit || 0);
+            setNumberOfTicks(parsedSettings.numberOfTicks || 1000);
+            setOptions(parsedSettings.optionsList || []);
+            setOverValue(parsedSettings.overValue || 4);
+            martingaleValueRef.current = parsedSettings.martingaleValue || 1.2;
+            setPercentageValue(parsedSettings.percentageValue || 60);
+            setUnderValue(parsedSettings.underValue || 4);
+            setIsOneClickActive(parsedSettings.isOneClickActive || false);
+            setIsAutoClickerActive(parsedSettings.isAutoClickerActive || false);
+            setIsRiseFallOneClickActive(parsedSettings.isRiseFallOneClickActive || false);
+            setIsEvenOddOneClickActive(parsedSettings.isEvenOddOneClickActive || false);
+            setIsOverUnderOneClickActive(parsedSettings.isOverUnderOneClickActive || false);
+            setIsTradeActive(parsedSettings.isTradeActive || false);
+            setOneClickContract(parsedSettings.oneClickContract || 'DIGITDIFF');
+            setTradingDiffType(parsedSettings.tradingDiffType || 'AUTO');
+            setOverUnderContract(parsedSettings.overUnderContract || 'DIGITOVER');
+            setOverUnderDirection(parsedSettings.overUnderDirection || 'SAME');
+            setEvenOddContract(parsedSettings.evenOddContract || 'DIGITEVEN');
+            setSameDiffEvenOdd(parsedSettings.sameDiffEvenOdd || 'SAME');
+            setOneClickDuration(parsedSettings.oneClickDuration || 1);
+            setOneClickAmount(parsedSettings.oneClickAmount || 0.5);
+            setCustomPrediction(parsedSettings.customPrediction || 0);
+            setAccountCurrency(parsedSettings.accountCurrency || '');
+            setActiveSymbol(parsedSettings.active_symbol || 'R_100');
+            setPrevSymbol(parsedSettings.prev_symbol || 'R_100');
+            setPipSize(parsedSettings.pip_size || 2);
+            setPrevLowestValue(parsedSettings.prevLowestValue || '');
+            setShowBotSettings(parsedSettings.showBotSettings || false);
+            setTakeProfitValue(parsedSettings.takeProfitValue || 2);
+            setStopLossValue(parsedSettings.stopLossValue || 2);
+            setEnableSlTpValue(parsedSettings.enableSlTpValue || false);
+            setEnableDisableMartingale(parsedSettings.enableDisableMartingale || true);
+            setCopyDemo(parsedSettings.enableCopyDemo || false);
+            setLiveAccCr(parsedSettings.liveAccCR || '');
+            setOverUnderManual(parsedSettings.overUnderManual || false);
+        }
+    }, []);
+
     function updateActiveProgress() {
         document.querySelectorAll('.differs_container .progress .active-svg').forEach(svg => svg.remove());
 
@@ -610,11 +839,10 @@ const BinaryAnalysisPage = observer(() => {
                         </select>
                     </div>
                     <div className='no_of_ticks'>
-                        <h4>No. of Ticks</h4>
+                        {/* <h6>No. of Ticks </h6> */}
                         <input type='number' name='' id='' value={numberOfTicks} onChange={handleInputChange} />
                     </div>
                     <div className='current_price'>
-                        <h4>CURRENT TICK</h4>
                         <h3>{currentTick.toString()}</h3>
                     </div>
                 </div>
@@ -642,30 +870,52 @@ const BinaryAnalysisPage = observer(() => {
                     />
                 )}
                 <div className='buttons'>
-                <button
-                    className={`button ${activeCard === 'AUTOLDP' ? 'active' : ''}`}
-                    onClick={() => handleSetActiveCard('AUTOLDP')}
-                >
-                    Auto LDP
-                </button>
-                <button
-                    className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
-                    onClick={() => handleSetActiveCard('LDP')}
-                >
-                    Manual LDP
-                </button>
-                
-                {/* Dropdown for Pro Tool with active check */}
-                <select
-                    className={`button ${['pie_diff', 'over_under', 'rise_fall'].includes(activeCard) ? 'active' : ''}`}
-                    value={activeCard}
-                    onChange={(e) => handleSetActiveCard(e.target.value)}
-                >
-                    <option value='pie_diff'>Digits</option>
-                    <option value='over_under'>Over Under</option>
-                    <option value='rise_fall'>Rise Fall</option>
-                </select>
-            </div>
+                    <button
+                        className={`button ${activeCard === 'AUTOLDP' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('AUTOLDP')}
+                    >
+                        Auto LDP
+                    </button>
+                    <button
+                        className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('LDP')}
+                    >
+                        Manual LDP
+                    </button>
+                    
+                    {/* Dropdown for Pro Tool with active check */}
+                    <select
+                        className={`button ${['pie_diff', 'over_under', 'rise_fall'].includes(activeCard) ? 'active' : ''}`}
+                        value={activeCard}
+                        onChange={(e) => handleSetActiveCard(e.target.value)}
+                    >
+                        <option value='pie_diff'>Digits</option>
+                        <option value='over_under'>Over Under</option>
+                        <option value='rise_fall'>Rise Fall</option>
+                    </select>
+                </div>
+                <div className='settings'>
+                    <div className='upload'>
+                        <label htmlFor='file-upload' className='upload-label'>
+                            <FaCloudUploadAlt className='iconu' />
+                            <span>Upload</span>
+                        </label>
+                        <input
+                            id='file-upload'
+                            key={fileInputKey}
+                            type='file'
+                            accept='.json'
+                            onChange={handleFileUpload}
+                            className='file-upload-input'
+                        />
+                    </div>
+                    <div className='download'>
+                        <label onClick={downloadSettings} className='download-label'>
+                            <FaCloudDownloadAlt className='icond' />
+                            <span>Download</span>
+                        </label>
+                    </div>
+                </div>
             </div>
             {activeCard === 'AUTOLDP' && (
                 <AutoLDPComponent
@@ -685,6 +935,7 @@ const BinaryAnalysisPage = observer(() => {
                     guideElement={guideElement}
                 />
             )}
+
             {activeCard === 'LDP' && (
                 <DigitSequenceComponent
                     digitList={getLastDigitList()}
