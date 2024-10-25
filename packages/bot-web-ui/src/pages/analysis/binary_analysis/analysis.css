@@ -994,7 +994,7 @@ input:checked + .slider:before {
 button.close-btn {
     float: right;
     cursor: pointer;
-    background-color: red; /* Set background to red */
+    background-color: #ff0000; /* Set background to red */
     border: none;
     border-radius: 50%; /* Make it round */
     width: 30px; /* Set width */
@@ -1003,11 +1003,11 @@ button.close-btn {
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
     font-size: 18px; /* Adjust font size */
-    color: white; /* Set text color to white */
+    color: #ffffff; /* Set text color to white */
 }
 
 button.close-btn:hover {
-    background-color: darkred; /* Darken on hover */
+    background-color: #8b0000; /* Darken on hover */
 }
 
 /* Modal header */

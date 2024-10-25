@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {  useEffect, useState, useCallback  } from 'react';
 import { calculatePercentages } from './calculatePercentage';
 import './AutoLDPComponent.css';
 import Modal from 'react-modal';
