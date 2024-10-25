@@ -12,8 +12,12 @@ import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
 import AutoLDPComponent from './AUTOLDP/AutoLDPComponent';
-import { FaYoutube, FaCloudUploadAlt, FaCloudDownloadAlt} from 'react-icons/fa';
+import { FaClipboardList, FaCloudUploadAlt, FaCloudDownloadAlt} from 'react-icons/fa';
 import Modal from 'react-modal';
+
+//strategies
+import Over2 from './strategies/Over 2.json';
+import Over3 from './strategies/Over 2 Pro.json';
 
 function sleep(milliseconds: any) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -49,6 +53,37 @@ type SymbolData = {
 type ActiveSymbolTypes = {
     active_symbols: SymbolData[];
 };
+
+interface UploadedSettings {
+    activeCard?: string;
+    lastDigit?: number;
+    numberOfTicks?: number;
+    overValue?: number;
+    martingaleValue?: number;
+    percentageValue?: number;
+    underValue?: number;
+    isOneClickActive?: boolean;
+    isAutoClickerActive?: boolean;
+    isRiseFallOneClickActive?: boolean;
+    isEvenOddOneClickActive?: boolean;
+    isOverUnderOneClickActive?: boolean;
+    isTradeActive?: boolean;
+    oneClickContract?: string;
+    tradingDiffType?: string;
+    overUnderContract?: string;
+    overUnderDirection?: string;
+    evenOddContract?: string;
+    sameDiffEvenOdd?: string;
+    oneClickDuration?: number;
+    oneClickAmount?: number;
+    customPrediction?: number;
+    takeProfitValue?: number;
+    stopLossValue?: number;
+    enableSlTpValue?: boolean;
+    enableDisableMartingale?: boolean;
+    enableCopyDemo?: boolean;
+    overUnderManual?: boolean;
+}
 
 const BinaryAnalysisPage = observer(() => {
     const [activeCard, setActiveCard] = useState(() => {
@@ -95,6 +130,44 @@ const BinaryAnalysisPage = observer(() => {
     const [overUnderManual, setOverUnderManual] = useState<boolean>(false);
     const [presetName, setPresetName] = useState('');
     const [fileInputKey, setFileInputKey] = useState(0);
+    const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
+
+    const strategies = [
+        { name: 'Over2', data: Over2 },
+        { name: 'Over3', data: Over3 }
+    ];
+
+    const handleStrategySelect = (uploadedSettings: UploadedSettings) => {
+        setActiveCard(uploadedSettings.activeCard || 'AUTOLDP');
+        setLastDigit(uploadedSettings.lastDigit || 0);
+        setNumberOfTicks(uploadedSettings.numberOfTicks || 1000);
+        setOverValue(uploadedSettings.overValue || 4);
+        martingaleValueRef.current = uploadedSettings.martingaleValue || 1.2;
+        setPercentageValue(uploadedSettings.percentageValue || 60);
+        setUnderValue(uploadedSettings.underValue || 4);
+        setIsOneClickActive(uploadedSettings.isOneClickActive || false);
+        setIsAutoClickerActive(uploadedSettings.isAutoClickerActive || false);
+        setIsRiseFallOneClickActive(uploadedSettings.isRiseFallOneClickActive || false);
+        setIsEvenOddOneClickActive(uploadedSettings.isEvenOddOneClickActive || false);
+        setIsOverUnderOneClickActive(uploadedSettings.isOverUnderOneClickActive || false);
+        setIsTradeActive(uploadedSettings.isTradeActive || false);
+        setOneClickContract(uploadedSettings.oneClickContract || 'DIGITDIFF');
+        setTradingDiffType(uploadedSettings.tradingDiffType || 'AUTO');
+        setOverUnderContract(uploadedSettings.overUnderContract || 'DIGITOVER');
+        setOverUnderDirection(uploadedSettings.overUnderDirection || 'SAME');
+        setEvenOddContract(uploadedSettings.evenOddContract || 'DIGITEVEN');
+        setSameDiffEvenOdd(uploadedSettings.sameDiffEvenOdd || 'SAME');
+        setOneClickDuration(uploadedSettings.oneClickDuration || 1);
+        setOneClickAmount(uploadedSettings.oneClickAmount || 0.5);
+        setCustomPrediction(uploadedSettings.customPrediction || 0);
+        setTakeProfitValue(uploadedSettings.takeProfitValue || 2);
+        setStopLossValue(uploadedSettings.stopLossValue || 2);
+        setEnableSlTpValue(uploadedSettings.enableSlTpValue || false);
+        setEnableDisableMartingale(uploadedSettings.enableDisableMartingale || true);
+        setCopyDemo(uploadedSettings.enableCopyDemo || false);
+        setOverUnderManual(uploadedSettings.overUnderManual || false);
+    };
+       
 
     useEffect(() => {
         localStorage.setItem('martingaleValue', martingaleValue.toString());
@@ -592,13 +665,8 @@ const BinaryAnalysisPage = observer(() => {
         if (name) {
             const settings = {
                 activeCard,
-                isSubscribed,
-                currentTick,
-                allLastDigitList,
-                isTickChart,
                 lastDigit,
                 numberOfTicks,
-                optionsList,
                 overValue,
                 martingaleValue: martingaleValueRef.current,
                 percentageValue,
@@ -618,18 +686,11 @@ const BinaryAnalysisPage = observer(() => {
                 oneClickDuration,
                 oneClickAmount,
                 customPrediction,
-                accountCurrency,
-                active_symbol,
-                prev_symbol,
-                pip_size,
-                prevLowestValue,
-                showBotSettings,
                 takeProfitValue,
                 stopLossValue,
                 enableSlTpValue,
                 enableDisableMartingale,
                 enableCopyDemo,
-                liveAccCR,
                 overUnderManual,
             };
 
@@ -652,13 +713,7 @@ const BinaryAnalysisPage = observer(() => {
                 const uploadedSettings = JSON.parse(e.target?.result as string);
 
                 setActiveCard(uploadedSettings.activeCard || 'AUTOLDP');
-                setIsSubscribed(uploadedSettings.isSubscribed || false);
-                setCurrentTick(uploadedSettings.currentTick || 'Updating...');
-                setAllLastDigitList(uploadedSettings.allLastDigitList || []);
-                setIsTickChart(uploadedSettings.isTickChart || true);
                 setLastDigit(uploadedSettings.lastDigit || 0);
-                setNumberOfTicks(uploadedSettings.numberOfTicks || 1000);
-                setOptions(uploadedSettings.optionsList || []);
                 setOverValue(uploadedSettings.overValue || 4);
                 martingaleValueRef.current = uploadedSettings.martingaleValue || 1.2;
                 setPercentageValue(uploadedSettings.percentageValue || 60);
@@ -678,18 +733,11 @@ const BinaryAnalysisPage = observer(() => {
                 setOneClickDuration(uploadedSettings.oneClickDuration || 1);
                 setOneClickAmount(uploadedSettings.oneClickAmount || 0.5);
                 setCustomPrediction(uploadedSettings.customPrediction || 0);
-                setAccountCurrency(uploadedSettings.accountCurrency || '');
-                setActiveSymbol(uploadedSettings.active_symbol || 'R_100');
-                setPrevSymbol(uploadedSettings.prev_symbol || 'R_100');
-                setPipSize(uploadedSettings.pip_size || 2);
-                setPrevLowestValue(uploadedSettings.prevLowestValue || '');
-                setShowBotSettings(uploadedSettings.showBotSettings || false);
                 setTakeProfitValue(uploadedSettings.takeProfitValue || 2);
                 setStopLossValue(uploadedSettings.stopLossValue || 2);
                 setEnableSlTpValue(uploadedSettings.enableSlTpValue || false);
                 setEnableDisableMartingale(uploadedSettings.enableDisableMartingale || true);
                 setCopyDemo(uploadedSettings.enableCopyDemo || false);
-                setLiveAccCr(uploadedSettings.liveAccCR || '');
                 setOverUnderManual(uploadedSettings.overUnderManual || false);
             };
             reader.readAsText(file);
@@ -915,6 +963,30 @@ const BinaryAnalysisPage = observer(() => {
                             <span>Download</span>
                         </label>
                     </div>
+                    <div className='strategies'>
+                        <label onClick={() => setIsStrategyModalOpen(true)} className='strategies-label'>
+                            <FaClipboardList className='icons' />
+                            <span>Strategies</span>
+                        </label>
+                    </div>
+                    {isStrategyModalOpen && (
+                        <div className="modal-overlay">
+                            <div className="modal-content">
+                                <button onClick={() => setIsStrategyModalOpen(false)} className="close-btn">X</button>
+                                <h2 className="modal-header">Select a Strategy</h2>
+                                <ul className="strategy-list">
+                                    {strategies.map((strategy, index) => (
+                                        <li key={index} onClick={() => {
+                                            handleStrategySelect(strategy.data);
+                                            setIsStrategyModalOpen(false);
+                                        }}>
+                                            {strategy.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
             {activeCard === 'AUTOLDP' && (

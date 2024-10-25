@@ -911,7 +911,7 @@ input:checked + .slider:before {
     gap: 20px;                    /* Add space between the icons */
 }
 
-.upload-label, .download-label {
+.upload-label, .download-label, .strategies-label {
     display: flex;                /* Flexbox for icon and text alignment */
     flex-direction: column;       /* Stack icon and text vertically */
     align-items: center;          /* Center align */
@@ -932,7 +932,14 @@ input:checked + .slider:before {
     transition: transform 0.2s, color 0.2s; /* Smooth transition */
 }
 
-.iconu:hover, .icond:hover {
+.icons {
+    color: #2bff00; /* Cyan color for download icon */
+    font-size: 2.5rem;
+    margin-bottom: 2px;
+    transition: transform 0.2s, color 0.2s; /* Smooth transition */
+}
+
+.iconu:hover, .icond:hover, .icons:hover {
     transform: scale(1.1);        /* Scale icon on hover */
 }
 
@@ -948,6 +955,88 @@ input:checked + .slider:before {
     transition: color 0.2s;
 }
 
-.upload-label span:hover, .download-label span:hover {
+.strategies-label span {
+    color: #2bff00; /* Cyan color for download text */
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.upload-label span:hover, .download-label, .strategies-label span:hover {
     color: #007bff; /* Blue color on hover for both spans */
+}
+
+/* CSS for the modal */
+.modal-overlay {
+    position: fixed;
+    top: 0; /* Changed from 2 to 0 */
+    left: 0; /* Changed from 2 to 0 */
+    bottom: 0; /* Changed from 2 to 0 */
+    right: 0; /* Changed from 2 to 0 */
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    height: 70%;
+    width: 70%; /* Changed to a percentage for responsiveness */
+    max-width: 600px; /* Set a maximum width for larger screens */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+/* Modal close button */
+button.close-btn {
+    float: right;
+    cursor: pointer;
+    background-color: red; /* Set background to red */
+    border: none;
+    border-radius: 50%; /* Make it round */
+    width: 30px; /* Set width */
+    height: 30px; /* Set height */
+    display: flex; /* Center the "X" */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    font-size: 18px; /* Adjust font size */
+    color: white; /* Set text color to white */
+}
+
+button.close-btn:hover {
+    background-color: darkred; /* Darken on hover */
+}
+
+/* Modal header */
+h2.modal-header {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* Strategy list styling */
+ul.strategy-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 1em;
+}
+
+/* Each strategy item styling */
+ul.strategy-list li {
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect to make items look clickable */
+ul.strategy-list li:hover {
+    background-color: #f0f0f0;
+    color: #0056b3;
 }

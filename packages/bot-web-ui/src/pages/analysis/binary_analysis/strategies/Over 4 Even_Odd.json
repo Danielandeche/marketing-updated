@@ -1,0 +1,13 @@
+{
+  "numDigits": 5,
+  "comparisonOperator": "less or equal to LDP",
+  "tradeAction": "DIGITOVER",
+  "customPrediction": 4,
+  "martingaleValue": 1.2,
+  "isAutoTrading": false,
+  "numDigits1": 5,
+  "comparisonOperator1": "custom",
+  "tradeAction1": "DIGITEVEN",
+  "isCustomTradeFormVisible": true,
+  "isSequencesVisible": true
+}
