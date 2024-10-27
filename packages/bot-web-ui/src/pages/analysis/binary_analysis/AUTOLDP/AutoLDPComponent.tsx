@@ -221,16 +221,7 @@ const AutoLDPComponent: React.FC<Props> = ({
         return () => clearInterval(interval);
     }, [buy_contract, isAutoTrading1, tradeAction1, tradeExecuted1, shouldTriggerTrade1, comparisonOperator1]);    
 
-    const {
-        evenPercentage,
-        oddPercentage,
-        overPercentage,
-        underPercentage,
-        matchesPercentage,
-        differsPercentage,
-        risePercentage,
-        fallPercentage,
-    } = calculatePercentages(digitList, tickList, predictionValue);
+    calculatePercentages(digitList, tickList, predictionValue);
 
     digitList = digitList.slice(-10);
     tickList = tickList.slice(-10);

@@ -121,7 +121,7 @@ const BotSettings = ({
                 </div>
             </div>
             <div className='bot_options'>
-            <div className='active_inactive'>
+                <div className='active_inactive'>
                     <label htmlFor='enable_tp_sl'>
                         <Text as='p' align='left' size='xs' color='prominent'>
                             {localize('Use Take Profit')}

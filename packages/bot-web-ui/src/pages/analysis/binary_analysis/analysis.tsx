@@ -131,6 +131,11 @@ const BinaryAnalysisPage = observer(() => {
     const [presetName, setPresetName] = useState('');
     const [fileInputKey, setFileInputKey] = useState(0);
     const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+
+    const togglePopup = () => {
+        setShowPopup(!showPopup);
+    };
 
     const strategies = [
         { name: 'Over2', data: Over2 },
@@ -598,36 +603,61 @@ const BinaryAnalysisPage = observer(() => {
     const handleIsRiseFallOneClick = () => {
         setIsRiseFallOneClickActive(!isRiseFallOneClickActive);
     };
-    const handleIsEvenOddOneClick = () => {
-        setIsEvenOddOneClickActive(!isEvenOddOneClickActive);
-    };
-    const handleIsOverUnderOneClick = () => {
-        setIsOverUnderOneClickActive(!isOverUnderOneClickActive);
-    };
+    
     const handleSetActiveCard = (card: any) => {
         setActiveCard(card);
         localStorage.setItem('active_card', card);
     };
+    const handleTpChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value;
+        setTakeProfitValue(newValue === '' ? '' : Number(newValue));
+        take_profit.current = newValue !== '' ? Number(newValue) : 0;
+    };
+
+    const handleSlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value;
+        setStopLossValue(newValue === '' ? '' : Number(newValue));
+        stop_loss.current = newValue !== '' ? Number(newValue) : 0;
+    };
+
+    const handleLiveAccCrChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newValue = event.target.value;
+        setLiveAccCr(newValue);
+    };
+
+    const handleIsActiveInActive = () => {
+        setEnableSlTpValue(!enableSlTpValue);
+        enable_tp_sl.current = !enable_tp_sl.current;
+    };
+
+    const handleEnableDisableMart = () => {
+        setEnableDisableMartingale(!enableDisableMartingale);
+        enable_disable_martingale.current = !enableDisableMartingale;
+    };
+
+    const handleDemoCopy = () => {
+        setCopyDemo(!enableCopyDemo);
+        enable_demo_copy.current = !enable_demo_copy.current;
+    };
+
+    const [liveAccounts, setLiveAccounts] = React.useState<string[]>([]);
+    const [selectedAccount, setSelectedAccount] = React.useState<string>('');
+
+    React.useEffect(() => {
+        if (typeof localStorage !== 'undefined') {
+            const client_accounts = JSON.parse(localStorage.getItem('client.accounts')!) || undefined;
+            const filteredAccountKeys = Object.keys(client_accounts).filter(key => key.startsWith('CR'));
+            setLiveAccounts(filteredAccountKeys);
+            if (filteredAccountKeys.length > 0) {
+                setSelectedAccount(filteredAccountKeys[0]);
+                setLiveAccCr(filteredAccountKeys[0]);
+            }
+        }
+    }, []);
+
     const selectTickList = () => {
         return (
             <>
-                <div
-                    className='oneclick_amout'
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
-                >
-                    <h3>Ticks</h3>
-                    <select name='intervals' id='contract_duration' onChange={handleDurationSelect}>
-                        <option value='1'>1</option>
-                        <option value='2'>2</option>
-                        <option value='3'>3</option>
-                        <option value='4'>4</option>
-                        <option value='5'>5</option>
-                        <option value='6'>6</option>
-                        <option value='7'>7</option>
-                        <option value='8'>8</option>
-                        <option value='9'>9</option>
-                    </select>
-                </div>
                 <div
                     className='oneclick_amout'
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
@@ -659,6 +689,15 @@ const BinaryAnalysisPage = observer(() => {
         setVideoUrl('');
     };
 
+    const handleToggle = () => {
+        setIsOverUnderOneClickActive(prevState => !prevState);
+    };
+    const handleToggleeo = () => {
+        setIsEvenOddOneClickActive(prevState => !prevState);
+    };
+
+    
+       
     // Function to download bot settings as a JSON file
     const downloadSettings = () => {
         const name = window.prompt("Enter the name for your settings file:", "Template name");
@@ -937,7 +976,8 @@ const BinaryAnalysisPage = observer(() => {
                         value={activeCard}
                         onChange={(e) => handleSetActiveCard(e.target.value)}
                     >
-                        <option value='pie_diff'>Digits</option>
+                        <option>PRO TOOL</option>
+                        <option value='pie_diff'>Even/Odd & Differs</option>
                         <option value='over_under'>Over Under</option>
                         <option value='rise_fall'>Rise Fall</option>
                     </select>
@@ -1053,57 +1093,164 @@ const BinaryAnalysisPage = observer(() => {
                                                 Buy
                                             </button>
                                         ) : (
-                                            <label className='switch'>
-                                                <input
-                                                    type='checkbox'
-                                                    checked={isOverUnderOneClickActive}
-                                                    onChange={handleIsOverUnderOneClick}
-                                                />
-                                                <span className='slider round' />
-                                            </label>
+                                            <button
+                                                onClick={handleToggle}
+                                                style={{
+                                                    backgroundColor: isOverUnderOneClickActive ? 'red' : 'green',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    padding: '4px 8px',
+                                                    cursor: 'pointer',
+                                                    borderRadius: '5px',
+                                                }}
+                                            >
+                                                {isOverUnderOneClickActive ? 'Stop' : 'Run'}
+                                            </button>
                                         )}
                                         {selectTickList()}
-                                        <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
-                                            <TbSettingsDollar />
+                                        <div
+                                            className='oneclick_amout'
+                                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
+                                        >
+                                            <h3>Settings</h3>                                        
+                                            <div className='guide' onClick={togglePopup}>
+                                                <TbSettingsDollar />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className='over_under_settings'>
-                                        <div className='ct_types_ou'>
-                                            <select
-                                                name='ct_types'
-                                                id='contract_types'
-                                                onChange={handleOverUnderContractSelect}
-                                            >
-                                                <option value='DIGITOVER'>Over</option>
-                                                <option value='DIGITUNDER'>Under</option>
-                                            </select>
-                                            <select
-                                                name='tt_options'
-                                                id='tt_options'
-                                                onChange={handleOverUnderDirectionSelect}
-                                            >
-                                                <option value='SAME'>Same</option>
-                                                <option value='OPPOSITE'>Opposite</option>
-                                                <option value='MANUAL'>Manual</option>
-                                            </select>
+                                    </div>           
+                                    {showPopup && (
+                                        <div className="popup-overlay">
+                                            <div className="popup-box">
+                                                <button className="close-button" onClick={togglePopup}>X</button>
+                                                <h2>Over/Under Settings</h2>
+                                                <div className='settings-column'>
+                                                    <div className='setting-item'>
+                                                        <label>Trade Type</label>
+                                                        <select
+                                                            name='contractType'
+                                                            id='contractType'
+                                                            onChange={handleOverUnderContractSelect}
+                                                        >
+                                                            <option value='DIGITOVER'>Over</option>
+                                                            <option value='DIGITUNDER'>Under</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className='setting-item'>
+                                                        <label>Contract Type</label>
+                                                        <select
+                                                            name='direction'
+                                                            id='direction'
+                                                            onChange={handleOverUnderDirectionSelect}
+                                                        >
+                                                            <option value='SAME'>Same as trade type</option>
+                                                            <option value='OPPOSITE'>Opposite to trade type</option>
+                                                            <option value='MANUAL'>Manual</option>
+                                                        </select>
+                                                    </div>
+                                                    <div
+                                                        className='setting-item'
+                                                    >
+                                                        <label>No. of ticks</label>
+                                                        <select name='intervals' id='contract_duration' onChange={handleDurationSelect}>
+                                                            <option value='1'>1</option>
+                                                            <option value='2'>2</option>
+                                                            <option value='3'>3</option>
+                                                            <option value='4'>4</option>
+                                                            <option value='5'>5</option>
+                                                            <option value='6'>6</option>
+                                                            <option value='7'>7</option>
+                                                            <option value='8'>8</option>
+                                                            <option value='9'>9</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className='setting-item'>
+                                                        <label>% Value</label>
+                                                        <input
+                                                            type='number'
+                                                            value={percentageValue}
+                                                            onChange={handlePercentageInputChange}
+                                                        />
+                                                    </div>
+                                                    <h5>Risk Management</h5>
+                                                    <div className='active_inactive'>
+                                                        <label>Use Martingale</label>
+                                                        <label className='switch'>
+                                                            <input
+                                                                type='checkbox'
+                                                                checked={enableDisableMartingale}
+                                                                id='enable_disbale_martingale'
+                                                                onChange={handleEnableDisableMart}
+                                                            />
+                                                            <span className='slider round'></span>
+                                                        </label>
+                                                    </div>
+
+                                                    {enableDisableMartingale && (
+                                                        <div className='setting-item'>
+                                                            <label>Martingale</label>
+                                                            <input
+                                                                type='number'
+                                                                value={martingaleValueRef.current}
+                                                                onChange={handleMartingaleInputChange}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                    <div className='active_inactive'>
+                                                        <label>Use Take Profit/Stop Loss</label>
+                                                        <label className='switch'>
+                                                            <input
+                                                                type='checkbox'
+                                                                checked={enableSlTpValue}
+                                                                id='enable_tp_sl'
+                                                                onChange={handleIsActiveInActive}
+                                                            />
+                                                            <span className='slider round'></span>
+                                                        </label>
+                                                    </div>
+
+                                                    {enableSlTpValue && (
+                                                        <>
+                                                            <div className='setting-item'>
+                                                                <label>Take Profit</label>
+                                                                <input
+                                                                    type='text'
+                                                                    value={takeProfitValue}
+                                                                    id='take_profit'
+                                                                    onChange={handleTpChange}
+                                                                />
+                                                            </div>
+                                                            
+                                                            <div className='setting-item'>
+                                                                <label>Stop Loss</label>
+                                                                <input
+                                                                    type='text'
+                                                                    value={stopLossValue}
+                                                                    id='stop_loss'
+                                                                    onChange={handleSlChange}
+                                                                />
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                    <div className='active_inactive'>
+                                                        <label>Copy Demo to Real Account</label>
+                                                        <label className='switch'>
+                                                            <input type='checkbox' checked={enableCopyDemo} id='copy_demo' onChange={handleDemoCopy} />
+                                                            <span className='slider round'></span>
+                                                        </label>
+                                                    </div>
+                                                    {enableCopyDemo && (
+                                                        <select value={liveAccCR} onChange={handleLiveAccCrChange}>
+                                                            {liveAccounts.map(key => (
+                                                                <option key={key} value={key}>
+                                                                    {key}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className='martingale'>
-                                            <small>martingale</small>
-                                            <input
-                                                type='number'
-                                                value={martingaleValueRef.current}
-                                                onChange={handleMartingaleInputChange}
-                                            />
-                                        </div>
-                                        <div className='percentage_value'>
-                                            <small>% value</small>
-                                            <input
-                                                type='number'
-                                                value={percentageValue}
-                                                onChange={handlePercentageInputChange}
-                                            />
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -1187,28 +1334,6 @@ const BinaryAnalysisPage = observer(() => {
                             <RiseFallBarChart allDigitList={getLastDigitList()} is_mobile={is_mobile} />
                         </div>
                     )}
-                    {/* {activeCard === 'over_under' && (
-                        <div className='guidevideo card5'>
-                            <iframe
-                                src='https://www.youtube.com/embed/VIDEO_ID'
-                                title='YouTube video player'
-                                frameBorder='0'
-                                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                                allowfullscreen
-                            />
-                        </div>
-                    )} */}
-                    {/* {activeCard === 'rise_fall' && (
-                        <div className='guidevideo card5'>
-                            <iframe
-                                src='https://www.youtube.com/embed/VIDEO_ID'
-                                title='YouTube video player'
-                                frameBorder='0'
-                                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                                allowfullscreen
-                            />
-                        </div>
-                    )} */}
                 </div>
             )}
             {/* Bottom Cards */}
@@ -1229,17 +1354,19 @@ const BinaryAnalysisPage = observer(() => {
                                     oneClickContract === 'DIGITDIFF' && (
                                         <>
                                             <div className='differs_choices'>
-                                                <div className='auto_clicker'>
-                                                    <h4>Enable</h4>
-                                                    <label className='switch'>
-                                                        <input
-                                                            type='checkbox'
-                                                            checked={isOneClickActive}
-                                                            onChange={handleIsOneClick}
-                                                        />
-                                                        <span className='slider round' />
-                                                    </label>
-                                                </div>
+                                                <button 
+                                                    onClick={handleIsOneClick}
+                                                    style={{
+                                                        backgroundColor: isOneClickActive ? 'red' : 'green',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        padding: '4px 8px',
+                                                        cursor: 'pointer',
+                                                        borderRadius: '5px',
+                                                    }}
+                                                >
+                                                    {isOneClickActive ? 'Stop' : 'Run'}
+                                                </button>
                                                 <div className='auto_clicker'>
                                                     <small>Auto Differ</small>
                                                     <label className='switch'>
@@ -1255,16 +1382,6 @@ const BinaryAnalysisPage = observer(() => {
                                         </>
                                     )
                                 )}
-                                <div className='diff_options'>
-                                    <select name='ct_types' id='contract_types' onChange={handleContractSelect}>
-                                        <option value='DIGITDIFF'>Differs</option>
-                                        <option value='DIGITMATCH'>Matches</option>
-                                    </select>
-                                    <select name='td_options' id='trading_options' onChange={handleTradingDiffType}>
-                                        <option value='AUTO'>Auto</option>
-                                        <option value='MANUAL'>Manual</option>
-                                    </select>
-                                </div>
                                 {tradingDiffType === 'MANUAL' && (
                                     <input
                                         className='custom_prediction'
@@ -1274,19 +1391,139 @@ const BinaryAnalysisPage = observer(() => {
                                     />
                                 )}
                                 {selectTickList()}
-                                <div className='differs_setting'>
-                                    <div className='martingale'>
-                                        <small>Martingale</small>
-                                        <input
-                                            type='number'
-                                            value={martingaleValueRef.current}
-                                            onChange={handleMartingaleInputChange}
-                                        />
-                                    </div>
-                                    <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
+                                <div
+                                    className='oneclick_amout'
+                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
+                                >
+                                    <h3>Settings</h3>                                        
+                                    <div className='guide' onClick={togglePopup}>
                                         <TbSettingsDollar />
                                     </div>
                                 </div>
+                                {showPopup && (
+                                    <div className="popup-overlay">
+                                        <div className="popup-box">
+                                            <button className="close-button" onClick={togglePopup}>X</button>
+                                            <h2>Differs/Matches Settings</h2>
+                                            <div className='settings-column'>
+                                                <div className='setting-item'>
+                                                    <label>Trade Type</label>
+                                                    <select name='ct_types' id='contract_types' onChange={handleContractSelect}>
+                                                        <option value='DIGITDIFF'>Differs</option>
+                                                        <option value='DIGITMATCH'>Matches</option>
+                                                    </select>
+                                                </div>
+                                                <div className='setting-item'>
+                                                    <label>Contract Type</label>
+                                                    <select name='td_options' id='trading_options' onChange={handleTradingDiffType}>
+                                                        <option value='AUTO'>Auto</option>
+                                                        <option value='MANUAL'>Manual</option>
+                                                    </select>
+                                                </div>
+                                                <div
+                                                    className='setting-item'
+                                                >
+                                                    <label>No. of ticks</label>
+                                                    <select name='intervals' id='contract_duration' onChange={handleDurationSelect}>
+                                                        <option value='1'>1</option>
+                                                        <option value='2'>2</option>
+                                                        <option value='3'>3</option>
+                                                        <option value='4'>4</option>
+                                                        <option value='5'>5</option>
+                                                        <option value='6'>6</option>
+                                                        <option value='7'>7</option>
+                                                        <option value='8'>8</option>
+                                                        <option value='9'>9</option>
+                                                    </select>
+                                                </div>
+                                                <div className='setting-item'>
+                                                    <label>% Value</label>
+                                                    <input
+                                                        type='number'
+                                                        value={percentageValue}
+                                                        onChange={handlePercentageInputChange}
+                                                    />
+                                                </div>
+                                                <h5>Risk Management</h5>
+                                                <div className='active_inactive'>
+                                                    <label>Use Martingale</label>
+                                                    <label className='switch'>
+                                                        <input
+                                                            type='checkbox'
+                                                            checked={enableDisableMartingale}
+                                                            id='enable_disbale_martingale'
+                                                            onChange={handleEnableDisableMart}
+                                                        />
+                                                        <span className='slider round'></span>
+                                                    </label>
+                                                </div>
+
+                                                {enableDisableMartingale && (
+                                                    <div className='setting-item'>
+                                                        <label>Martingale</label>
+                                                        <input
+                                                            type='number'
+                                                            value={martingaleValueRef.current}
+                                                            onChange={handleMartingaleInputChange}
+                                                        />
+                                                    </div>
+                                                )}
+                                                <div className='active_inactive'>
+                                                    <label>Use Take Profit/Stop Loss</label>
+                                                    <label className='switch'>
+                                                        <input
+                                                            type='checkbox'
+                                                            checked={enableSlTpValue}
+                                                            id='enable_tp_sl'
+                                                            onChange={handleIsActiveInActive}
+                                                        />
+                                                        <span className='slider round'></span>
+                                                    </label>
+                                                </div>
+
+                                                {enableSlTpValue && (
+                                                    <>
+                                                        <div className='setting-item'>
+                                                            <label>Take Profit</label>
+                                                            <input
+                                                                type='text'
+                                                                value={takeProfitValue}
+                                                                id='take_profit'
+                                                                onChange={handleTpChange}
+                                                            />
+                                                        </div>
+                                                        
+                                                        <div className='setting-item'>
+                                                            <label>Stop Loss</label>
+                                                            <input
+                                                                type='text'
+                                                                value={stopLossValue}
+                                                                id='stop_loss'
+                                                                onChange={handleSlChange}
+                                                            />
+                                                        </div>
+                                                    </>
+                                                )}
+                                                <div className='active_inactive'>
+                                                    <label>Copy Demo to Real Account</label>
+                                                    <label className='switch'>
+                                                        <input type='checkbox' checked={enableCopyDemo} id='copy_demo' onChange={handleDemoCopy} />
+                                                        <span className='slider round'></span>
+                                                    </label>
+                                                </div>
+                                                {enableCopyDemo && (
+                                                    <select value={liveAccCR} onChange={handleLiveAccCrChange}>
+                                                        {liveAccounts.map(key => (
+                                                            <option key={key} value={key}>
+                                                                {key}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <DiffersBalls
@@ -1314,49 +1551,155 @@ const BinaryAnalysisPage = observer(() => {
                         <div className='odd_even_info'>
                             <h2 className='analysis_title'>Even/Odd</h2>
                             <div className='odd_even_settings'>
-                                <div className='martingale'>
-                                    <small>Enable</small>
-                                    <label className='switch'>
-                                        <input
-                                            type='checkbox'
-                                            checked={isEvenOddOneClickActive}
-                                            onChange={handleIsEvenOddOneClick}
-                                        />
-                                        <span className='slider round' />
-                                    </label>
+                                <button
+                                    onClick={handleToggleeo}
+                                    style={{
+                                        backgroundColor: isEvenOddOneClickActive ? 'red' : 'green',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '4px 8px',
+                                        cursor: 'pointer',
+                                        borderRadius: '5px',
+                                    }}
+                                >
+                                    {isEvenOddOneClickActive ? 'Stop' : 'Run'}
+                                </button>
+                                <div
+                                    className='oneclick_amout'
+                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
+                                >
+                                    <h3>Settings</h3>                                        
+                                    <div className='guide' onClick={togglePopup}>
+                                        <TbSettingsDollar />
+                                    </div>
                                 </div>
-                                <select name='ct_types' id='contract_types' onChange={handleEvenOddContractSelect}>
-                                    <option value='DIGITEVEN'>Even</option>
-                                    <option value='DIGITODD'>Odd</option>
-                                    <option value='BOTH'>Both</option>
-                                </select>
-                                <div className='martingale'>
-                                    <small>martingale</small>
-                                    <input
-                                        type='number'
-                                        value={martingaleValueRef.current}
-                                        onChange={handleMartingaleInputChange}
-                                    />
-                                </div>
-                                <div className='percentage_value'>
-                                    <small>% value</small>
-                                    <input
-                                        type='number'
-                                        value={percentageValue}
-                                        onChange={handlePercentageInputChange}
-                                    />
-                                </div>
-                                <div className='guide' onClick={() => setShowBotSettings(!showBotSettings)}>
-                                    <TbSettingsDollar />
-                                </div>
-                            </div>
-                            <div className='same_diff'>
-                                <select onChange={handleSameDiffEvenOddContractSelect}>
-                                    <option value='SAME'>Same</option>
-                                    <option value='OPPOSITE'>Opposite</option>
-                                </select>
                                 <div className='tick_stake'>{selectTickList()}</div>
-                            </div>
+                            </div>          
+                            {showPopup && (
+                                <div className="popup-overlay">
+                                    <div className="popup-box">
+                                        <button className="close-button" onClick={togglePopup}>X</button>
+                                        <h2>Even/Odd Settings</h2>
+                                        <div className='settings-column'>
+                                            <div className='setting-item'>
+                                                <label>Trade Type</label>
+                                                <select name='ct_types' id='contract_types' onChange={handleEvenOddContractSelect}>
+                                                    <option value='DIGITEVEN'>Even</option>
+                                                    <option value='DIGITODD'>Odd</option>
+                                                    <option value='BOTH'>Both</option>
+                                                </select>
+                                            </div>
+                                            <div className='setting-item'>
+                                                <label>Contract Type</label>
+                                                <select onChange={handleSameDiffEvenOddContractSelect}>
+                                                    <option value='SAME'>Same</option>
+                                                    <option value='OPPOSITE'>Opposite</option>
+                                                </select>
+                                            </div>
+                                            <div
+                                                className='setting-item'
+                                            >
+                                                <label>No. of ticks</label>
+                                                <select name='intervals' id='contract_duration' onChange={handleDurationSelect}>
+                                                    <option value='1'>1</option>
+                                                    <option value='2'>2</option>
+                                                    <option value='3'>3</option>
+                                                    <option value='4'>4</option>
+                                                    <option value='5'>5</option>
+                                                    <option value='6'>6</option>
+                                                    <option value='7'>7</option>
+                                                    <option value='8'>8</option>
+                                                    <option value='9'>9</option>
+                                                </select>
+                                            </div>
+                                            <div className='setting-item'>
+                                                <label>% Value</label>
+                                                <input
+                                                    type='number'
+                                                    value={percentageValue}
+                                                    onChange={handlePercentageInputChange}
+                                                />
+                                            </div>
+                                            <h5>Risk Management</h5>
+                                            <div className='active_inactive'>
+                                                <label>Use Martingale</label>
+                                                <label className='switch'>
+                                                    <input
+                                                        type='checkbox'
+                                                        checked={enableDisableMartingale}
+                                                        id='enable_disbale_martingale'
+                                                        onChange={handleEnableDisableMart}
+                                                    />
+                                                    <span className='slider round'></span>
+                                                </label>
+                                            </div>
+
+                                            {enableDisableMartingale && (
+                                                <div className='setting-item'>
+                                                    <label>Martingale</label>
+                                                    <input
+                                                        type='number'
+                                                        value={martingaleValueRef.current}
+                                                        onChange={handleMartingaleInputChange}
+                                                    />
+                                                </div>
+                                            )}
+                                            <div className='active_inactive'>
+                                                <label>Use Take Profit/Stop Loss</label>
+                                                <label className='switch'>
+                                                    <input
+                                                        type='checkbox'
+                                                        checked={enableSlTpValue}
+                                                        id='enable_tp_sl'
+                                                        onChange={handleIsActiveInActive}
+                                                    />
+                                                    <span className='slider round'></span>
+                                                </label>
+                                            </div>
+
+                                            {enableSlTpValue && (
+                                                <>
+                                                    <div className='setting-item'>
+                                                        <label>Take Profit</label>
+                                                        <input
+                                                            type='text'
+                                                            value={takeProfitValue}
+                                                            id='take_profit'
+                                                            onChange={handleTpChange}
+                                                        />
+                                                    </div>
+                                                    
+                                                    <div className='setting-item'>
+                                                        <label>Stop Loss</label>
+                                                        <input
+                                                            type='text'
+                                                            value={stopLossValue}
+                                                            id='stop_loss'
+                                                            onChange={handleSlChange}
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+                                            <div className='active_inactive'>
+                                                <label>Copy Demo to Real Account</label>
+                                                <label className='switch'>
+                                                    <input type='checkbox' checked={enableCopyDemo} id='copy_demo' onChange={handleDemoCopy} />
+                                                    <span className='slider round'></span>
+                                                </label>
+                                            </div>
+                                            {enableCopyDemo && (
+                                                <select value={liveAccCR} onChange={handleLiveAccCrChange}>
+                                                    {liveAccounts.map(key => (
+                                                        <option key={key} value={key}>
+                                                            {key}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className='pie_container'>
