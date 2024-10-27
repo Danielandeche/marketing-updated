@@ -18,6 +18,7 @@ import Modal from 'react-modal';
 //strategies
 import Over2 from './strategies/Over 2.json';
 import Over3 from './strategies/Over 2 Pro.json';
+import { Label } from 'recharts';
 
 function sleep(milliseconds: any) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -132,9 +133,14 @@ const BinaryAnalysisPage = observer(() => {
     const [fileInputKey, setFileInputKey] = useState(0);
     const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const [showPopup2, setShowPopup2] = useState(false);
 
     const togglePopup = () => {
         setShowPopup(!showPopup);
+    };
+
+    const togglePopup2 = () => {
+        setShowPopup2(!showPopup2);
     };
 
     const strategies = [
@@ -1383,12 +1389,15 @@ const BinaryAnalysisPage = observer(() => {
                                     )
                                 )}
                                 {tradingDiffType === 'MANUAL' && (
-                                    <input
-                                        className='custom_prediction'
-                                        type='number'
-                                        value={customPrediction}
-                                        onChange={handleCustomPredictionInputChange}
-                                    />
+                                    <div className='auto_clicker'>
+                                        <small>Prediction</small>
+                                        <input
+                                            className='custom_prediction'
+                                            type='number'
+                                            value={customPrediction}
+                                            onChange={handleCustomPredictionInputChange}
+                                        />
+                                    </div>
                                 )}
                                 {selectTickList()}
                                 <div
@@ -1396,134 +1405,126 @@ const BinaryAnalysisPage = observer(() => {
                                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
                                 >
                                     <h3>Settings</h3>                                        
-                                    <div className='guide' onClick={togglePopup}>
+                                    <div className='guide' onClick={togglePopup2}>
                                         <TbSettingsDollar />
                                     </div>
-                                </div>
-                                {showPopup && (
-                                    <div className="popup-overlay">
-                                        <div className="popup-box">
-                                            <button className="close-button" onClick={togglePopup}>X</button>
-                                            <h2>Differs/Matches Settings</h2>
-                                            <div className='settings-column'>
-                                                <div className='setting-item'>
-                                                    <label>Trade Type</label>
-                                                    <select name='ct_types' id='contract_types' onChange={handleContractSelect}>
-                                                        <option value='DIGITDIFF'>Differs</option>
-                                                        <option value='DIGITMATCH'>Matches</option>
-                                                    </select>
-                                                </div>
-                                                <div className='setting-item'>
-                                                    <label>Contract Type</label>
-                                                    <select name='td_options' id='trading_options' onChange={handleTradingDiffType}>
-                                                        <option value='AUTO'>Auto</option>
-                                                        <option value='MANUAL'>Manual</option>
-                                                    </select>
-                                                </div>
-                                                <div
-                                                    className='setting-item'
-                                                >
-                                                    <label>No. of ticks</label>
-                                                    <select name='intervals' id='contract_duration' onChange={handleDurationSelect}>
-                                                        <option value='1'>1</option>
-                                                        <option value='2'>2</option>
-                                                        <option value='3'>3</option>
-                                                        <option value='4'>4</option>
-                                                        <option value='5'>5</option>
-                                                        <option value='6'>6</option>
-                                                        <option value='7'>7</option>
-                                                        <option value='8'>8</option>
-                                                        <option value='9'>9</option>
-                                                    </select>
-                                                </div>
-                                                <div className='setting-item'>
-                                                    <label>% Value</label>
-                                                    <input
-                                                        type='number'
-                                                        value={percentageValue}
-                                                        onChange={handlePercentageInputChange}
-                                                    />
-                                                </div>
-                                                <h5>Risk Management</h5>
-                                                <div className='active_inactive'>
-                                                    <label>Use Martingale</label>
-                                                    <label className='switch'>
-                                                        <input
-                                                            type='checkbox'
-                                                            checked={enableDisableMartingale}
-                                                            id='enable_disbale_martingale'
-                                                            onChange={handleEnableDisableMart}
-                                                        />
-                                                        <span className='slider round'></span>
-                                                    </label>
-                                                </div>
-
-                                                {enableDisableMartingale && (
+                                    {showPopup2 && (
+                                        <div className="popup-overlay">
+                                            <div className="popup-box">
+                                                <button className="close-button" onClick={togglePopup2}>X</button>
+                                                <h2>Differs/Matches Settings</h2>
+                                                <div className='settings-column'>
                                                     <div className='setting-item'>
-                                                        <label>Martingale</label>
-                                                        <input
-                                                            type='number'
-                                                            value={martingaleValueRef.current}
-                                                            onChange={handleMartingaleInputChange}
-                                                        />
+                                                        <label>Trade Type</label>
+                                                        <select name='ct_types' id='contract_types' onChange={handleContractSelect}>
+                                                            <option value='DIGITDIFF'>Differs</option>
+                                                            <option value='DIGITMATCH'>Matches</option>
+                                                        </select>
                                                     </div>
-                                                )}
-                                                <div className='active_inactive'>
-                                                    <label>Use Take Profit/Stop Loss</label>
-                                                    <label className='switch'>
-                                                        <input
-                                                            type='checkbox'
-                                                            checked={enableSlTpValue}
-                                                            id='enable_tp_sl'
-                                                            onChange={handleIsActiveInActive}
-                                                        />
-                                                        <span className='slider round'></span>
-                                                    </label>
-                                                </div>
+                                                    <div className='setting-item'>
+                                                        <label>Contract Type</label>
+                                                        <select name='td_options' id='trading_options' onChange={handleTradingDiffType}>
+                                                            <option value='AUTO'>Auto</option>
+                                                            <option value='MANUAL'>Manual</option>
+                                                        </select>
+                                                    </div>
+                                                    <div
+                                                        className='setting-item'
+                                                    >
+                                                        <label>No. of ticks</label>
+                                                        <select name='intervals' id='contract_duration' onChange={handleDurationSelect}>
+                                                            <option value='1'>1</option>
+                                                            <option value='2'>2</option>
+                                                            <option value='3'>3</option>
+                                                            <option value='4'>4</option>
+                                                            <option value='5'>5</option>
+                                                            <option value='6'>6</option>
+                                                            <option value='7'>7</option>
+                                                            <option value='8'>8</option>
+                                                            <option value='9'>9</option>
+                                                        </select>
+                                                    </div>
+                                                    <h5>Risk Management</h5>
+                                                    <div className='active_inactive'>
+                                                        <label>Use Martingale</label>
+                                                        <label className='switch'>
+                                                            <input
+                                                                type='checkbox'
+                                                                checked={enableDisableMartingale}
+                                                                id='enable_disbale_martingale'
+                                                                onChange={handleEnableDisableMart}
+                                                            />
+                                                            <span className='slider round'></span>
+                                                        </label>
+                                                    </div>
 
-                                                {enableSlTpValue && (
-                                                    <>
+                                                    {enableDisableMartingale && (
                                                         <div className='setting-item'>
-                                                            <label>Take Profit</label>
+                                                            <label>Martingale</label>
                                                             <input
-                                                                type='text'
-                                                                value={takeProfitValue}
-                                                                id='take_profit'
-                                                                onChange={handleTpChange}
+                                                                type='number'
+                                                                value={martingaleValueRef.current}
+                                                                onChange={handleMartingaleInputChange}
                                                             />
                                                         </div>
-                                                        
-                                                        <div className='setting-item'>
-                                                            <label>Stop Loss</label>
+                                                    )}
+                                                    <div className='active_inactive'>
+                                                        <label>Use Take Profit/Stop Loss</label>
+                                                        <label className='switch'>
                                                             <input
-                                                                type='text'
-                                                                value={stopLossValue}
-                                                                id='stop_loss'
-                                                                onChange={handleSlChange}
+                                                                type='checkbox'
+                                                                checked={enableSlTpValue}
+                                                                id='enable_tp_sl'
+                                                                onChange={handleIsActiveInActive}
                                                             />
-                                                        </div>
-                                                    </>
-                                                )}
-                                                <div className='active_inactive'>
-                                                    <label>Copy Demo to Real Account</label>
-                                                    <label className='switch'>
-                                                        <input type='checkbox' checked={enableCopyDemo} id='copy_demo' onChange={handleDemoCopy} />
-                                                        <span className='slider round'></span>
-                                                    </label>
+                                                            <span className='slider round'></span>
+                                                        </label>
+                                                    </div>
+
+                                                    {enableSlTpValue && (
+                                                        <>
+                                                            <div className='setting-item'>
+                                                                <label>Take Profit</label>
+                                                                <input
+                                                                    type='text'
+                                                                    value={takeProfitValue}
+                                                                    id='take_profit'
+                                                                    onChange={handleTpChange}
+                                                                />
+                                                            </div>
+                                                            
+                                                            <div className='setting-item'>
+                                                                <label>Stop Loss</label>
+                                                                <input
+                                                                    type='text'
+                                                                    value={stopLossValue}
+                                                                    id='stop_loss'
+                                                                    onChange={handleSlChange}
+                                                                />
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                    <div className='active_inactive'>
+                                                        <label>Copy Demo to Real Account</label>
+                                                        <label className='switch'>
+                                                            <input type='checkbox' checked={enableCopyDemo} id='copy_demo' onChange={handleDemoCopy} />
+                                                            <span className='slider round'></span>
+                                                        </label>
+                                                    </div>
+                                                    {enableCopyDemo && (
+                                                        <select value={liveAccCR} onChange={handleLiveAccCrChange}>
+                                                            {liveAccounts.map(key => (
+                                                                <option key={key} value={key}>
+                                                                    {key}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    )}
                                                 </div>
-                                                {enableCopyDemo && (
-                                                    <select value={liveAccCR} onChange={handleLiveAccCrChange}>
-                                                        {liveAccounts.map(key => (
-                                                            <option key={key} value={key}>
-                                                                {key}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                )}
                                             </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <DiffersBalls
