@@ -130,7 +130,7 @@
     }
     &--tertiary {
         background: var(--button-tertiary-default);
-        border: 2px solid #ff444f; 
+        border: 2px solid #00ffff; 
         border-radius: 5px;
 
         &:hover:not([disabled]) {
@@ -141,7 +141,7 @@
         }
         .dc-btn__text,
         .dc-btn__icon {         
-            color: #fff;
+            color: #00ffff;
         }
         &:disabled,
         &[disabled] {
