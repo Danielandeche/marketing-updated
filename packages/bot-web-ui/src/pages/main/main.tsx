@@ -18,11 +18,7 @@ import BinaryToolsBots from '../binarytools_bots';
 import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
 import CopyTrading from '../copytrading';
-import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
-import PrivacyPolicy from '../privacy';
-import AnalysisTool from '../analysistool';
-import Tutorial from '../tutorials';
 import RandomBots from '../Random Bots';
 import { tour_list } from '../tutorials/dbot-tours/utils';
 import RiskDisclaimer from 'Components/risk disclaimer/risk_disclaimer';
@@ -56,9 +52,8 @@ const AppWrapper = observer(() => {
         'bot_builder',
         'pro-analysistool',
         'ai_bots',
-        'analysistool',
+        'chart_freebot',
         'copytrading',
-        'chart',
     ];
 
     let tab_value: number | string = active_tab;
@@ -194,22 +189,8 @@ const AppWrapper = observer(() => {
                             <RandomBots />
                         </div>
                         <div
-                            icon='IcChartsTabDbot'
-                            label={<Localize i18n_default_text='Analysis Tool' />}
-                            id='id-analysistool'
-                        >
-                            <AnalysisTool />
-                        </div>
-                        <div
-                            icon='IcCopytrading'
-                            label={<Localize i18n_default_text='Copy Trading' />}
-                            id='id-copy-trading'
-                        >
-                            <CopyTrading />
-                        </div>
-                        <div
                             icon='IcTradingViewChart'
-                            label={<Localize i18n_default_text='Chart' />}
+                            label={<Localize i18n_default_text='Chart/Analysis' />}
                             id={
                                 is_chart_modal_visible || is_trading_view_modal_visible
                                     ? 'id-charts--disabled'
@@ -217,6 +198,13 @@ const AppWrapper = observer(() => {
                             }
                         >
                             <Chart />
+                        </div>
+                        <div
+                            icon='IcCopytrading'
+                            label={<Localize i18n_default_text='Copy Trading' />}
+                            id='id-copy-trading'
+                        >
+                            <CopyTrading />
                         </div>
                     </Tabs>
                 </div>

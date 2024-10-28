@@ -253,9 +253,8 @@ const RunPanel = observer(() => {
         COPYTRADING,
         DASHBOARD,
         RANDOMBOTS,
-        ANALYSISTOOL,
-        BINARYTOOLS_BOTS,
         CHART,
+        BINARYTOOLS_BOTS,
         TUTORIAL,
     } = DBOT_TABS;
 
@@ -306,9 +305,8 @@ const RunPanel = observer(() => {
             COPYTRADING,
             DASHBOARD,
             RANDOMBOTS,
-            ANALYSISTOOL,
-            BINARYTOOLS_BOTS,
             CHART,
+            BINARYTOOLS_BOTS,
             TUTORIAL,
         ].includes(active_tab) || active_tour;
     if ((!show_run_panel && !is_mobile) || active_tour === 'bot_builder') return null;

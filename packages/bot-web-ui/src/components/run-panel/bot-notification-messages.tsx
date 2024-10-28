@@ -10,9 +10,8 @@ const {
     COPYTRADING,
     DASHBOARD,
     RANDOMBOTS,
-    ANALYSISTOOL,
-    BINARYTOOLS_BOTS,
     CHART,
+    BINARYTOOLS_BOTS,
     TUTORIAL,
 } = DBOT_TABS;
 
@@ -35,9 +34,8 @@ const BotNotificationMessages = observer(() => {
                         COPYTRADING,
                         DASHBOARD,
                         RANDOMBOTS,
-                        ANALYSISTOOL,
-                        BINARYTOOLS_BOTS,
                         CHART,
+                        BINARYTOOLS_BOTS,
                         TUTORIAL,
                     ].includes(active_tab) && is_drawer_open,
             })}
