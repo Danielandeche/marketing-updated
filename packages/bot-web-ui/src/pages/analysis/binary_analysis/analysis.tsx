@@ -371,26 +371,11 @@ const BinaryAnalysisPage = observer(() => {
         setAccountCurrency(api_base.account_info.currency);
     };
 
-    const stopAnalysisBot = () => {
-        setIsRiseFallOneClickActive(false);
-        setIsOverUnderOneClickActive(false);
-        setIsEvenOddOneClickActive(false);
-        setIsOneClickActive(false);
-        totalLostAmount.current = 0;
-        total_profit.current = 0;
-        setOneClickAmount(oneClickDefaultAmount.current);
-    };
-
-    const getOverUnderValue = () => {
-        if (overUnderContract === 'DIGITOVER') {
-            return overValue;
-        } else if (overUnderContract === 'DIGITUNDER') {
-            return underValue;
-        }
-    };
-
-    const buy_contract = (contract_type: string, isTradeActive: boolean) => {
-        if (isTradeActive) {
+    const buy_contract = (contract_type: string) => {
+        if (!isTradeActiveRef.current) {
+            isTradeActiveRef.current = true;
+            setIsTradeActive(true);
+            
             !enableCopyDemo
                 ? api_base.api.send({
                       buy: '1',
@@ -421,7 +406,7 @@ const BinaryAnalysisPage = observer(() => {
                       },
                   });
         }
-    };
+    };    
 
     const buy_contract_differs = (contract_type: string, isOverUnder = false) => {
         !enableCopyDemo
@@ -455,6 +440,24 @@ const BinaryAnalysisPage = observer(() => {
                       barrier: isOverUnder ? getOverUnderValue() : customPrediction,
                   },
               });
+    };
+
+    const stopAnalysisBot = () => {
+        setIsRiseFallOneClickActive(false);
+        setIsOverUnderOneClickActive(false);
+        setIsEvenOddOneClickActive(false);
+        setIsOneClickActive(false);
+        totalLostAmount.current = 0;
+        total_profit.current = 0;
+        setOneClickAmount(oneClickDefaultAmount.current);
+    };
+
+    const getOverUnderValue = () => {
+        if (overUnderContract === 'DIGITOVER') {
+            return overValue;
+        } else if (overUnderContract === 'DIGITUNDER') {
+            return underValue;
+        }
     };
 
     // =========================
@@ -1565,6 +1568,7 @@ const BinaryAnalysisPage = observer(() => {
                                 >
                                     {isEvenOddOneClickActive ? 'Stop' : 'Run'}
                                 </button>
+                                <div className='tick_stake'>{selectTickList()}</div>
                                 <div
                                     className='oneclick_amout'
                                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
@@ -1574,7 +1578,6 @@ const BinaryAnalysisPage = observer(() => {
                                         <TbSettingsDollar />
                                     </div>
                                 </div>
-                                <div className='tick_stake'>{selectTickList()}</div>
                             </div>          
                             {showPopup && (
                                 <div className="popup-overlay">
