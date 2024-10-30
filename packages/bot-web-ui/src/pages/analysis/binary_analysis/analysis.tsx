@@ -11,14 +11,7 @@ import PieChart from './components/pie_chart';
 import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
-import AutoLDPComponent from './AUTOLDP/AutoLDPComponent';
-import { FaClipboardList, FaCloudUploadAlt, FaCloudDownloadAlt} from 'react-icons/fa';
 import Modal from 'react-modal';
-
-//strategies
-import Over2 from './strategies/Over 2.json';
-import Over3 from './strategies/Over 2 Pro.json';
-import { Label } from 'recharts';
 
 function sleep(milliseconds: any) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -55,41 +48,8 @@ type ActiveSymbolTypes = {
     active_symbols: SymbolData[];
 };
 
-interface UploadedSettings {
-    activeCard?: string;
-    lastDigit?: number;
-    numberOfTicks?: number;
-    overValue?: number;
-    martingaleValue?: number;
-    percentageValue?: number;
-    underValue?: number;
-    isOneClickActive?: boolean;
-    isAutoClickerActive?: boolean;
-    isRiseFallOneClickActive?: boolean;
-    isEvenOddOneClickActive?: boolean;
-    isOverUnderOneClickActive?: boolean;
-    isTradeActive?: boolean;
-    oneClickContract?: string;
-    tradingDiffType?: string;
-    overUnderContract?: string;
-    overUnderDirection?: string;
-    evenOddContract?: string;
-    sameDiffEvenOdd?: string;
-    oneClickDuration?: number;
-    oneClickAmount?: number;
-    customPrediction?: number;
-    takeProfitValue?: number;
-    stopLossValue?: number;
-    enableSlTpValue?: boolean;
-    enableDisableMartingale?: boolean;
-    enableCopyDemo?: boolean;
-    overUnderManual?: boolean;
-}
-
 const BinaryAnalysisPage = observer(() => {
-    const [activeCard, setActiveCard] = useState(() => {
-        return localStorage.getItem('activeCard') || 'AUTOLDP';
-    });
+    const [activeCard, setActiveCard] = useState('LDP');
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [currentTick, setCurrentTick] = useState<number | string>('Updating...');
     const [allLastDigitList, setAllLastDigitList] = useState<number[]>([]);
@@ -98,7 +58,7 @@ const BinaryAnalysisPage = observer(() => {
     const [numberOfTicks, setNumberOfTicks] = useState<string | number>(1000);
     const [optionsList, setOptions] = useState<SymbolData[]>([]);
     const [overValue, setOverValue] = useState<string | number>(4);
-    const [martingaleValue, setMartingaleValue] = useState<number | string>(Number(localStorage.getItem('martingaleValue')) || 1.2);
+    const [martingaleValue, setMartingaleValue] = useState<string | number>(1.2);
     const [percentageValue, setPercentageValue] = useState<string | number>(60);
     const [underValue, setUnderValue] = useState<string | number>(4);
     const [isOneClickActive, setIsOneClickActive] = useState(false);
@@ -129,9 +89,6 @@ const BinaryAnalysisPage = observer(() => {
     const [enableCopyDemo, setCopyDemo] = useState<boolean>(false);
     const [liveAccCR, setLiveAccCr] = useState<string>('');
     const [overUnderManual, setOverUnderManual] = useState<boolean>(false);
-    const [presetName, setPresetName] = useState('');
-    const [fileInputKey, setFileInputKey] = useState(0);
-    const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [showPopup2, setShowPopup2] = useState(false);
 
@@ -142,49 +99,6 @@ const BinaryAnalysisPage = observer(() => {
     const togglePopup2 = () => {
         setShowPopup2(!showPopup2);
     };
-
-    const strategies = [
-        { name: 'Over2', data: Over2 },
-        { name: 'Over3', data: Over3 }
-    ];
-
-    const handleStrategySelect = (uploadedSettings: UploadedSettings) => {
-        setActiveCard(uploadedSettings.activeCard || 'AUTOLDP');
-        setLastDigit(uploadedSettings.lastDigit || 0);
-        setNumberOfTicks(uploadedSettings.numberOfTicks || 1000);
-        setOverValue(uploadedSettings.overValue || 4);
-        martingaleValueRef.current = uploadedSettings.martingaleValue || 1.2;
-        setPercentageValue(uploadedSettings.percentageValue || 60);
-        setUnderValue(uploadedSettings.underValue || 4);
-        setIsOneClickActive(uploadedSettings.isOneClickActive || false);
-        setIsAutoClickerActive(uploadedSettings.isAutoClickerActive || false);
-        setIsRiseFallOneClickActive(uploadedSettings.isRiseFallOneClickActive || false);
-        setIsEvenOddOneClickActive(uploadedSettings.isEvenOddOneClickActive || false);
-        setIsOverUnderOneClickActive(uploadedSettings.isOverUnderOneClickActive || false);
-        setIsTradeActive(uploadedSettings.isTradeActive || false);
-        setOneClickContract(uploadedSettings.oneClickContract || 'DIGITDIFF');
-        setTradingDiffType(uploadedSettings.tradingDiffType || 'AUTO');
-        setOverUnderContract(uploadedSettings.overUnderContract || 'DIGITOVER');
-        setOverUnderDirection(uploadedSettings.overUnderDirection || 'SAME');
-        setEvenOddContract(uploadedSettings.evenOddContract || 'DIGITEVEN');
-        setSameDiffEvenOdd(uploadedSettings.sameDiffEvenOdd || 'SAME');
-        setOneClickDuration(uploadedSettings.oneClickDuration || 1);
-        setOneClickAmount(uploadedSettings.oneClickAmount || 0.5);
-        setCustomPrediction(uploadedSettings.customPrediction || 0);
-        setTakeProfitValue(uploadedSettings.takeProfitValue || 2);
-        setStopLossValue(uploadedSettings.stopLossValue || 2);
-        setEnableSlTpValue(uploadedSettings.enableSlTpValue || false);
-        setEnableDisableMartingale(uploadedSettings.enableDisableMartingale || true);
-        setCopyDemo(uploadedSettings.enableCopyDemo || false);
-        setOverUnderManual(uploadedSettings.overUnderManual || false);
-    };
-       
-
-    useEffect(() => {
-        localStorage.setItem('martingaleValue', martingaleValue.toString());
-    }, [
-        martingaleValue
-    ]);
 
     // Refs
     const martingaleValueRef = useRef<string | number>(martingaleValue);
@@ -204,20 +118,10 @@ const BinaryAnalysisPage = observer(() => {
 
     const { ui } = useStore();
     const DBotStores = useDBotStore();
-    const { transactions, run_panel, } = DBotStores;
+    const { transactions, run_panel } = DBotStores;
     const { registerBotListeners, unregisterBotListeners } = run_panel;
     const { is_mobile, is_dark_mode_on } = ui;
     const { updateResultsCompletedContract } = transactions;
-
-    // Save activeCard to localStorage whenever it changes
-    useEffect(() => {
-        localStorage.setItem('activeCard', activeCard);
-    }, [activeCard]);
-
-    // Function to update activeCard
-    const handleCardChange = (newCard: string) => {
-        setActiveCard(newCard);  // Update activeCard state and automatically save to localStorage
-    };
 
     useEffect(() => {
         registerBotListeners();
@@ -232,12 +136,11 @@ const BinaryAnalysisPage = observer(() => {
         if (active_card !== null) {
             setActiveCard(active_card);
         }
-    
+
         return () => {
             unregisterBotListeners();
         };
     }, []);
-    
 
     useEffect(() => {
         if (prev_symbol !== active_symbol) {
@@ -335,26 +238,29 @@ const BinaryAnalysisPage = observer(() => {
                                 }
                             }
 
-                            console.log('Martingale Status',enable_disable_martingale.current)
+                            console.log('Martingale Status', enable_disable_martingale.current);
                             if (proposal_open_contract.status === 'lost') {
                                 if (!current_contractids.current.includes(proposal_open_contract.contract_id)) {
+                                    current_contractids.current.push(proposal_open_contract.contract_id);
                                     totalLostAmount.current += Math.abs(proposal_open_contract.profit);
                                     let newStake;
                                     if (enable_disable_martingale.current) {
                                         newStake = totalLostAmount.current * parseFloat(martingaleValueRef.current);
                                         setOneClickAmount(parseFloat(newStake.toFixed(2)));
                                     }
+                                    isTradeActiveRef.current = false;
+                                    setIsTradeActive(false);
                                 }
                             } else {
                                 totalLostAmount.current = 0;
                                 setOneClickAmount(oneClickDefaultAmount.current);
+                                isTradeActiveRef.current = false;
+                                setIsTradeActive(false);
                             }
                             if (
                                 isTradeActiveRef.current &&
                                 !current_contractids.current.includes(proposal_open_contract.contract_id)
                             ) {
-                                isTradeActiveRef.current = false;
-                                setIsTradeActive(false);
                                 current_contractids.current.push(proposal_open_contract.contract_id);
                             }
                         }
@@ -368,11 +274,9 @@ const BinaryAnalysisPage = observer(() => {
         setAccountCurrency(api_base.account_info.currency);
     };
 
-    const buy_contract = (contract_type: string) => {
-        if (!isTradeActiveRef.current) {
-            isTradeActiveRef.current = true;
-            setIsTradeActive(true);
-            
+
+    const buy_contract = (contract_type: string, isTradeActive: boolean) => {
+        if (isTradeActive) {
             !enableCopyDemo
                 ? api_base.api.send({
                       buy: '1',
@@ -403,7 +307,7 @@ const BinaryAnalysisPage = observer(() => {
                       },
                   });
         }
-    };    
+    };
 
     const buy_contract_differs = (contract_type: string, isOverUnder = false) => {
         !enableCopyDemo
@@ -609,7 +513,7 @@ const BinaryAnalysisPage = observer(() => {
     const handleIsRiseFallOneClick = () => {
         setIsRiseFallOneClickActive(!isRiseFallOneClickActive);
     };
-    
+   
     const handleSetActiveCard = (card: any) => {
         setActiveCard(card);
         localStorage.setItem('active_card', card);
@@ -682,217 +586,12 @@ const BinaryAnalysisPage = observer(() => {
             </div>
         );
     };
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [videoUrl, setVideoUrl] = useState('');
-
-    const openModal = (url: string) => {
-        setVideoUrl(url);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setVideoUrl('');
-    };
-
     const handleToggle = () => {
         setIsOverUnderOneClickActive(prevState => !prevState);
     };
     const handleToggleeo = () => {
         setIsEvenOddOneClickActive(prevState => !prevState);
     };
-
-    
-       
-    // Function to download bot settings as a JSON file
-    const downloadSettings = () => {
-        const name = window.prompt("Enter the name for your settings file:", "Template name");
-        if (name) {
-            const settings = {
-                activeCard,
-                lastDigit,
-                numberOfTicks,
-                overValue,
-                martingaleValue: martingaleValueRef.current,
-                percentageValue,
-                underValue,
-                isOneClickActive,
-                isAutoClickerActive,
-                isRiseFallOneClickActive,
-                isEvenOddOneClickActive,
-                isOverUnderOneClickActive,
-                isTradeActive,
-                oneClickContract,
-                tradingDiffType,
-                overUnderContract,
-                overUnderDirection,
-                evenOddContract,
-                sameDiffEvenOdd,
-                oneClickDuration,
-                oneClickAmount,
-                customPrediction,
-                takeProfitValue,
-                stopLossValue,
-                enableSlTpValue,
-                enableDisableMartingale,
-                enableCopyDemo,
-                overUnderManual,
-            };
-
-            const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${name}.json`;
-            a.click();
-            URL.revokeObjectURL(url); // Cleanup
-        }
-    };
-
-    // Function to upload settings from a JSON file
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const uploadedSettings = JSON.parse(e.target?.result as string);
-
-                setActiveCard(uploadedSettings.activeCard || 'AUTOLDP');
-                setLastDigit(uploadedSettings.lastDigit || 0);
-                setOverValue(uploadedSettings.overValue || 4);
-                martingaleValueRef.current = uploadedSettings.martingaleValue || 1.2;
-                setPercentageValue(uploadedSettings.percentageValue || 60);
-                setUnderValue(uploadedSettings.underValue || 4);
-                setIsOneClickActive(uploadedSettings.isOneClickActive || false);
-                setIsAutoClickerActive(uploadedSettings.isAutoClickerActive || false);
-                setIsRiseFallOneClickActive(uploadedSettings.isRiseFallOneClickActive || false);
-                setIsEvenOddOneClickActive(uploadedSettings.isEvenOddOneClickActive || false);
-                setIsOverUnderOneClickActive(uploadedSettings.isOverUnderOneClickActive || false);
-                setIsTradeActive(uploadedSettings.isTradeActive || false);
-                setOneClickContract(uploadedSettings.oneClickContract || 'DIGITDIFF');
-                setTradingDiffType(uploadedSettings.tradingDiffType || 'AUTO');
-                setOverUnderContract(uploadedSettings.overUnderContract || 'DIGITOVER');
-                setOverUnderDirection(uploadedSettings.overUnderDirection || 'SAME');
-                setEvenOddContract(uploadedSettings.evenOddContract || 'DIGITEVEN');
-                setSameDiffEvenOdd(uploadedSettings.sameDiffEvenOdd || 'SAME');
-                setOneClickDuration(uploadedSettings.oneClickDuration || 1);
-                setOneClickAmount(uploadedSettings.oneClickAmount || 0.5);
-                setCustomPrediction(uploadedSettings.customPrediction || 0);
-                setTakeProfitValue(uploadedSettings.takeProfitValue || 2);
-                setStopLossValue(uploadedSettings.stopLossValue || 2);
-                setEnableSlTpValue(uploadedSettings.enableSlTpValue || false);
-                setEnableDisableMartingale(uploadedSettings.enableDisableMartingale || true);
-                setCopyDemo(uploadedSettings.enableCopyDemo || false);
-                setOverUnderManual(uploadedSettings.overUnderManual || false);
-            };
-            reader.readAsText(file);
-        }
-    };
-
-    // Example of storing in localStorage when values change
-    useEffect(() => {
-        const settings = {
-            activeCard,
-            isSubscribed,
-            currentTick,
-            allLastDigitList,
-            isTickChart,
-            lastDigit,
-            numberOfTicks,
-            optionsList,
-            overValue,
-            martingaleValue: martingaleValueRef.current,
-            percentageValue,
-            underValue,
-            isOneClickActive,
-            isAutoClickerActive,
-            isRiseFallOneClickActive,
-            isEvenOddOneClickActive,
-            isOverUnderOneClickActive,
-            isTradeActive,
-            oneClickContract,
-            tradingDiffType,
-            overUnderContract,
-            overUnderDirection,
-            evenOddContract,
-            sameDiffEvenOdd,
-            oneClickDuration,
-            oneClickAmount,
-            customPrediction,
-            accountCurrency,
-            active_symbol,
-            prev_symbol,
-            pip_size,
-            prevLowestValue,
-            showBotSettings,
-            takeProfitValue,
-            stopLossValue,
-            enableSlTpValue,
-            enableDisableMartingale,
-            enableCopyDemo,
-            liveAccCR,
-            overUnderManual,
-        };
-
-        localStorage.setItem('botSettings', JSON.stringify(settings));
-    }, [
-        activeCard, isSubscribed, currentTick, allLastDigitList, isTickChart, lastDigit, numberOfTicks,
-        optionsList, overValue, percentageValue, underValue, isOneClickActive, isAutoClickerActive,
-        isRiseFallOneClickActive, isEvenOddOneClickActive, isOverUnderOneClickActive, isTradeActive,
-        oneClickContract, tradingDiffType, overUnderContract, overUnderDirection, evenOddContract,
-        sameDiffEvenOdd, oneClickDuration, oneClickAmount, customPrediction, accountCurrency, active_symbol,
-        prev_symbol, pip_size, prevLowestValue, showBotSettings, takeProfitValue, stopLossValue,
-        enableSlTpValue, enableDisableMartingale, enableCopyDemo, liveAccCR, overUnderManual
-    ]);
-
-    useEffect(() => {
-        const savedSettings = localStorage.getItem('botSettings');
-        if (savedSettings) {
-            const parsedSettings = JSON.parse(savedSettings);
-
-            setActiveCard(parsedSettings.activeCard || 'AUTOLDP');
-            setIsSubscribed(parsedSettings.isSubscribed || false);
-            setCurrentTick(parsedSettings.currentTick || 'Updating...');
-            setAllLastDigitList(parsedSettings.allLastDigitList || []);
-            setIsTickChart(parsedSettings.isTickChart || true);
-            setLastDigit(parsedSettings.lastDigit || 0);
-            setNumberOfTicks(parsedSettings.numberOfTicks || 1000);
-            setOptions(parsedSettings.optionsList || []);
-            setOverValue(parsedSettings.overValue || 4);
-            martingaleValueRef.current = parsedSettings.martingaleValue || 1.2;
-            setPercentageValue(parsedSettings.percentageValue || 60);
-            setUnderValue(parsedSettings.underValue || 4);
-            setIsOneClickActive(parsedSettings.isOneClickActive || false);
-            setIsAutoClickerActive(parsedSettings.isAutoClickerActive || false);
-            setIsRiseFallOneClickActive(parsedSettings.isRiseFallOneClickActive || false);
-            setIsEvenOddOneClickActive(parsedSettings.isEvenOddOneClickActive || false);
-            setIsOverUnderOneClickActive(parsedSettings.isOverUnderOneClickActive || false);
-            setIsTradeActive(parsedSettings.isTradeActive || false);
-            setOneClickContract(parsedSettings.oneClickContract || 'DIGITDIFF');
-            setTradingDiffType(parsedSettings.tradingDiffType || 'AUTO');
-            setOverUnderContract(parsedSettings.overUnderContract || 'DIGITOVER');
-            setOverUnderDirection(parsedSettings.overUnderDirection || 'SAME');
-            setEvenOddContract(parsedSettings.evenOddContract || 'DIGITEVEN');
-            setSameDiffEvenOdd(parsedSettings.sameDiffEvenOdd || 'SAME');
-            setOneClickDuration(parsedSettings.oneClickDuration || 1);
-            setOneClickAmount(parsedSettings.oneClickAmount || 0.5);
-            setCustomPrediction(parsedSettings.customPrediction || 0);
-            setAccountCurrency(parsedSettings.accountCurrency || '');
-            setActiveSymbol(parsedSettings.active_symbol || 'R_100');
-            setPrevSymbol(parsedSettings.prev_symbol || 'R_100');
-            setPipSize(parsedSettings.pip_size || 2);
-            setPrevLowestValue(parsedSettings.prevLowestValue || '');
-            setShowBotSettings(parsedSettings.showBotSettings || false);
-            setTakeProfitValue(parsedSettings.takeProfitValue || 2);
-            setStopLossValue(parsedSettings.stopLossValue || 2);
-            setEnableSlTpValue(parsedSettings.enableSlTpValue || false);
-            setEnableDisableMartingale(parsedSettings.enableDisableMartingale || true);
-            setCopyDemo(parsedSettings.enableCopyDemo || false);
-            setLiveAccCr(parsedSettings.liveAccCR || '');
-            setOverUnderManual(parsedSettings.overUnderManual || false);
-        }
-    }, []);
-
     function updateActiveProgress() {
         document.querySelectorAll('.differs_container .progress .active-svg').forEach(svg => svg.remove());
 
@@ -932,10 +631,11 @@ const BinaryAnalysisPage = observer(() => {
                         </select>
                     </div>
                     <div className='no_of_ticks'>
-                        {/* <h6>No. of Ticks </h6> */}
+                        <h4>No. of Ticks</h4>
                         <input type='number' name='' id='' value={numberOfTicks} onChange={handleInputChange} />
                     </div>
                     <div className='current_price'>
+                        <h4>CURRENT TICK</h4>
                         <h3>{currentTick.toString()}</h3>
                     </div>
                 </div>
@@ -964,96 +664,31 @@ const BinaryAnalysisPage = observer(() => {
                 )}
                 <div className='buttons'>
                     <button
-                        className={`button ${activeCard === 'AUTOLDP' ? 'active' : ''}`}
-                        onClick={() => handleSetActiveCard('AUTOLDP')}
-                    >
-                        Auto LDP
-                    </button>
-                    <button
                         className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
                         onClick={() => handleSetActiveCard('LDP')}
                     >
-                        Manual LDP
+                        LDP
                     </button>
-                    
-                    {/* Dropdown for Pro Tool with active check */}
-                    <select
-                        className={`button ${['pie_diff', 'over_under', 'rise_fall'].includes(activeCard) ? 'active' : ''}`}
-                        value={activeCard}
-                        onChange={(e) => handleSetActiveCard(e.target.value)}
+                    <button
+                        className={`button ${activeCard === 'pie_diff' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('pie_diff')}
                     >
-                        <option>PRO TOOL</option>
-                        <option value='pie_diff'>Even/Odd & Differs</option>
-                        <option value='over_under'>Over Under</option>
-                        <option value='rise_fall'>Rise Fall</option>
-                    </select>
-                </div>
-                <div className='settings'>
-                    <div className='upload'>
-                        <label htmlFor='file-upload' className='upload-label'>
-                            <FaCloudUploadAlt className='iconu' />
-                            <span>Upload</span>
-                        </label>
-                        <input
-                            id='file-upload'
-                            key={fileInputKey}
-                            type='file'
-                            accept='.json'
-                            onChange={handleFileUpload}
-                            className='file-upload-input'
-                        />
-                    </div>
-                    <div className='download'>
-                        <label onClick={downloadSettings} className='download-label'>
-                            <FaCloudDownloadAlt className='icond' />
-                            <span>Download</span>
-                        </label>
-                    </div>
-                    <div className='strategies'>
-                        <label onClick={() => setIsStrategyModalOpen(true)} className='strategies-label'>
-                            <FaClipboardList className='icons' />
-                            <span>Strategies</span>
-                        </label>
-                    </div>
-                    {isStrategyModalOpen && (
-                        <div className="modal-overlay">
-                            <div className="modal-content">
-                                <button onClick={() => setIsStrategyModalOpen(false)} className="close-btn">X</button>
-                                <h2 className="modal-header">Select a Strategy</h2>
-                                <ul className="strategy-list">
-                                    {strategies.map((strategy, index) => (
-                                        <li key={index} onClick={() => {
-                                            handleStrategySelect(strategy.data);
-                                            setIsStrategyModalOpen(false);
-                                        }}>
-                                            {strategy.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    )}
+                        Digits
+                    </button>
+                    <button
+                        className={`button ${activeCard === 'over_under' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('over_under')}
+                    >
+                        Over/Under
+                    </button>
+                    <button
+                        className={`button ${activeCard === 'rise_fall' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('rise_fall')}
+                    >
+                        Rise/Fall
+                    </button>
                 </div>
             </div>
-            {activeCard === 'AUTOLDP' && (
-                <AutoLDPComponent
-                    digitList={getLastDigitList()}
-                    tickList={getTickList()}
-                    CirclesDigitList={getLast1000DigitList()}
-                    customPrediction={customPrediction}
-                    handleCustomPredictionInputChange={handleCustomPredictionInputChange}
-                    is_dark_mode_on={is_dark_mode_on}
-                    buy_contract={buy_contract}
-                    buy_contract_differs={buy_contract_differs}
-                    selectTickList={selectTickList}
-                    handleMartingaleInputChange={handleMartingaleInputChange}
-                    martingaleValueRef={martingaleValueRef}
-                    isTradeActive={isTradeActive}
-                    setIsTradeActive={setIsTradeActive}
-                    guideElement={guideElement}
-                />
-            )}
-
             {activeCard === 'LDP' && (
                 <DigitSequenceComponent
                     digitList={getLastDigitList()}
@@ -1723,50 +1358,46 @@ const BinaryAnalysisPage = observer(() => {
                     </div>
                 </div>
             )}
-            {/* Modal for YouTube Video */}
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                style={{
-                    overlay: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)', // Dark background
-                        zIndex: 1000, // High z-index for overlay
-                    },
-                    content: {
-                        top: '50%', // Center vertically
-                        left: '50%', // Center horizontally
-                        right: 'auto',
-                        bottom: 'auto',
-                        transform: 'translate(-50%, -50%)', // Adjust positioning
-                        border: 'none',
-                        borderRadius: '8px',
-                        padding: '8px',
-                        boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-                        background: '#fff', // Background color
-                        zIndex: 1001, // Higher z-index for content
-                    },
-                }}
-            >
-                <h2 style={{ color: '#000', fontSize: '20px', textAlign: 'center', margin: '5px 0' }}>
-                Video Tutorial
-            </h2>
-                <iframe
-                    width="560"
-                    height="315"
-                    src={videoUrl}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                />
-                <button 
-                    onClick={closeModal} 
-                    style={{ display: 'block', margin: '5px auto', backgroundColor: 'red', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}
-                >
-                    Close
-                </button>
-
-            </Modal>
+            {/* {activeCard === 'tutorial' && (
+                <div className='tutorial'>
+                    <div className='guidevideo card5'>
+                        <iframe
+                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
+                            title='YouTube video player'
+                            frameBorder='0'
+                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                            allowFullScreen
+                        />
+                    </div>
+                    <div className='guidevideo card5'>
+                        <iframe
+                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
+                            title='YouTube video player'
+                            frameBorder='0'
+                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                            allowFullScreen
+                        />
+                    </div>
+                    <div className='guidevideo card5'>
+                        <iframe
+                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
+                            title='YouTube video player'
+                            frameBorder='0'
+                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                            allowFullScreen
+                        />
+                    </div>
+                    <div className='guidevideo card5'>
+                        <iframe
+                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
+                            title='YouTube video player'
+                            frameBorder='0'
+                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                            allowFullScreen
+                        />
+                    </div>
+                </div>
+            )} */}
         </div>
     );
 });

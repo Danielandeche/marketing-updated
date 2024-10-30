@@ -1,7 +1,15 @@
 .ldp_max_container {
+    background: var(--general-section-1);
+    box-shadow: 0 2px 4px var(--text-general), 0 3px 10px var(--text-general);
+    width: fit-content;
+    height: fit-content;
     display: flex;
-    justify-content: center;
+    justify-content: start;
+    border-radius: 6px;
+    padding: 10px;
+    margin-left: 8px;
 }
+
 .container-ldp {
     display: flex;
     flex-direction: column;
@@ -35,7 +43,6 @@
 .all_digit_boxes {
     display: flex;
     gap: 10px;
-    justify-content: center;
 }
 
 .last_p {
@@ -75,7 +82,7 @@
 }
 
 .odd {
-    background-color: #ff444f;
+    background-color: #ff0000;
 }
 
 .blue {
@@ -114,7 +121,7 @@
 }
 
 .metric.odd {
-    background-color: #ff444f;
+    background-color: #ff0000;
 }
 
 .metric.over {
