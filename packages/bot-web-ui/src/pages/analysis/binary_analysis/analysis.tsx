@@ -82,7 +82,7 @@ const ContractProgressPopup = ({
             setIsVisible(true);
             if (contractData.status === 'buy') {
                 setProgressText("Contract Bought: Monitoring Progress...");
-                setBackgroundColor('rgba(0,0,0,0.8)'); // Default background when contract is bought
+                setBackgroundColor('rgba(51, 255, 255)'); // Default background when contract is bought
             } else if (contractData.status === 'sold') {
                 if (contractData.profit > 0) {
                     setProgressText("Contract Won: Profit: " + contractData.profit);
@@ -96,7 +96,7 @@ const ContractProgressPopup = ({
         } else if (anySoftwareRunning) {
             setIsVisible(true);
             setProgressText("Software is running");
-            setBackgroundColor('rgba(0,0,0,0.8)'); // Default background when software is running
+            setBackgroundColor('rgba(51, 255, 255)'); // Default background when software is running
         } else {
             setIsVisible(false);
         }
@@ -331,13 +331,13 @@ const BinaryAnalysisPage = observer(() => {
                             } else {
                                 totalLostAmount.current = 0;
                                 setOneClickAmount(oneClickDefaultAmount.current);
-                                isTradeActiveRef.current = false;
-                                setIsTradeActive(false);
                             }
                             if (
                                 isTradeActiveRef.current &&
                                 !current_contractids.current.includes(proposal_open_contract.contract_id)
                             ) {
+                                isTradeActiveRef.current = false;
+                                setIsTradeActive(false);
                                 current_contractids.current.push(proposal_open_contract.contract_id);
                             }
                         }
@@ -350,7 +350,6 @@ const BinaryAnalysisPage = observer(() => {
         }
         setAccountCurrency(api_base.account_info.currency);
     };
-
 
     const buy_contract = (contract_type: string, isTradeActive: boolean) => {
         if (isTradeActive) {

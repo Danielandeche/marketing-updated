@@ -81,50 +81,58 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     const show_overlay = should_show_overlay && is_contract_completed;
 
     return (
-        <div className={classNames('animation__wrapper', className)}>
-            {(active_tab !== ANALYSISPAGE && active_tab !== RANDOMBOTS) && (
-                <Button
-                    is_disabled={is_disabled && !is_unavailable_for_payment_agent}
-                    className='animation__button'
-                    id={button_props.id}
-                    text={button_props.text}
-                    icon={<Icon icon={button_props.icon} color='active' />}
-                    onClick={() => {
-                        setShouldDisable(true);
-                        if (is_stop_button_visible) {
-                            onStopBotClick();
-                            return;
-                        }
-                        onRunButtonClick();
-                    }}
-                    has_effect
-                    {...(is_stop_button_visible || !is_unavailable_for_payment_agent
-                        ? { primary: true }
-                        : { green: true })}
-                />
-            )}
-
-            {show_bot_stop_message && <BotStopNotification />}
-            <div
-                className={classNames('animation__container', className, {
-                    'animation--running': contract_stage > 0,
-                    'animation--completed': contract_stage + 1,
-                })}
-            >
-                <span className='animation__text'>
-                    <ContractStageText contract_stage={contract_stage} />
-                </span>
-                <div className='animation__progress'>
-                    <div className='animation__progress-line'>
-                        <div className={`animation__progress-bar animation__progress-${contract_stage}`} />
+        <>
+            {(active_tab !== ANALYSISPAGE && active_tab !== RANDOMBOTS) ? (
+                <div className={classNames('animation__wrapper', className)}>
+                    <Button
+                        is_disabled={is_disabled && !is_unavailable_for_payment_agent}
+                        className='animation__button'
+                        id={button_props.id}
+                        text={button_props.text}
+                        icon={<Icon icon={button_props.icon} color='active' />}
+                        onClick={() => {
+                            setShouldDisable(true);
+                            if (is_stop_button_visible) {
+                                onStopBotClick();
+                                return;
+                            }
+                            onRunButtonClick();
+                        }}
+                        has_effect
+                        {...(is_stop_button_visible || !is_unavailable_for_payment_agent
+                            ? { primary: true }
+                            : { green: true })}
+                    />
+    
+                    {show_bot_stop_message && <BotStopNotification />}
+                    <div
+                        className={classNames('animation__container', className, {
+                            'animation--running': contract_stage > 0,
+                            'animation--completed': contract_stage > 0,
+                        })}
+                    >
+                        <span className='animation__text'>
+                            <ContractStageText contract_stage={contract_stage} />
+                        </span>
+                        <div className='animation__progress'>
+                            <div className='animation__progress-line'>
+                                <div className={`animation__progress-bar animation__progress-${contract_stage}`} />
+                            </div>
+                            {status_classes.map((status_class, i) => (
+                                <CircularWrapper key={`status_class-${status_class}-${i}`} className={status_class} />
+                            ))}
+                        </div>
                     </div>
-                    {status_classes.map((status_class, i) => (
-                        <CircularWrapper key={`status_class-${status_class}-${i}`} className={status_class} />
-                    ))}
                 </div>
-            </div>
-        </div>
-    );
+            ) : (
+                <div className={classNames('animation__wrapper', className)}>
+                    <span className='app-text' style={{ textAlign: 'center', fontWeight: 'bold', display: 'block' }}>
+                        Follow us on youtube and Tiktok @binarytool
+                    </span>
+                </div>
+            )}
+        </>
+    );         
 });
 
 export default TradeAnimation;

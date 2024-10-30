@@ -67,6 +67,12 @@
         height: 40px;
     }
 
+    &__binarytool {
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+    }
+
     &__overlay {
         border-top-left-radius: 0;
         border-bottom-right-radius: $BORDER_RADIUS;
