@@ -261,7 +261,9 @@ const DigitSequenceComponent: React.FC<Props> = ({
                         </div>
                         {guideElement()}
                     </div>
-
+                </div>
+                <div className="card">
+                    <h4>Click on circles to select Prediction</h4>
                     <div className='digit-list'>
                         {Array.from({ length: 10 }, (_, digit) => {
                             const individualMatchPercentage = calculatePercentages(
@@ -287,7 +289,125 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             );
                         })}
                     </div>
+                </div>
+                <div className="card">
+                    <div className="digit-display">
+                        <div className="all-digit-boxes">
+                            {digitList.map((digit, index) => (
+                                <div key={index} className={`digit-box ${digit % 2 === 0 ? 'even' : 'odd'}`}>
+                                    {digit}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <table className="trade-form-table">
+                        <thead>
+                            <tr>
+                                <th>Condition</th>
+                                <th>Comparison</th>
+                                <th>Trade Action</th>
+                                <th>Auto Trade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label className="small-text">If the last</label>
+                                    <input type="number" value={numDigits} onChange={handleNumDigitsChange} className="input-box" />
+                                </td>
+                                <td>
+                                    <label className="small-text">digits are</label>
+                                    <select value={comparisonOperator} onChange={handleComparisonOperatorChange} className="select-box">
+                                        <option value="less than LDP">Less than LDP</option>
+                                        <option value="less or equal to LDP">Less or equal to LDP</option>
+                                        <option value="greater than LDP">Greater than LDP</option>
+                                        <option value="greater or equal to LDP">Greater or equal to LDP</option>
+                                        <option value="equal to LDP">Equal to LDP</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <label className="small-text">Is</label>
+                                    <select value={tradeAction} onChange={handleTradeActionChange} className="select-box">
+                                        <option value=""></option>
+                                        <option value="DIGITOVER">Digit Over</option>
+                                        <option value="DIGITUNDER">Digit Under</option>
+                                        <option value="DIGITDIFF">Digit Differs</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <label className="small-text">Run</label>
+                                    <button
+                                        className="auto-trade-button"
+                                        style={{ backgroundColor: isAutoTrading ? 'red' : 'green' }}
+                                        onClick={() => setIsAutoTrading(prev => !prev)}
+                                    >
+                                        {isAutoTrading ? 'Stop' : 'Start'}
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label className="small-text">If the last</label>
+                                    <input type="number" value={numDigits1} onChange={handleNumDigitsChange1} className="input-box" />
+                                </td>
+                                <td>
+                                    <label className="small-text">digits are</label>
+                                    <select value={comparisonOperator1} onChange={handleComparisonOperatorChange1} className="select-box">
+                                        <option value="odd">Odd</option>
+                                        <option value="even">Even</option>
+                                        <option value="custom">If Even → Odd, Odd → Even</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <label className="small-text">option</label>
+                                    {comparisonOperator1 !== 'custom' && (
+                                        <select value={tradeAction1} onChange={handleTradeActionChange1} className="select-box">
+                                            <option value="DIGITODD">Odd Trade</option>
+                                            <option value="DIGITEVEN">Even Trade</option>
+                                        </select>
+                                    )}
+                                </td>
+                                <td>
+                                    <label className="small-text">Run</label>
+                                    <button
+                                        className="auto-trade-button"
+                                        style={{ backgroundColor: isAutoTrading1 ? 'red' : 'green' }}
+                                        onClick={() => setIsAutoTrading1(prev => !prev)}
+                                    >
+                                        {isAutoTrading1 ? 'Stop' : 'Start'}
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div className="card">
+                    <h4>Click on circles to select Prediction</h4>
+                    <div className='digit-list'>
+                        {Array.from({ length: 10 }, (_, digit) => {
+                            const individualMatchPercentage = calculatePercentages(
+                                CirclesDigitList,
+                                tickList,
+                                digit
+                            ).matchesPercentage;
+                            const backgroundColor = getBackgroundColor(digit);
 
+                            return (
+                                <div
+                                    key={digit}
+                                    className={`digit-item ${digit === customPrediction ? 'selected' : ''}`}
+                                    onClick={() =>
+                                        handleCustomPredictionInputChange({ target: { value: digit } } as any)
+                                    }
+                                    style={{ background: backgroundColor }}
+                                >
+                                    {digit === customPrediction && <div className='red-pointer' />}
+                                    <h3>{digit}</h3>
+                                    <h4>{individualMatchPercentage.toFixed(2)}%</h4>
+                                </div>
+                            );
+                        })}
+                    </div>
                     <div className='all_digit_boxes'>
                         {digitList.map((digit, index) => {
                             let className = '';
@@ -309,110 +429,50 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             );
                         })}
                     </div>
-                </div>
-
-                <div className='custom-trade-form'>
-                    <label>
-                        If the last
-                        <input type='number' value={numDigits} onChange={handleNumDigitsChange} />
-                        digits are
-                    </label>
-                    <select value={comparisonOperator} onChange={handleComparisonOperatorChange}>
-                        <option value='less than LDP'>Less than LDP</option>
-                        <option value='less or equal to LDP'>Less or equal to LDP</option>
-                        <option value='greater than LDP'>Greater than LDP</option>
-                        <option value='greater or equal to LDP'>Greater or equal to LDP</option>
-                        <option value='equal to LDP'>Equal to LDP</option>
-                    </select>
-                    <label>it trades </label>
-                    <select value={tradeAction} onChange={handleTradeActionChange}>
-                        <option value='DIGITOVER'>Digit Over</option>
-                        <option value='DIGITUNDER'>Digit Under</option>
-                        <option value='DIGITDIFF'>Digit Differs</option>
-                    </select>
-                    <div className='auto-trade-controls'>
-                        <button
-                            style={{ backgroundColor: isAutoTrading ? 'red' : 'green', color: '#fff' }}
-                            onClick={() => setIsAutoTrading(prev => !prev)}
-                        >
-                            {isAutoTrading ? 'Stop Auto Trading' : 'Start Auto Trading'}
+                    <div className='metrics'>
+                        {/* Metric buttons */}
+                        <button className='metric over' onClick={() => handle_buy_contract_differs('DIGITOVER')}>
+                            Over {overPercentage.toFixed(2)}%
+                        </button>
+                        <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITUNDER')}>
+                            Under {underPercentage.toFixed(2)}%
+                        </button>
+                        <button className='metric match' onClick={() => handle_buy_contract_differs('DIGITMATCH')}>
+                            Matches {matchesPercentage.toFixed(2)}%
+                        </button>
+                        <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITDIFF')}>
+                            Differ {differsPercentage.toFixed(2)}%
                         </button>
                     </div>
                 </div>
-
-                <div className='metrics'>
-                    {/* Metric buttons */}
-                    <button className='metric over' onClick={() => handle_buy_contract_differs('DIGITOVER')}>
-                        Over {overPercentage.toFixed(2)}%
-                    </button>
-                    <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITUNDER')}>
-                        Under {underPercentage.toFixed(2)}%
-                    </button>
-                    <button className='metric match' onClick={() => handle_buy_contract_differs('DIGITMATCH')}>
-                        Matches {matchesPercentage.toFixed(2)}%
-                    </button>
-                    <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITDIFF')}>
-                        Differ {differsPercentage.toFixed(2)}%
-                    </button>
-                </div>
-
-                <div className='sequences'>
-                    {/* Even Odd Sequences */}
-                    <div className='sequence'>
-                        <h4>Even Odd</h4>
-                        <div className='sequence-container'>{getEvenOddSequence()}</div>
-                        <div className='metrics'>
-                            <button className='metric even' onClick={() => handle_buy_contract('DIGITEVEN')}>
-                                Even {evenPercentage.toFixed(2)}%
-                            </button>
-                            <button className='metric odd' onClick={() => handle_buy_contract('DIGITODD')}>
-                                Odd {oddPercentage.toFixed(2)}%
-                            </button>
-                        </div>
-                        <div className='custom-trade-form'>
-                            <label>
-                                If the last
-                                <input type='number' value={numDigits1} onChange={handleNumDigitsChange1} />
-                                digits are
-                            </label>
-                            <select value={comparisonOperator1} onChange={handleComparisonOperatorChange1}>
-                                <option value='odd'>Odd</option>
-                                <option value='even'>Even</option>
-                                <option value='custom'>If Even → Odd, Odd → Even</option>
-                            </select>
-
-                            {comparisonOperator1 !== 'custom' && (
-                                <>
-                                    <label>it trades</label>
-                                    <select value={tradeAction1} onChange={handleTradeActionChange1}>
-                                        <option value='DIGITODD'>Odd Trade</option>
-                                        <option value='DIGITEVEN'>Even Trade</option>
-                                    </select>
-                                </>
-                            )}
-
-                            <div className='auto-trade-controls'>
-                                <button
-                                    style={{ backgroundColor: isAutoTrading1 ? 'red' : 'green', color: '#fff' }}
-                                    onClick={() => setIsAutoTrading1(prev => !prev)}
-                                >
-                                    {isAutoTrading1 ? 'Stop Auto Trading' : 'Start Auto Trading'}
+                <div className="card">
+                    <div className='sequences'>
+                        {/* Even Odd Sequences */}
+                        <div className='sequence'>
+                            <h4>Even Odd</h4>
+                            <div className='sequence-container'>{getEvenOddSequence()}</div>
+                            <div className='metrics'>
+                                <button className='metric even' onClick={() => handle_buy_contract('DIGITEVEN')}>
+                                    Even {evenPercentage.toFixed(2)}%
+                                </button>
+                                <button className='metric odd' onClick={() => handle_buy_contract('DIGITODD')}>
+                                    Odd {oddPercentage.toFixed(2)}%
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Rise Fall Sequence */}
-                    <div className='sequence'>
-                        <h4>Rise/Fall</h4>
-                        <div className='sequence-container'>{getRiseFallSequence()}</div>
-                        <div className='metrics'>
-                            <button className='metric even' onClick={() => handle_buy_contract('CALL')}>
-                                Rise {risePercentage.toFixed(2)}%
-                            </button>
-                            <button className='metric odd' onClick={() => handle_buy_contract('PUT')}>
-                                Fall {fallPercentage.toFixed(2)}%
-                            </button>
+                        {/* Rise Fall Sequence */}
+                        <div className='sequence'>
+                            <h4>Rise/Fall</h4>
+                            <div className='sequence-container'>{getRiseFallSequence()}</div>
+                            <div className='metrics'>
+                                <button className='metric even' onClick={() => handle_buy_contract('CALL')}>
+                                    Rise {risePercentage.toFixed(2)}%
+                                </button>
+                                <button className='metric odd' onClick={() => handle_buy_contract('PUT')}>
+                                    Fall {fallPercentage.toFixed(2)}%
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
