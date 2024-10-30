@@ -48,6 +48,77 @@ type ActiveSymbolTypes = {
     active_symbols: SymbolData[];
 };
 
+interface ContractData {
+    status: 'buy' | 'sold';
+    profit: number;
+}
+
+const ContractProgressPopup = ({ 
+    contractData, 
+    isTradeActive,
+    isOneClickActive,
+    isAutoClickerActive,
+    isRiseFallOneClickActive,
+    isEvenOddOneClickActive,
+    isOverUnderOneClickActive 
+}: { 
+    contractData: ContractData | null,
+    isTradeActive: boolean,
+    isOneClickActive: boolean,
+    isAutoClickerActive: boolean,
+    isRiseFallOneClickActive: boolean,
+    isEvenOddOneClickActive: boolean,
+    isOverUnderOneClickActive: boolean 
+}) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const [progressText, setProgressText] = useState("Awaiting Contract...");
+    const [backgroundColor, setBackgroundColor] = useState('rgba(0,0,0,0.8)'); // Default background
+
+    useEffect(() => {
+        const anySoftwareRunning = isTradeActive || isOneClickActive || isAutoClickerActive ||
+                                   isRiseFallOneClickActive || isEvenOddOneClickActive || isOverUnderOneClickActive;
+        
+        if (contractData) {
+            setIsVisible(true);
+            if (contractData.status === 'buy') {
+                setProgressText("Contract Bought: Monitoring Progress...");
+                setBackgroundColor('rgba(0,0,0,0.8)'); // Default background when contract is bought
+            } else if (contractData.status === 'sold') {
+                if (contractData.profit > 0) {
+                    setProgressText("Contract Won: Profit: " + contractData.profit);
+                    setBackgroundColor('green'); // Green for profit
+                } else {
+                    setProgressText("Contract Lost: Loss: " + Math.abs(contractData.profit));
+                    setBackgroundColor('red'); // Red for loss
+                }
+                setTimeout(() => setIsVisible(false), 5000);
+            }
+        } else if (anySoftwareRunning) {
+            setIsVisible(true);
+            setProgressText("Software is running");
+            setBackgroundColor('rgba(0,0,0,0.8)'); // Default background when software is running
+        } else {
+            setIsVisible(false);
+        }
+    }, [contractData, isTradeActive, isOneClickActive, isAutoClickerActive, isRiseFallOneClickActive, isEvenOddOneClickActive, isOverUnderOneClickActive]);
+
+    return isVisible ? (
+        <div style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            backgroundColor: backgroundColor,
+            color: '#fff',
+            fontWeight: 'bolder',
+            padding: '10px',
+            borderRadius: '5px',
+            zIndex: 1000,
+        }}>
+            {progressText}
+        </div>
+    ) : null;
+};
+
 const BinaryAnalysisPage = observer(() => {
     const [activeCard, setActiveCard] = useState('LDP');
     const [isSubscribed, setIsSubscribed] = useState(false);
@@ -91,6 +162,7 @@ const BinaryAnalysisPage = observer(() => {
     const [overUnderManual, setOverUnderManual] = useState<boolean>(false);
     const [showPopup, setShowPopup] = useState(false);
     const [showPopup2, setShowPopup2] = useState(false);
+    const [contractData, setContractData] = useState<ContractData | null>(null);
 
     const togglePopup = () => {
         setShowPopup(!showPopup);
@@ -220,6 +292,11 @@ const BinaryAnalysisPage = observer(() => {
         if (api_base.api) {
             const subscription = api_base.api.onMessage().subscribe(({ data }: { data: any }) => {
                 if (data.msg_type === 'proposal_open_contract') {
+                    const contractStatus = data.proposal_open_contract;
+                    setContractData({
+                        status: contractStatus.is_sold ? 'sold' : 'buy',
+                        profit: contractStatus.profit,
+                    });
                     const { proposal_open_contract } = data;
                     const contract = proposal_open_contract.contract_type;
 
@@ -614,7 +691,17 @@ const BinaryAnalysisPage = observer(() => {
     updateActiveProgress();
 
     return (
-        <div className='main_app'>
+    <>
+    <ContractProgressPopup 
+        contractData={contractData} 
+        isTradeActive={isTradeActive}
+        isOneClickActive={isOneClickActive}
+        isAutoClickerActive={isAutoClickerActive}
+        isRiseFallOneClickActive={isRiseFallOneClickActive}
+        isEvenOddOneClickActive={isEvenOddOneClickActive}
+        isOverUnderOneClickActive={isOverUnderOneClickActive}
+    />
+    <div className='main_app'>
             <div className='top_bar'>
                 <div className='symbol_price'>
                     <div className='active_symbol'>
@@ -659,8 +746,7 @@ const BinaryAnalysisPage = observer(() => {
                         setLiveAccCr={setLiveAccCr}
                         enableDisableMartingale={enableDisableMartingale}
                         enable_disable_martingale={enable_disable_martingale}
-                        setEnableDisableMartingale={setEnableDisableMartingale}
-                    />
+                        setEnableDisableMartingale={setEnableDisableMartingale} />
                 )}
                 <div className='buttons'>
                     <button
@@ -704,8 +790,7 @@ const BinaryAnalysisPage = observer(() => {
                     martingaleValueRef={martingaleValueRef}
                     isTradeActive={isTradeActive}
                     setIsTradeActive={setIsTradeActive}
-                    guideElement={guideElement}
-                />
+                    guideElement={guideElement} />
             )}
             {/* Middle Cards */}
             {(activeCard === 'rise_fall' || activeCard === 'over_under') && (
@@ -753,12 +838,12 @@ const BinaryAnalysisPage = observer(() => {
                                             className='oneclick_amout'
                                             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
                                         >
-                                            <h3>Settings</h3>                                        
+                                            <h3>Settings</h3>
                                             <div className='guide' onClick={togglePopup}>
                                                 <TbSettingsDollar />
                                             </div>
                                         </div>
-                                    </div>           
+                                    </div>
                                     {showPopup && (
                                         <div className="popup-overlay">
                                             <div className="popup-box">
@@ -809,8 +894,7 @@ const BinaryAnalysisPage = observer(() => {
                                                         <input
                                                             type='number'
                                                             value={percentageValue}
-                                                            onChange={handlePercentageInputChange}
-                                                        />
+                                                            onChange={handlePercentageInputChange} />
                                                     </div>
                                                     <h5>Risk Management</h5>
                                                     <div className='active_inactive'>
@@ -820,8 +904,7 @@ const BinaryAnalysisPage = observer(() => {
                                                                 type='checkbox'
                                                                 checked={enableDisableMartingale}
                                                                 id='enable_disbale_martingale'
-                                                                onChange={handleEnableDisableMart}
-                                                            />
+                                                                onChange={handleEnableDisableMart} />
                                                             <span className='slider round'></span>
                                                         </label>
                                                     </div>
@@ -832,8 +915,7 @@ const BinaryAnalysisPage = observer(() => {
                                                             <input
                                                                 type='number'
                                                                 value={martingaleValueRef.current}
-                                                                onChange={handleMartingaleInputChange}
-                                                            />
+                                                                onChange={handleMartingaleInputChange} />
                                                         </div>
                                                     )}
                                                     <div className='active_inactive'>
@@ -843,8 +925,7 @@ const BinaryAnalysisPage = observer(() => {
                                                                 type='checkbox'
                                                                 checked={enableSlTpValue}
                                                                 id='enable_tp_sl'
-                                                                onChange={handleIsActiveInActive}
-                                                            />
+                                                                onChange={handleIsActiveInActive} />
                                                             <span className='slider round'></span>
                                                         </label>
                                                     </div>
@@ -857,18 +938,16 @@ const BinaryAnalysisPage = observer(() => {
                                                                     type='text'
                                                                     value={takeProfitValue}
                                                                     id='take_profit'
-                                                                    onChange={handleTpChange}
-                                                                />
+                                                                    onChange={handleTpChange} />
                                                             </div>
-                                                            
+
                                                             <div className='setting-item'>
                                                                 <label>Stop Loss</label>
                                                                 <input
                                                                     type='text'
                                                                     value={stopLossValue}
                                                                     id='stop_loss'
-                                                                    onChange={handleSlChange}
-                                                                />
+                                                                    onChange={handleSlChange} />
                                                             </div>
                                                         </>
                                                     )}
@@ -911,8 +990,7 @@ const BinaryAnalysisPage = observer(() => {
                                 setIsTradeActive={setIsTradeActive}
                                 isTradeActiveRef={isTradeActiveRef}
                                 enableCopyDemo={enableCopyDemo}
-                                liveAccCR={liveAccCR}
-                            />
+                                liveAccCR={liveAccCR} />
                         </div>
                     )}
                     {(activeCard === 'rise_fall' || activeCard === 'over_under') && (
@@ -934,8 +1012,7 @@ const BinaryAnalysisPage = observer(() => {
                                                     <input
                                                         type='checkbox'
                                                         checked={isRiseFallOneClickActive}
-                                                        onChange={handleIsRiseFallOneClick}
-                                                    />
+                                                        onChange={handleIsRiseFallOneClick} />
                                                     <span className='slider round' />
                                                 </label>
                                             </div>
@@ -995,7 +1072,7 @@ const BinaryAnalysisPage = observer(() => {
                                     oneClickContract === 'DIGITDIFF' && (
                                         <>
                                             <div className='differs_choices'>
-                                                <button 
+                                                <button
                                                     onClick={handleIsOneClick}
                                                     style={{
                                                         backgroundColor: isOneClickActive ? 'red' : 'green',
@@ -1014,8 +1091,7 @@ const BinaryAnalysisPage = observer(() => {
                                                         <input
                                                             type='checkbox'
                                                             checked={isAutoClickerActive}
-                                                            onChange={handleIsAutoClicker}
-                                                        />
+                                                            onChange={handleIsAutoClicker} />
                                                         <span className='slider round' />
                                                     </label>
                                                 </div>
@@ -1030,8 +1106,7 @@ const BinaryAnalysisPage = observer(() => {
                                             className='custom_prediction'
                                             type='number'
                                             value={customPrediction}
-                                            onChange={handleCustomPredictionInputChange}
-                                        />
+                                            onChange={handleCustomPredictionInputChange} />
                                     </div>
                                 )}
                                 {selectTickList()}
@@ -1039,7 +1114,7 @@ const BinaryAnalysisPage = observer(() => {
                                     className='oneclick_amout'
                                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
                                 >
-                                    <h3>Settings</h3>                                        
+                                    <h3>Settings</h3>
                                     <div className='guide' onClick={togglePopup2}>
                                         <TbSettingsDollar />
                                     </div>
@@ -1087,8 +1162,7 @@ const BinaryAnalysisPage = observer(() => {
                                                                 type='checkbox'
                                                                 checked={enableDisableMartingale}
                                                                 id='enable_disbale_martingale'
-                                                                onChange={handleEnableDisableMart}
-                                                            />
+                                                                onChange={handleEnableDisableMart} />
                                                             <span className='slider round'></span>
                                                         </label>
                                                     </div>
@@ -1099,8 +1173,7 @@ const BinaryAnalysisPage = observer(() => {
                                                             <input
                                                                 type='number'
                                                                 value={martingaleValueRef.current}
-                                                                onChange={handleMartingaleInputChange}
-                                                            />
+                                                                onChange={handleMartingaleInputChange} />
                                                         </div>
                                                     )}
                                                     <div className='active_inactive'>
@@ -1110,8 +1183,7 @@ const BinaryAnalysisPage = observer(() => {
                                                                 type='checkbox'
                                                                 checked={enableSlTpValue}
                                                                 id='enable_tp_sl'
-                                                                onChange={handleIsActiveInActive}
-                                                            />
+                                                                onChange={handleIsActiveInActive} />
                                                             <span className='slider round'></span>
                                                         </label>
                                                     </div>
@@ -1124,18 +1196,16 @@ const BinaryAnalysisPage = observer(() => {
                                                                     type='text'
                                                                     value={takeProfitValue}
                                                                     id='take_profit'
-                                                                    onChange={handleTpChange}
-                                                                />
+                                                                    onChange={handleTpChange} />
                                                             </div>
-                                                            
+
                                                             <div className='setting-item'>
                                                                 <label>Stop Loss</label>
                                                                 <input
                                                                     type='text'
                                                                     value={stopLossValue}
                                                                     id='stop_loss'
-                                                                    onChange={handleSlChange}
-                                                                />
+                                                                    onChange={handleSlChange} />
                                                             </div>
                                                         </>
                                                     )}
@@ -1180,8 +1250,7 @@ const BinaryAnalysisPage = observer(() => {
                             setPrevLowestValue={setPrevLowestValue}
                             tradingDiffType={tradingDiffType}
                             enableCopyDemo={enableCopyDemo}
-                            liveAccCR={liveAccCR}
-                        />
+                            liveAccCR={liveAccCR} />
                     </div>
                     <div className='pie card4'>
                         <div className='odd_even_info'>
@@ -1205,12 +1274,12 @@ const BinaryAnalysisPage = observer(() => {
                                     className='oneclick_amout'
                                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5px' }}
                                 >
-                                    <h3>Settings</h3>                                        
+                                    <h3>Settings</h3>
                                     <div className='guide' onClick={togglePopup}>
                                         <TbSettingsDollar />
                                     </div>
                                 </div>
-                            </div>          
+                            </div>
                             {showPopup && (
                                 <div className="popup-overlay">
                                     <div className="popup-box">
@@ -1253,8 +1322,7 @@ const BinaryAnalysisPage = observer(() => {
                                                 <input
                                                     type='number'
                                                     value={percentageValue}
-                                                    onChange={handlePercentageInputChange}
-                                                />
+                                                    onChange={handlePercentageInputChange} />
                                             </div>
                                             <h5>Risk Management</h5>
                                             <div className='active_inactive'>
@@ -1264,8 +1332,7 @@ const BinaryAnalysisPage = observer(() => {
                                                         type='checkbox'
                                                         checked={enableDisableMartingale}
                                                         id='enable_disbale_martingale'
-                                                        onChange={handleEnableDisableMart}
-                                                    />
+                                                        onChange={handleEnableDisableMart} />
                                                     <span className='slider round'></span>
                                                 </label>
                                             </div>
@@ -1276,8 +1343,7 @@ const BinaryAnalysisPage = observer(() => {
                                                     <input
                                                         type='number'
                                                         value={martingaleValueRef.current}
-                                                        onChange={handleMartingaleInputChange}
-                                                    />
+                                                        onChange={handleMartingaleInputChange} />
                                                 </div>
                                             )}
                                             <div className='active_inactive'>
@@ -1287,8 +1353,7 @@ const BinaryAnalysisPage = observer(() => {
                                                         type='checkbox'
                                                         checked={enableSlTpValue}
                                                         id='enable_tp_sl'
-                                                        onChange={handleIsActiveInActive}
-                                                    />
+                                                        onChange={handleIsActiveInActive} />
                                                     <span className='slider round'></span>
                                                 </label>
                                             </div>
@@ -1301,18 +1366,16 @@ const BinaryAnalysisPage = observer(() => {
                                                             type='text'
                                                             value={takeProfitValue}
                                                             id='take_profit'
-                                                            onChange={handleTpChange}
-                                                        />
+                                                            onChange={handleTpChange} />
                                                     </div>
-                                                    
+
                                                     <div className='setting-item'>
                                                         <label>Stop Loss</label>
                                                         <input
                                                             type='text'
                                                             value={stopLossValue}
                                                             id='stop_loss'
-                                                            onChange={handleSlChange}
-                                                        />
+                                                            onChange={handleSlChange} />
                                                     </div>
                                                 </>
                                             )}
@@ -1352,53 +1415,52 @@ const BinaryAnalysisPage = observer(() => {
                                 setIsTradeActive={setIsTradeActive}
                                 enableCopyDemo={enableCopyDemo}
                                 liveAccCR={liveAccCR}
-                                sameDiffEvenOdd={sameDiffEvenOdd}
-                            />
+                                sameDiffEvenOdd={sameDiffEvenOdd} />
                         </div>
                     </div>
                 </div>
             )}
             {/* {activeCard === 'tutorial' && (
-                <div className='tutorial'>
-                    <div className='guidevideo card5'>
-                        <iframe
-                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
-                            title='YouTube video player'
-                            frameBorder='0'
-                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                            allowFullScreen
-                        />
-                    </div>
-                    <div className='guidevideo card5'>
-                        <iframe
-                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
-                            title='YouTube video player'
-                            frameBorder='0'
-                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                            allowFullScreen
-                        />
-                    </div>
-                    <div className='guidevideo card5'>
-                        <iframe
-                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
-                            title='YouTube video player'
-                            frameBorder='0'
-                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                            allowFullScreen
-                        />
-                    </div>
-                    <div className='guidevideo card5'>
-                        <iframe
-                            src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
-                            title='YouTube video player'
-                            frameBorder='0'
-                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                            allowFullScreen
-                        />
-                    </div>
-                </div>
-            )} */}
+        <div className='tutorial'>
+            <div className='guidevideo card5'>
+                <iframe
+                    src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
+                    title='YouTube video player'
+                    frameBorder='0'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                    allowFullScreen
+                />
+            </div>
+            <div className='guidevideo card5'>
+                <iframe
+                    src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
+                    title='YouTube video player'
+                    frameBorder='0'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                    allowFullScreen
+                />
+            </div>
+            <div className='guidevideo card5'>
+                <iframe
+                    src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
+                    title='YouTube video player'
+                    frameBorder='0'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                    allowFullScreen
+                />
+            </div>
+            <div className='guidevideo card5'>
+                <iframe
+                    src='https://www.youtube.com/embed/VIDEO_ID' // Replace VIDEO_ID with actual ID
+                    title='YouTube video player'
+                    frameBorder='0'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                    allowFullScreen
+                />
+            </div>
         </div>
+    )} */}
+        </div></>
     );
 });
 
