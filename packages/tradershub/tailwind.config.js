@@ -88,7 +88,7 @@ module.exports = {
                     brown: {
                         dark: '#664407',
                     },
-                    coral: '#ff444f',
+                    coral: '#2e9a40',
                     night: '#2a3052',
                     orange: '#ff6444',
                     pink: {
@@ -99,7 +99,7 @@ module.exports = {
                     red: {
                         dark: '#b33037',
                         darker: '#661b20',
-                        light: '#ff444f',
+                        light: '#2e9a40',
                     },
                     violet: {
                         dark: '#4a3871',
@@ -364,7 +364,7 @@ module.exports = {
                         400: '#ff7e88',
                         500: '#ff6671',
                         600: '#ff535e',
-                        700: '#ff444f',
+                        700: '#2e9a40',
                         800: '#e12e3a',
                         900: '#c41c28',
                         1000: '#a60e19',

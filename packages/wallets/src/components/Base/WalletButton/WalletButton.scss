@@ -1,12 +1,12 @@
 $color-map: (
     'primary': (
-        backgroundcolor: #ff444f,
+        backgroundcolor: #2e9a40,
         hover: #eb3e48,
     ),
     'primary-light': (
-        backgroundcolor: #ff444f29,
-        hover: #ff444f3d,
-        color: #ff444f,
+        backgroundcolor: #2e9a4029,
+        hover: #2e9a403d,
+        color: #2e9a40,
     ),
     'white': (
         backgroundcolor: #fff,
@@ -76,7 +76,7 @@ $size-map: (
             background: none;
             border: none;
             &:hover:not(:disabled) {
-                background: #ff444f14;
+                background: #2e9a4014;
             }
         }
     }

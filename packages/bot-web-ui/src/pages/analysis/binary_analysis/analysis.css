@@ -92,7 +92,7 @@
   
   .guide svg {
     font-size: 28px;
-    color: #ff444f;
+    color: #2e9a40;
   }
   
   @keyframes rotate360 {
@@ -852,7 +852,7 @@
 }
 
 .button.active {
-    background-color: #ff444f; /* Blue color */
+    background-color: #2e9a40; /* Blue color */
     color: #ffffff; /* White color */
 }
 

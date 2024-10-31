@@ -163,7 +163,7 @@ const MainCopyTrader = observer(() => {
                 <a href='https://app.deriv.com/account/api-token' target='_blank'>
                     <button
                         style={{
-                            backgroundColor: '#ff444f',
+                            backgroundColor: '#2e9a40',
                             color: '#fff',
                             border: 'none',
                             padding: '10px 20px',

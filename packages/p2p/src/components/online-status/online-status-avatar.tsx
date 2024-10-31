@@ -25,7 +25,7 @@ const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }: TOnlineSta
                     <circle fill='black' cx='87%' cy='86%' r={size * 0.37} />
                 </mask>
                 <rect
-                    fill='#FF444F'
+                    fill='#2e9a40'
                     style={{
                         width: '100%',
                         height: '100%',

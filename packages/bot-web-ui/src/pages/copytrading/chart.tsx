@@ -278,7 +278,7 @@ const CopyTrading = observer(() => {
                         }
                     }}
                     style={{
-                        backgroundColor: !allowedCopyTrading.current ? '#28a745' : '#ff444f',
+                        backgroundColor: !allowedCopyTrading.current ? '#28a745' : '#2e9a40',
                         borderRadius: '5px',
                         fontSize: '16px',
                         cursor: 'pointer',
@@ -318,7 +318,7 @@ const CopyTrading = observer(() => {
                     </label>
                     <Localize i18n_default_text='Enable Demo to Real Copy Trading' />
                     <div onClick={() => openModal('https://www.youtube.com/embed/QiJw3zY6UyM')} style={{ cursor: 'pointer' }}>
-                        <FaYoutube size={40} style={{ color: '#ff444f' }} />
+                        <FaYoutube size={40} style={{ color: '#2e9a40' }} />
                     </div>
                 </div>
                 {enableDC && (
@@ -343,7 +343,7 @@ const CopyTrading = observer(() => {
                         <FaRegPlusSquare />
                     </button>                   
                     <button onClick={() => openModal('https://www.youtube.com/embed/1oIuMsIFHn8')} style={{ cursor: 'pointer' }}>
-                        <FaYoutube style={{ color: '#ff444f' }} />
+                        <FaYoutube style={{ color: '#2e9a40' }} />
                     </button>
                 </div>
 

@@ -11,7 +11,7 @@
 .binarytools-list__item {
     display: flex;
     padding: 0.8rem 1rem;
-    background: linear-gradient(-55deg, #000046, #119dc4);
+    background: #238636;
     margin: 1rem;
     color: #fff;
     text-align: center;
@@ -25,8 +25,7 @@
 }
 
 .binarytools-list__item:hover {
-    background: #003366;
-    color: #000;
+    background: #29903b;
 }
 
 .binarytools_massive_logo {

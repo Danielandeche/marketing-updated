@@ -35,7 +35,7 @@ const UserAvatar = memo(
                         {showOnlineStatus && <circle cx='87%' cy='86%' fill='black' r={size * 0.37} />}
                     </mask>
                     <rect
-                        fill='#FF444F'
+                        fill='#2e9a40'
                         mask='url(#circle)'
                         style={{
                             height: '100%',
