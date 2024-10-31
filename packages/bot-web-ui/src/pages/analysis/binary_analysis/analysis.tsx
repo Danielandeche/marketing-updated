@@ -82,7 +82,7 @@ const ContractProgressPopup = ({
             setIsVisible(true);
             if (contractData.status === 'buy') {
                 setProgressText("Contract Bought: Monitoring Progress...");
-                setBackgroundColor('rgba(51, 255, 255)'); // Default background when contract is bought
+                setBackgroundColor('gold'); // Default background when contract is bought
             } else if (contractData.status === 'sold') {
                 if (contractData.profit > 0) {
                     setProgressText("Contract Won: Profit: " + contractData.profit);
@@ -96,7 +96,7 @@ const ContractProgressPopup = ({
         } else if (anySoftwareRunning) {
             setIsVisible(true);
             setProgressText("Software is running");
-            setBackgroundColor('rgba(51, 255, 255)'); // Default background when software is running
+            setBackgroundColor('gold'); // Default background when software is running
         } else {
             setIsVisible(false);
         }
@@ -108,7 +108,8 @@ const ContractProgressPopup = ({
             bottom: '20px',
             right: '20px',
             backgroundColor: backgroundColor,
-            color: '#fff',
+            color: '#000',
+            fontSize: '18px',
             fontWeight: 'bolder',
             padding: '10px',
             borderRadius: '5px',

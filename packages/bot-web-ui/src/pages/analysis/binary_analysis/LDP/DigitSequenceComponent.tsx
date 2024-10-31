@@ -318,6 +318,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 <td>
                                     <label className="small-text">digits are</label>
                                     <select value={comparisonOperator} onChange={handleComparisonOperatorChange} className="select-box">
+                                        <option>select &lt; or &gt; or = or &lt;= or =&gt;</option>
                                         <option value="less than LDP">Less than LDP</option>
                                         <option value="less or equal to LDP">Less or equal to LDP</option>
                                         <option value="greater than LDP">Greater than LDP</option>
@@ -353,6 +354,7 @@ const DigitSequenceComponent: React.FC<Props> = ({
                                 <td>
                                     <label className="small-text">digits are</label>
                                     <select value={comparisonOperator1} onChange={handleComparisonOperatorChange1} className="select-box">
+                                        <option>Select Digit Comparison</option>
                                         <option value="odd">Odd</option>
                                         <option value="even">Even</option>
                                         <option value="custom">If Even → Odd, Odd → Even</option>

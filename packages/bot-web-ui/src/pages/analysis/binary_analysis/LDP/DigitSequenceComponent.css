@@ -389,9 +389,9 @@
     }
     .digit-item {
         flex: 1 1 calc(20% - 10px); /* Flex to take 1/5th of the row (20%) minus margin */
-        max-width: 55px;
-        height: 55px;
-        margin: 5px;
+        max-width: 43px;
+        height: 43px;
+        margin: 2px;
     }
     .digit-item h3 {
         font-size: 1rem;
