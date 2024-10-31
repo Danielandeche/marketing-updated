@@ -17,6 +17,7 @@ import AnalysisPage from '../analysis';
 import BinaryToolsBots from '../binarytools_bots';
 import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
+import Dashboard from '../dashboard';
 import CopyTrading from '../copytrading';
 import RunStrategy from '../dashboard/run-strategy';
 import RandomBots from '../Random Bots';
@@ -51,8 +52,9 @@ const AppWrapper = observer(() => {
         'uploadbots',
         'bot_builder',
         'pro-analysistool',
+        'Free-bots',
+        'chart_analysis',
         'ai_bots',
-        'chart_freebot',
         'copytrading',
     ];
 
@@ -161,48 +163,50 @@ const AppWrapper = observer(() => {
                         onTabItemClick={handleTabChange}
                         top
                     >
-                        
                         <div
-                            icon='IcFullStar'
-                            label={<Localize i18n_default_text='Upload/Free Bots' />}
-                            id='id-dbot-upload-bots'
+                            icon='IcDashboardComponentTab'
+                            label={<Localize i18n_default_text='UpLoad Bot' />}
+                            id='id-1'
                         >
-                            <BinaryToolsBots handleTabChange={handleTabChange} />
+                            <Dashboard handleTabChange={handleTabChange} />
                         </div>
                         <div
                             icon='IcBotBuilderTabIcon'
                             label={<Localize i18n_default_text='Bot Builder' />}
-                            id='id-bot-builder'
+                            id='id-2'
                         />                      
                         <div
                             icon='IcDbotViewDetail'
-                            label={<Localize i18n_default_text='Pro-Analysistool' />}
-                            id={'id-analysis-page'}
+                            label={<Localize i18n_default_text='LDP/Pro Tool' />}
+                            id={'id-3'}
                         >
                             <AnalysisPage />
                         </div>
                         <div
-                            icon='IcDbotViewDetail'
-                            label={<Localize i18n_default_text='AI Bots' />}
-                            id='id-random-bots'
+                            icon='IcFullStar'
+                            label={<Localize i18n_default_text='Free Bots' />}
+                            id='id-4'
                         >
-                            <RandomBots />
+                            <BinaryToolsBots handleTabChange={handleTabChange} />
                         </div>
                         <div
                             icon='IcTradingViewChart'
                             label={<Localize i18n_default_text='Chart/Analysis' />}
-                            id={
-                                is_chart_modal_visible || is_trading_view_modal_visible
-                                    ? 'id-charts--disabled'
-                                    : 'id-charts'
-                            }
+                            id='id-5'
                         >
                             <Chart />
                         </div>
                         <div
+                            icon='IcDbotViewDetail'
+                            label={<Localize i18n_default_text='AI Bots' />}
+                            id='id-6'
+                        >
+                            <RandomBots />
+                        </div>
+                        <div
                             icon='IcCopytrading'
                             label={<Localize i18n_default_text='Copy Trading' />}
-                            id='id-copy-trading'
+                            id='id-7'
                         >
                             <CopyTrading />
                         </div>
