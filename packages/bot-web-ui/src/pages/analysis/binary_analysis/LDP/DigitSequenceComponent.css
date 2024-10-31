@@ -321,10 +321,9 @@
 
 .digit-list {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .digit-item {
@@ -386,7 +385,6 @@
 @media (max-width: 768px) {
     .digit-list {
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-between;
     }
     .digit-item {
