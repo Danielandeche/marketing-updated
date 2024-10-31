@@ -433,16 +433,16 @@ const DigitSequenceComponent: React.FC<Props> = ({
                     </div>
                     <div className='metrics'>
                         {/* Metric buttons */}
-                        <button className='metric over' onClick={() => handle_buy_contract_differs('DIGITOVER')}>
+                        <button className='metric over' onClick={() => buy_contract_differs('DIGITOVER')}>
                             Over {overPercentage.toFixed(2)}%
                         </button>
-                        <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITUNDER')}>
+                        <button className='metric under' onClick={() => buy_contract_differs('DIGITUNDER')}>
                             Under {underPercentage.toFixed(2)}%
                         </button>
-                        <button className='metric match' onClick={() => handle_buy_contract_differs('DIGITMATCH')}>
+                        <button className='metric match' onClick={() => buy_contract_differs('DIGITMATCH')}>
                             Matches {matchesPercentage.toFixed(2)}%
                         </button>
-                        <button className='metric under' onClick={() => handle_buy_contract_differs('DIGITDIFF')}>
+                        <button className='metric under' onClick={() => buy_contract_differs('DIGITDIFF')}>
                             Differ {differsPercentage.toFixed(2)}%
                         </button>
                     </div>
@@ -454,10 +454,10 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             <h4>Even Odd</h4>
                             <div className='sequence-container'>{getEvenOddSequence()}</div>
                             <div className='metrics'>
-                                <button className='metric even' onClick={() => handle_buy_contract('DIGITEVEN')}>
+                                <button className='metric even' onClick={() => buy_contract('DIGITEVEN', true)}>
                                     Even {evenPercentage.toFixed(2)}%
                                 </button>
-                                <button className='metric odd' onClick={() => handle_buy_contract('DIGITODD')}>
+                                <button className='metric odd' onClick={() => buy_contract('DIGITODD', true)}>
                                     Odd {oddPercentage.toFixed(2)}%
                                 </button>
                             </div>
@@ -468,10 +468,10 @@ const DigitSequenceComponent: React.FC<Props> = ({
                             <h4>Rise/Fall</h4>
                             <div className='sequence-container'>{getRiseFallSequence()}</div>
                             <div className='metrics'>
-                                <button className='metric even' onClick={() => handle_buy_contract('CALL')}>
+                                <button className='metric even' onClick={() => buy_contract('CALL', true)}>
                                     Rise {risePercentage.toFixed(2)}%
                                 </button>
-                                <button className='metric odd' onClick={() => handle_buy_contract('PUT')}>
+                                <button className='metric odd' onClick={() => buy_contract('PUT', true)}>
                                     Fall {fallPercentage.toFixed(2)}%
                                 </button>
                             </div>
