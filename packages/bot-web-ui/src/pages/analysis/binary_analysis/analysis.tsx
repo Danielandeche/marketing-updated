@@ -53,69 +53,94 @@ interface ContractData {
     profit: number;
 }
 
-const ContractProgressPopup = ({ 
-    contractData, 
+const ContractProgressPopup = ({
+    contractData,
     isTradeActive,
     isOneClickActive,
     isAutoClickerActive,
     isRiseFallOneClickActive,
     isEvenOddOneClickActive,
-    isOverUnderOneClickActive 
-}: { 
+    isOverUnderOneClickActive
+}: {
     contractData: ContractData | null,
     isTradeActive: boolean,
     isOneClickActive: boolean,
     isAutoClickerActive: boolean,
     isRiseFallOneClickActive: boolean,
     isEvenOddOneClickActive: boolean,
-    isOverUnderOneClickActive: boolean 
+    isOverUnderOneClickActive: boolean
 }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [progressText, setProgressText] = useState("Awaiting Contract...");
-    const [backgroundColor, setBackgroundColor] = useState('rgba(0,0,0,0.8)'); // Default background
+    const [progressStage, setProgressStage] = useState(0); // 0: No progress, 1: Bought, 2: Monitoring, 3: Completed
 
     useEffect(() => {
         const anySoftwareRunning = isTradeActive || isOneClickActive || isAutoClickerActive ||
                                    isRiseFallOneClickActive || isEvenOddOneClickActive || isOverUnderOneClickActive;
-        
+
         if (contractData) {
             setIsVisible(true);
             if (contractData.status === 'buy') {
-                setProgressText("Contract Bought: Monitoring Progress...");
-                setBackgroundColor('gold'); // Default background when contract is bought
+                setProgressText("Contract Bought");
+                setProgressStage(1); // First stage (Contract Bought)
             } else if (contractData.status === 'sold') {
                 if (contractData.profit > 0) {
                     setProgressText("Contract Won: Profit: " + contractData.profit);
-                    setBackgroundColor('green'); // Green for profit
                 } else {
                     setProgressText("Contract Lost: Loss: " + Math.abs(contractData.profit));
-                    setBackgroundColor('red'); // Red for loss
                 }
+                setProgressStage(3); // Final stage (Contract Sold)
                 setTimeout(() => setIsVisible(false), 5000);
             }
         } else if (anySoftwareRunning) {
             setIsVisible(true);
             setProgressText("Software is running");
-            setBackgroundColor('gold'); // Default background when software is running
+            setProgressStage(2); // Monitoring stage
         } else {
             setIsVisible(false);
         }
     }, [contractData, isTradeActive, isOneClickActive, isAutoClickerActive, isRiseFallOneClickActive, isEvenOddOneClickActive, isOverUnderOneClickActive]);
+
+    const getProgressBarWidth = () => {
+        if (progressStage === 1) return '33%'; // Contract Bought
+        if (progressStage === 2) return '66%'; // Monitoring stage
+        if (progressStage === 3) return '100%'; // Contract Sold
+        return '0%'; // Initial stage
+    };
 
     return isVisible ? (
         <div style={{
             position: 'fixed',
             bottom: '20px',
             right: '20px',
-            backgroundColor: backgroundColor,
+            backgroundColor: '#f2f2f2',
             color: '#000',
-            fontSize: '18px',
-            fontWeight: 'bolder',
+            fontSize: '16px',
+            fontWeight: 'bold',
             padding: '10px',
-            borderRadius: '5px',
-            zIndex: 1000,
+            borderRadius: '8px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+            width: '300px',
+            textAlign: 'center',
+            zIndex: 9999,
+            opacity: 0.9,
         }}>
-            {progressText}
+            <div style={{ marginBottom: '10px' }}>{progressText}</div>
+            <div style={{
+                width: '100%',
+                height: '8px',
+                backgroundColor: '#e0e0e0',
+                borderRadius: '4px',
+                overflow: 'hidden',
+                position: 'relative',
+            }}>
+                <div style={{
+                    width: getProgressBarWidth(),
+                    height: '100%',
+                    backgroundColor: progressStage === 3 ? (contractData?.profit > 0 ? 'green' : 'red') : '#4caf50', // Green if profit, red if loss
+                    transition: 'width 0.5s ease-in-out',
+                }} />
+            </div>
         </div>
     ) : null;
 };
@@ -332,13 +357,13 @@ const BinaryAnalysisPage = observer(() => {
                             } else {
                                 totalLostAmount.current = 0;
                                 setOneClickAmount(oneClickDefaultAmount.current);
+                                isTradeActiveRef.current = false;
+                                setIsTradeActive(false);
                             }
                             if (
                                 isTradeActiveRef.current &&
                                 !current_contractids.current.includes(proposal_open_contract.contract_id)
                             ) {
-                                isTradeActiveRef.current = false;
-                                setIsTradeActive(false);
                                 current_contractids.current.push(proposal_open_contract.contract_id);
                             }
                         }
