@@ -323,7 +323,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .digit-item {
@@ -385,13 +385,14 @@
 @media (max-width: 768px) {
     .digit-list {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
     }
     .digit-item {
         flex: 1 1 calc(20% - 10px); /* Flex to take 1/5th of the row (20%) minus margin */
-        max-width: 43px;
-        height: 43px;
-        margin: 2px;
+        max-width: 55px;
+        height: 55px;
+        margin: 5px;
     }
     .digit-item h3 {
         font-size: 1rem;

@@ -11,6 +11,7 @@ import PieChart from './components/pie_chart';
 import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
+import AutoLDPComponent from './LDP/AutoLDPComponent';
 import Modal from 'react-modal';
 
 function sleep(milliseconds: any) {
@@ -102,7 +103,7 @@ const ContractProgressPopup = ({
     }, [contractData, isTradeActive, isOneClickActive, isAutoClickerActive, isRiseFallOneClickActive, isEvenOddOneClickActive, isOverUnderOneClickActive]);
 
     const getProgressBarWidth = () => {
-        if (progressStage === 1) return '33%'; // Contract Bought
+        if (progressStage === 1) return '50%'; // Contract Bought
         if (progressStage === 2) return '66%'; // Monitoring stage
         if (progressStage === 3) return '100%'; // Contract Sold
         return '0%'; // Initial stage
@@ -775,6 +776,12 @@ const BinaryAnalysisPage = observer(() => {
                 )}
                 <div className='buttons'>
                     <button
+                        className={`button ${activeCard === 'AUTOLDP' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('AUTOLDP')}
+                    >
+                        AUTO
+                    </button>
+                    <button
                         className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
                         onClick={() => handleSetActiveCard('LDP')}
                     >
@@ -800,6 +807,23 @@ const BinaryAnalysisPage = observer(() => {
                     </button>
                 </div>
             </div>
+            {activeCard === 'AUTOLDP' && (
+                <AutoLDPComponent
+                    digitList={getLastDigitList()}
+                    tickList={getTickList()}
+                    CirclesDigitList={getLast1000DigitList()}
+                    customPrediction={customPrediction}
+                    handleCustomPredictionInputChange={handleCustomPredictionInputChange}
+                    is_dark_mode_on={is_dark_mode_on}
+                    buy_contract={buy_contract}
+                    buy_contract_differs={buy_contract_differs}
+                    selectTickList={selectTickList}
+                    handleMartingaleInputChange={handleMartingaleInputChange}
+                    martingaleValueRef={martingaleValueRef}
+                    isTradeActive={isTradeActive}
+                    setIsTradeActive={setIsTradeActive}
+                    guideElement={guideElement} />
+            )}
             {activeCard === 'LDP' && (
                 <DigitSequenceComponent
                     digitList={getLastDigitList()}
