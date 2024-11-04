@@ -1,6 +1,8 @@
 import 'Sass/app/_common/components/platform-switcher.scss';
+
 import { Icon } from '@deriv/components';
 import { getPlatformInformation, getUrlBinaryBot, isMobile } from '@deriv/shared';
+
 import { CSSTransition } from 'react-transition-group';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
@@ -8,59 +10,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-
-const ReloadButton = () => (
-    <a 
-        id='dt_mobile_drawer_toggle' 
-        href='#' 
-        className='header__mobile-drawer-toggle' 
-        onClick={(e) => { 
-            e.preventDefault(); 
-            window.location.reload(); 
-        }}
-    >
-        <svg width="120px" height="20px" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g transform="translate(0, 0)">
-                <path d="M6 7L7 6L4.70711 3.70711L5.29289 3.12132C6.01086 2.40335 6.98464 2 8 2C9.01536 2 9.98914 2.40335 10.7071 3.12132L10.7929 3.20711C11.5658 3.98 12 5.02828 12 6.12132L12 7L14 7V6.12132C14 4.49785 13.3551 2.94086 12.2071 1.79289L12.1213 1.70711C11.0283 0.614064 9.5458 0 8 0C6.45421 0 4.97172 0.614064 3.87868 1.70711L3.29289 2.29289L1 0L0 1V7H6Z" fill="#FF0000"/>
-                <path d="M10.7071 12.8787C9.98914 13.5966 9.01536 14 8 14C6.98464 14 6.01086 13.5967 5.29289 12.8787L5.20711 12.7929C4.43421 12.02 4 10.9717 4 9.87868L4 9L2 9V9.87868C2 11.5022 2.64492 13.0591 3.79289 14.2071L3.87868 14.2929C4.97172 15.3859 6.45421 16 8 16C9.54579 16 11.0283 15.3859 12.1213 14.2929L12.7071 13.7071L15 16L16 15L16 9L10 9L9 10L11.2929 12.2929L10.7071 12.8787Z" fill="#FF0000"/>
-            </g>
-            <text x="20" y="14" fill="#FF0000" font-size="20" font-weight="bold">RELOAD</text>
-            </svg>
-    </a>
-);
-
-const TelegramIcon = (props) => (
-    <svg width="30px" height="45px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="16" cy="16" r="14" fill="url(#paint0_linear_87_7225)"/>
-    <path d="M22.9866 10.2088C23.1112 9.40332 22.3454 8.76755 21.6292 9.082L7.36482 15.3448C6.85123 15.5703 6.8888 16.3483 7.42147 16.5179L10.3631 17.4547C10.9246 17.6335 11.5325 17.541 12.0228 17.2023L18.655 12.6203C18.855 12.4821 19.073 12.7665 18.9021 12.9426L14.1281 17.8646C13.665 18.3421 13.7569 19.1512 14.314 19.5005L19.659 22.8523C20.2585 23.2282 21.0297 22.8506 21.1418 22.1261L22.9866 10.2088Z" fill="white"/>
-    <defs>
-    <linearGradient id="paint0_linear_87_7225" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse">
-    <stop stop-color="#37BBFE"/>
-    <stop offset="1" stop-color="#007DBB"/>
-    </linearGradient>
-    </defs>
-    </svg>
-);
-
-const MenuIcon = (props) => (
-    <svg width="40px" height="30px" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M981.3 170.7H320c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h661.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.7 42.7zM981.3 938.7H320c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h661.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.7 42.7zM981.3 554.7H320c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h661.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.7 42.7z" fill="#3688FF" /><path d="M106.7 128m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#5F6379" /><path d="M106.7 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#5F6379" /><path d="M106.7 896m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#5F6379" />
-    </svg>
-);
-
-const YouTubeIcon = (props) => (
-    <svg fill="#ff444f" width="30px" height="45px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><path d="M23,9.71a8.5,8.5,0,0,0-.91-4.13,2.92,2.92,0,0,0-1.72-1A78.36,78.36,0,0,0,12,4.27a78.45,78.45,0,0,0-8.34.3,2.87,2.87,0,0,0-1.46.74c-.9.83-1,2.25-1.1,3.45a48.29,48.29,0,0,0,0,6.48,9.55,9.55,0,0,0,.3,2,3.14,3.14,0,0,0,.71,1.36,2.86,2.86,0,0,0,1.49.78,45.18,45.18,0,0,0,6.5.33c3.5.05,6.57,0,10.2-.28a2.88,2.88,0,0,0,1.53-.78,2.49,2.49,0,0,0,.61-1,10.58,10.58,0,0,0,.52-3.4C23,13.69,23,10.31,23,9.71ZM9.74,14.85V8.66l5.92,3.11C14,12.69,11.81,13.73,9.74,14.85Z"/>
-    </svg>
-);
-
-const TiktokIcon = (props) => (
-    <svg width="30px" height="45px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M8.45095 19.7926C8.60723 18.4987 9.1379 17.7743 10.1379 17.0317C11.5688 16.0259 13.3561 16.5948 13.3561 16.5948V13.2197C13.7907 13.2085 14.2254 13.2343 14.6551 13.2966V17.6401C14.6551 17.6401 12.8683 17.0712 11.4375 18.0775C10.438 18.8196 9.90623 19.5446 9.7505 20.8385C9.74562 21.5411 9.87747 22.4595 10.4847 23.2536C10.3345 23.1766 10.1815 23.0889 10.0256 22.9905C8.68807 22.0923 8.44444 20.7449 8.45095 19.7926ZM22.0352 6.97898C21.0509 5.90039 20.6786 4.81139 20.5441 4.04639H21.7823C21.7823 4.04639 21.5354 6.05224 23.3347 8.02482L23.3597 8.05134C22.8747 7.7463 22.43 7.38624 22.0352 6.97898ZM28 10.0369V14.293C28 14.293 26.42 14.2312 25.2507 13.9337C23.6179 13.5176 22.5685 12.8795 22.5685 12.8795C22.5685 12.8795 21.8436 12.4245 21.785 12.3928V21.1817C21.785 21.6711 21.651 22.8932 21.2424 23.9125C20.709 25.246 19.8859 26.1212 19.7345 26.3001C19.7345 26.3001 18.7334 27.4832 16.9672 28.28C15.3752 28.9987 13.9774 28.9805 13.5596 28.9987C13.5596 28.9987 11.1434 29.0944 8.96915 27.6814C8.49898 27.3699 8.06011 27.0172 7.6582 26.6277L7.66906 26.6355C9.84383 28.0485 12.2595 27.9528 12.2595 27.9528C12.6779 27.9346 14.0756 27.9528 15.6671 27.2341C17.4317 26.4374 18.4344 25.2543 18.4344 25.2543C18.5842 25.0754 19.4111 24.2001 19.9423 22.8662C20.3498 21.8474 20.4849 20.6247 20.4849 20.1354V11.3475C20.5435 11.3797 21.2679 11.8347 21.2679 11.8347C21.2679 11.8347 22.3179 12.4734 23.9506 12.8889C25.1204 13.1864 26.7 13.2483 26.7 13.2483V9.91314C27.2404 10.0343 27.7011 10.0671 28 10.0369Z" fill="#EE1D52"/>
-    <path d="M26.7009 9.91314V13.2472C26.7009 13.2472 25.1213 13.1853 23.9515 12.8879C22.3188 12.4718 21.2688 11.8337 21.2688 11.8337C21.2688 11.8337 20.5444 11.3787 20.4858 11.3464V20.1364C20.4858 20.6258 20.3518 21.8484 19.9432 22.8672C19.4098 24.2012 18.5867 25.0764 18.4353 25.2553C18.4353 25.2553 17.4337 26.4384 15.668 27.2352C14.0765 27.9539 12.6788 27.9357 12.2604 27.9539C12.2604 27.9539 9.84473 28.0496 7.66995 26.6366L7.6591 26.6288C7.42949 26.4064 7.21336 26.1717 7.01177 25.9257C6.31777 25.0795 5.89237 24.0789 5.78547 23.7934C5.78529 23.7922 5.78529 23.791 5.78547 23.7898C5.61347 23.2937 5.25209 22.1022 5.30147 20.9482C5.38883 18.9122 6.10507 17.6625 6.29444 17.3494C6.79597 16.4957 7.44828 15.7318 8.22233 15.0919C8.90538 14.5396 9.6796 14.1002 10.5132 13.7917C11.4144 13.4295 12.3794 13.2353 13.3565 13.2197V16.5948C13.3565 16.5948 11.5691 16.028 10.1388 17.0317C9.13879 17.7743 8.60812 18.4987 8.45185 19.7926C8.44534 20.7449 8.68897 22.0923 10.0254 22.991C10.1813 23.0898 10.3343 23.1775 10.4845 23.2541C10.7179 23.5576 11.0021 23.8221 11.3255 24.0368C12.631 24.8632 13.7249 24.9209 15.1238 24.3842C16.0565 24.0254 16.7586 23.2167 17.0842 22.3206C17.2888 21.7611 17.2861 21.1978 17.2861 20.6154V4.04639H20.5417C20.6763 4.81139 21.0485 5.90039 22.0328 6.97898C22.4276 7.38624 22.8724 7.7463 23.3573 8.05134C23.5006 8.19955 24.2331 8.93231 25.1734 9.38216C25.6596 9.61469 26.1722 9.79285 26.7009 9.91314Z" fill="#000000"/>
-    <path d="M4.48926 22.7568V22.7594L4.57004 22.9784C4.56076 22.9529 4.53074 22.8754 4.48926 22.7568Z" fill="#69C9D0"/>
-    <path d="M10.5128 13.7916C9.67919 14.1002 8.90498 14.5396 8.22192 15.0918C7.44763 15.7332 6.79548 16.4987 6.29458 17.354C6.10521 17.6661 5.38897 18.9168 5.30161 20.9528C5.25223 22.1068 5.61361 23.2983 5.78561 23.7944C5.78543 23.7956 5.78543 23.7968 5.78561 23.798C5.89413 24.081 6.31791 25.0815 7.01191 25.9303C7.2135 26.1763 7.42963 26.4111 7.65924 26.6334C6.92357 26.1457 6.26746 25.5562 5.71236 24.8839C5.02433 24.0451 4.60001 23.0549 4.48932 22.7626C4.48919 22.7605 4.48919 22.7584 4.48932 22.7564V22.7527C4.31677 22.2571 3.95431 21.0651 4.00477 19.9096C4.09213 17.8736 4.80838 16.6239 4.99775 16.3108C5.4985 15.4553 6.15067 14.6898 6.92509 14.0486C7.608 13.4961 8.38225 13.0567 9.21598 12.7484C9.73602 12.5416 10.2778 12.3891 10.8319 12.2934C11.6669 12.1537 12.5198 12.1415 13.3588 12.2575V13.2196C12.3808 13.2349 11.4148 13.4291 10.5128 13.7916Z" fill="#69C9D0"/>
-    <path d="M20.5438 4.04635H17.2881V20.6159C17.2881 21.1983 17.2881 21.76 17.0863 22.3211C16.7575 23.2167 16.058 24.0253 15.1258 24.3842C13.7265 24.923 12.6326 24.8632 11.3276 24.0368C11.0036 23.823 10.7187 23.5594 10.4844 23.2567C11.5962 23.8251 12.5913 23.8152 13.8241 23.341C14.7558 22.9821 15.4563 22.1734 15.784 21.2774C15.9891 20.7178 15.9864 20.1546 15.9864 19.5726V3H20.4819C20.4819 3 20.4315 3.41188 20.5438 4.04635ZM26.7002 8.99104V9.9131C26.1725 9.79263 25.6609 9.61447 25.1755 9.38213C24.2352 8.93228 23.5026 8.19952 23.3594 8.0513C23.5256 8.1559 23.6981 8.25106 23.8759 8.33629C25.0192 8.88339 26.1451 9.04669 26.7002 8.99104Z" fill="#69C9D0"/>
-    </svg>
-);
+import { Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import './style.css';
 
 const PlatformSwitcher = ({
     toggleDrawer,
@@ -73,6 +25,7 @@ const PlatformSwitcher = ({
     setTogglePlatformType,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
+
     const is_close_drawer_fired_ref = React.useRef(false);
 
     React.useEffect(() => {
@@ -98,75 +51,42 @@ const PlatformSwitcher = ({
         is_close_drawer_fired_ref.current = true;
     };
 
-    return (is_logged_in || is_logging_in ? !is_landing_company_loaded : app_routing_history.length === 0) ? (
-        <div
-            data-testid='dt_platform_switcher_preloader'
-            className={classNames('platform-switcher__preloader', {
-                'platform-switcher__preloader--is-mobile': isMobile(),
-            })}
-        >
-            <PlatformSwitcherLoader is_mobile={isMobile()} speed={3} />
-        </div>
-    ) : (
+    const TelegramIcon = (props) => (
+        <svg width="30px" height="45px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="14" fill="url(#paint0_linear_87_7225)"/>
+        <path d="M22.9866 10.2088C23.1112 9.40332 22.3454 8.76755 21.6292 9.082L7.36482 15.3448C6.85123 15.5703 6.8888 16.3483 7.42147 16.5179L10.3631 17.4547C10.9246 17.6335 11.5325 17.541 12.0228 17.2023L18.655 12.6203C18.855 12.4821 19.073 12.7665 18.9021 12.9426L14.1281 17.8646C13.665 18.3421 13.7569 19.1512 14.314 19.5005L19.659 22.8523C20.2585 23.2282 21.0297 22.8506 21.1418 22.1261L22.9866 10.2088Z" fill="white"/>
+        <defs>
+        <linearGradient id="paint0_linear_87_7225" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#37BBFE"/>
+        <stop offset="1" stop-color="#007DBB"/>
+        </linearGradient>
+        </defs>
+        </svg>
+    );    
+
+    return (
         <React.Fragment>
-            <div
-                data-testid='dt_platform_switcher'
-                className={classNames(
-                    'platform-switcher',
-                    { 'platform-switcher--active': is_open },
-                    { 'platform-switcher--is-mobile': isMobile() }
-                )}
-                onClick={() => setIsOpen(!is_open)}
+            <a
+                className='logo_holder'
+                href='https://app.binarytool.site'
             >
-                <MenuIcon
+               <span className='logo_image'></span>
+                <Text size='m' line_height='xs' className='header__menu-link-text'>
+                    <Localize i18n_default_text='Binarytool' />
+                </Text>
+            </a>
+            <a 
+                href="https://t.me/binarytools" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className='platform-switcher__link'
+            >
+                <TelegramIcon
                     className='platform-switcher__icon'
-                    width={30}
+                    width={25}
                     height={25}
                 />
-                <div className='platform-switcher__separator' />
-                <ReloadButton />
-                <div className='platform-switcher__separator' />
-                <a 
-                    href="https://t.me/binarytools" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className='platform-switcher__link'
-                >
-                    <TelegramIcon
-                        className='platform-switcher__icon'
-                        width={25}
-                        height={25}
-                    />
-                </a>
-                <div className='platform-switcher__separator' />
-                <a 
-                    href="https://www.youtube.com/@BinarytoolTutorial" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className='platform-switcher__link'
-                >
-                    <YouTubeIcon
-                        className='platform-switcher__icon'
-                        width={25}
-                        height={25}
-                    />
-                </a>
-                <div className='platform-switcher__separator' />
-                <a 
-                    href="https://www.tiktok.com/@binarytools" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className='platform-switcher__link'
-                >
-                    <TiktokIcon
-                        className='platform-switcher__icon'
-                        width={25}
-                        height={25}
-                    />
-                </a>
-            </div>
-
-
+            </a>
             <CSSTransition
                 mountOnEnter
                 appear
@@ -201,3 +121,209 @@ PlatformSwitcher.propTypes = {
 };
 
 export default withRouter(PlatformSwitcher);
+
+
+
+// import 'Sass/app/_common/components/platform-switcher.scss';
+// import { Icon } from '@deriv/components';
+// import { getPlatformInformation, getUrlBinaryBot, isMobile } from '@deriv/shared';
+// import { CSSTransition } from 'react-transition-group';
+// import { PlatformDropdown } from './platform-dropdown.jsx';
+// import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
+// import PropTypes from 'prop-types';
+// import React from 'react';
+// import classNames from 'classnames';
+// import { withRouter } from 'react-router-dom';
+
+// const ReloadButton = () => (
+//     <a 
+//         id='dt_mobile_drawer_toggle' 
+//         href='#' 
+//         className='header__mobile-drawer-toggle' 
+//         onClick={(e) => { 
+//             e.preventDefault(); 
+//             window.location.reload(); 
+//         }}
+//     >
+//         <svg width="120px" height="20px" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+//             <g transform="translate(0, 0)">
+//                 <path d="M6 7L7 6L4.70711 3.70711L5.29289 3.12132C6.01086 2.40335 6.98464 2 8 2C9.01536 2 9.98914 2.40335 10.7071 3.12132L10.7929 3.20711C11.5658 3.98 12 5.02828 12 6.12132L12 7L14 7V6.12132C14 4.49785 13.3551 2.94086 12.2071 1.79289L12.1213 1.70711C11.0283 0.614064 9.5458 0 8 0C6.45421 0 4.97172 0.614064 3.87868 1.70711L3.29289 2.29289L1 0L0 1V7H6Z" fill="#FF0000"/>
+//                 <path d="M10.7071 12.8787C9.98914 13.5966 9.01536 14 8 14C6.98464 14 6.01086 13.5967 5.29289 12.8787L5.20711 12.7929C4.43421 12.02 4 10.9717 4 9.87868L4 9L2 9V9.87868C2 11.5022 2.64492 13.0591 3.79289 14.2071L3.87868 14.2929C4.97172 15.3859 6.45421 16 8 16C9.54579 16 11.0283 15.3859 12.1213 14.2929L12.7071 13.7071L15 16L16 15L16 9L10 9L9 10L11.2929 12.2929L10.7071 12.8787Z" fill="#FF0000"/>
+//             </g>
+//             <text x="20" y="14" fill="#FF0000" font-size="20" font-weight="bold">RELOAD</text>
+//             </svg>
+//     </a>
+// );
+
+// const TelegramIcon = (props) => (
+//     <svg width="30px" height="45px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+//     <circle cx="16" cy="16" r="14" fill="url(#paint0_linear_87_7225)"/>
+//     <path d="M22.9866 10.2088C23.1112 9.40332 22.3454 8.76755 21.6292 9.082L7.36482 15.3448C6.85123 15.5703 6.8888 16.3483 7.42147 16.5179L10.3631 17.4547C10.9246 17.6335 11.5325 17.541 12.0228 17.2023L18.655 12.6203C18.855 12.4821 19.073 12.7665 18.9021 12.9426L14.1281 17.8646C13.665 18.3421 13.7569 19.1512 14.314 19.5005L19.659 22.8523C20.2585 23.2282 21.0297 22.8506 21.1418 22.1261L22.9866 10.2088Z" fill="white"/>
+//     <defs>
+//     <linearGradient id="paint0_linear_87_7225" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse">
+//     <stop stop-color="#37BBFE"/>
+//     <stop offset="1" stop-color="#007DBB"/>
+//     </linearGradient>
+//     </defs>
+//     </svg>
+// );
+
+// const MenuIcon = (props) => (
+//     <svg width="40px" height="30px" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M981.3 170.7H320c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h661.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.7 42.7zM981.3 938.7H320c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h661.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.7 42.7zM981.3 554.7H320c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h661.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.7 42.7z" fill="#3688FF" /><path d="M106.7 128m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#5F6379" /><path d="M106.7 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#5F6379" /><path d="M106.7 896m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" fill="#5F6379" />
+//     </svg>
+// );
+
+// const YouTubeIcon = (props) => (
+//     <svg fill="#ff444f" width="30px" height="45px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><path d="M23,9.71a8.5,8.5,0,0,0-.91-4.13,2.92,2.92,0,0,0-1.72-1A78.36,78.36,0,0,0,12,4.27a78.45,78.45,0,0,0-8.34.3,2.87,2.87,0,0,0-1.46.74c-.9.83-1,2.25-1.1,3.45a48.29,48.29,0,0,0,0,6.48,9.55,9.55,0,0,0,.3,2,3.14,3.14,0,0,0,.71,1.36,2.86,2.86,0,0,0,1.49.78,45.18,45.18,0,0,0,6.5.33c3.5.05,6.57,0,10.2-.28a2.88,2.88,0,0,0,1.53-.78,2.49,2.49,0,0,0,.61-1,10.58,10.58,0,0,0,.52-3.4C23,13.69,23,10.31,23,9.71ZM9.74,14.85V8.66l5.92,3.11C14,12.69,11.81,13.73,9.74,14.85Z"/>
+//     </svg>
+// );
+
+// const TiktokIcon = (props) => (
+//     <svg width="30px" height="45px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+//     <path d="M8.45095 19.7926C8.60723 18.4987 9.1379 17.7743 10.1379 17.0317C11.5688 16.0259 13.3561 16.5948 13.3561 16.5948V13.2197C13.7907 13.2085 14.2254 13.2343 14.6551 13.2966V17.6401C14.6551 17.6401 12.8683 17.0712 11.4375 18.0775C10.438 18.8196 9.90623 19.5446 9.7505 20.8385C9.74562 21.5411 9.87747 22.4595 10.4847 23.2536C10.3345 23.1766 10.1815 23.0889 10.0256 22.9905C8.68807 22.0923 8.44444 20.7449 8.45095 19.7926ZM22.0352 6.97898C21.0509 5.90039 20.6786 4.81139 20.5441 4.04639H21.7823C21.7823 4.04639 21.5354 6.05224 23.3347 8.02482L23.3597 8.05134C22.8747 7.7463 22.43 7.38624 22.0352 6.97898ZM28 10.0369V14.293C28 14.293 26.42 14.2312 25.2507 13.9337C23.6179 13.5176 22.5685 12.8795 22.5685 12.8795C22.5685 12.8795 21.8436 12.4245 21.785 12.3928V21.1817C21.785 21.6711 21.651 22.8932 21.2424 23.9125C20.709 25.246 19.8859 26.1212 19.7345 26.3001C19.7345 26.3001 18.7334 27.4832 16.9672 28.28C15.3752 28.9987 13.9774 28.9805 13.5596 28.9987C13.5596 28.9987 11.1434 29.0944 8.96915 27.6814C8.49898 27.3699 8.06011 27.0172 7.6582 26.6277L7.66906 26.6355C9.84383 28.0485 12.2595 27.9528 12.2595 27.9528C12.6779 27.9346 14.0756 27.9528 15.6671 27.2341C17.4317 26.4374 18.4344 25.2543 18.4344 25.2543C18.5842 25.0754 19.4111 24.2001 19.9423 22.8662C20.3498 21.8474 20.4849 20.6247 20.4849 20.1354V11.3475C20.5435 11.3797 21.2679 11.8347 21.2679 11.8347C21.2679 11.8347 22.3179 12.4734 23.9506 12.8889C25.1204 13.1864 26.7 13.2483 26.7 13.2483V9.91314C27.2404 10.0343 27.7011 10.0671 28 10.0369Z" fill="#EE1D52"/>
+//     <path d="M26.7009 9.91314V13.2472C26.7009 13.2472 25.1213 13.1853 23.9515 12.8879C22.3188 12.4718 21.2688 11.8337 21.2688 11.8337C21.2688 11.8337 20.5444 11.3787 20.4858 11.3464V20.1364C20.4858 20.6258 20.3518 21.8484 19.9432 22.8672C19.4098 24.2012 18.5867 25.0764 18.4353 25.2553C18.4353 25.2553 17.4337 26.4384 15.668 27.2352C14.0765 27.9539 12.6788 27.9357 12.2604 27.9539C12.2604 27.9539 9.84473 28.0496 7.66995 26.6366L7.6591 26.6288C7.42949 26.4064 7.21336 26.1717 7.01177 25.9257C6.31777 25.0795 5.89237 24.0789 5.78547 23.7934C5.78529 23.7922 5.78529 23.791 5.78547 23.7898C5.61347 23.2937 5.25209 22.1022 5.30147 20.9482C5.38883 18.9122 6.10507 17.6625 6.29444 17.3494C6.79597 16.4957 7.44828 15.7318 8.22233 15.0919C8.90538 14.5396 9.6796 14.1002 10.5132 13.7917C11.4144 13.4295 12.3794 13.2353 13.3565 13.2197V16.5948C13.3565 16.5948 11.5691 16.028 10.1388 17.0317C9.13879 17.7743 8.60812 18.4987 8.45185 19.7926C8.44534 20.7449 8.68897 22.0923 10.0254 22.991C10.1813 23.0898 10.3343 23.1775 10.4845 23.2541C10.7179 23.5576 11.0021 23.8221 11.3255 24.0368C12.631 24.8632 13.7249 24.9209 15.1238 24.3842C16.0565 24.0254 16.7586 23.2167 17.0842 22.3206C17.2888 21.7611 17.2861 21.1978 17.2861 20.6154V4.04639H20.5417C20.6763 4.81139 21.0485 5.90039 22.0328 6.97898C22.4276 7.38624 22.8724 7.7463 23.3573 8.05134C23.5006 8.19955 24.2331 8.93231 25.1734 9.38216C25.6596 9.61469 26.1722 9.79285 26.7009 9.91314Z" fill="#000000"/>
+//     <path d="M4.48926 22.7568V22.7594L4.57004 22.9784C4.56076 22.9529 4.53074 22.8754 4.48926 22.7568Z" fill="#69C9D0"/>
+//     <path d="M10.5128 13.7916C9.67919 14.1002 8.90498 14.5396 8.22192 15.0918C7.44763 15.7332 6.79548 16.4987 6.29458 17.354C6.10521 17.6661 5.38897 18.9168 5.30161 20.9528C5.25223 22.1068 5.61361 23.2983 5.78561 23.7944C5.78543 23.7956 5.78543 23.7968 5.78561 23.798C5.89413 24.081 6.31791 25.0815 7.01191 25.9303C7.2135 26.1763 7.42963 26.4111 7.65924 26.6334C6.92357 26.1457 6.26746 25.5562 5.71236 24.8839C5.02433 24.0451 4.60001 23.0549 4.48932 22.7626C4.48919 22.7605 4.48919 22.7584 4.48932 22.7564V22.7527C4.31677 22.2571 3.95431 21.0651 4.00477 19.9096C4.09213 17.8736 4.80838 16.6239 4.99775 16.3108C5.4985 15.4553 6.15067 14.6898 6.92509 14.0486C7.608 13.4961 8.38225 13.0567 9.21598 12.7484C9.73602 12.5416 10.2778 12.3891 10.8319 12.2934C11.6669 12.1537 12.5198 12.1415 13.3588 12.2575V13.2196C12.3808 13.2349 11.4148 13.4291 10.5128 13.7916Z" fill="#69C9D0"/>
+//     <path d="M20.5438 4.04635H17.2881V20.6159C17.2881 21.1983 17.2881 21.76 17.0863 22.3211C16.7575 23.2167 16.058 24.0253 15.1258 24.3842C13.7265 24.923 12.6326 24.8632 11.3276 24.0368C11.0036 23.823 10.7187 23.5594 10.4844 23.2567C11.5962 23.8251 12.5913 23.8152 13.8241 23.341C14.7558 22.9821 15.4563 22.1734 15.784 21.2774C15.9891 20.7178 15.9864 20.1546 15.9864 19.5726V3H20.4819C20.4819 3 20.4315 3.41188 20.5438 4.04635ZM26.7002 8.99104V9.9131C26.1725 9.79263 25.6609 9.61447 25.1755 9.38213C24.2352 8.93228 23.5026 8.19952 23.3594 8.0513C23.5256 8.1559 23.6981 8.25106 23.8759 8.33629C25.0192 8.88339 26.1451 9.04669 26.7002 8.99104Z" fill="#69C9D0"/>
+//     </svg>
+// );
+
+// const PlatformSwitcher = ({
+//     toggleDrawer,
+//     app_routing_history,
+//     platform_config = [],
+//     current_language,
+//     is_landing_company_loaded,
+//     is_logged_in,
+//     is_logging_in,
+//     setTogglePlatformType,
+// }) => {
+//     const [is_open, setIsOpen] = React.useState(false);
+//     const is_close_drawer_fired_ref = React.useRef(false);
+
+//     React.useEffect(() => {
+//         platform_config.forEach(data => {
+//             const { name } = data;
+//             if (name === 'Binary Bot') {
+//                 data.href = getUrlBinaryBot();
+//             }
+//         });
+//     }, [current_language, platform_config]);
+
+//     React.useEffect(() => {
+//         if (is_close_drawer_fired_ref.current) {
+//             if (typeof toggleDrawer === 'function') {
+//                 toggleDrawer();
+//             }
+//         }
+//         is_close_drawer_fired_ref.current = false;
+//     });
+
+//     const closeDrawer = () => {
+//         setIsOpen(false);
+//         is_close_drawer_fired_ref.current = true;
+//     };
+
+//     return (is_logged_in || is_logging_in ? !is_landing_company_loaded : app_routing_history.length === 0) ? (
+//         <div
+//             data-testid='dt_platform_switcher_preloader'
+//             className={classNames('platform-switcher__preloader', {
+//                 'platform-switcher__preloader--is-mobile': isMobile(),
+//             })}
+//         >
+//             <PlatformSwitcherLoader is_mobile={isMobile()} speed={3} />
+//         </div>
+//     ) : (
+//         <React.Fragment>
+//             <div
+//                 data-testid='dt_platform_switcher'
+//                 className={classNames(
+//                     'platform-switcher',
+//                     { 'platform-switcher--active': is_open },
+//                     { 'platform-switcher--is-mobile': isMobile() }
+//                 )}
+//                 onClick={() => setIsOpen(!is_open)}
+//             >
+//                 <MenuIcon
+//                     className='platform-switcher__icon'
+//                     width={30}
+//                     height={25}
+//                 />
+//                 <div className='platform-switcher__separator' />
+//                 <ReloadButton />
+//                 <div className='platform-switcher__separator' />
+//                 <a 
+//                     href="https://t.me/binarytools" 
+//                     target="_blank" 
+//                     rel="noopener noreferrer"
+//                     className='platform-switcher__link'
+//                 >
+//                     <TelegramIcon
+//                         className='platform-switcher__icon'
+//                         width={25}
+//                         height={25}
+//                     />
+//                 </a>
+//                 <div className='platform-switcher__separator' />
+//                 <a 
+//                     href="https://www.youtube.com/@BinarytoolTutorial" 
+//                     target="_blank" 
+//                     rel="noopener noreferrer"
+//                     className='platform-switcher__link'
+//                 >
+//                     <YouTubeIcon
+//                         className='platform-switcher__icon'
+//                         width={25}
+//                         height={25}
+//                     />
+//                 </a>
+//                 <div className='platform-switcher__separator' />
+//                 <a 
+//                     href="https://www.tiktok.com/@binarytools" 
+//                     target="_blank" 
+//                     rel="noopener noreferrer"
+//                     className='platform-switcher__link'
+//                 >
+//                     <TiktokIcon
+//                         className='platform-switcher__icon'
+//                         width={25}
+//                         height={25}
+//                     />
+//                 </a>
+//             </div>
+
+
+//             <CSSTransition
+//                 mountOnEnter
+//                 appear
+//                 in={is_open}
+//                 classNames={{
+//                     enterDone: 'platform-dropdown--enter-done',
+//                 }}
+//                 timeout={!isMobile() && is_open ? 0 : 250}
+//                 unmountOnExit
+//             >
+//                 <PlatformDropdown
+//                     platform_config={platform_config}
+//                     closeDrawer={closeDrawer}
+//                     current_language={current_language}
+//                     app_routing_history={app_routing_history}
+//                     setTogglePlatformType={setTogglePlatformType}
+//                 />
+//             </CSSTransition>
+//         </React.Fragment>
+//     );
+// };
+
+// PlatformSwitcher.propTypes = {
+//     platform_config: PropTypes.array,
+//     toggleDrawer: PropTypes.func,
+//     current_language: PropTypes.string,
+//     app_routing_history: PropTypes.array,
+//     is_landing_company_loaded: PropTypes.bool,
+//     is_logged_in: PropTypes.bool,
+//     is_logging_in: PropTypes.bool,
+//     setTogglePlatformType: PropTypes.func,
+// };
+
+// export default withRouter(PlatformSwitcher);
