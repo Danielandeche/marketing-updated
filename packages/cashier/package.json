@@ -1,0 +1,43 @@
+{
+    "name": "@deriv/cashier",
+    "version": "1.0.0",
+    "description": "Deriv Cashier",
+    "keywords": [
+        "deriv-app",
+        "deriv.com"
+    ],
+    "main": "dist/cashier/js/cashier.js",
+    "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+    },
+    "engines": {
+        "node": "18.x"
+    },
+    "files": [
+        "lib"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/binary-com/deriv-app.git"
+    },
+    "scripts": {
+        "test": "echo \"No test specified\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
+        "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config \"./build/webpack.config.js\"",
+        "build:travis": "rimraf dist && webpack --config \"./build/webpack.config.js\"  --mode=production",
+        "build": ""
+    },
+    "bugs": {
+        "url": "https://github.com/binary-com/deriv-app/issues"
+    },
+    "dependencies": {
+    
+    },
+    "devDependencies": {
+        
+    }
+}

@@ -1,0 +1,61 @@
+/* Ensure the container takes up full height and centers its content */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    margin: 0;
+    background: transparent;
+  }
+  
+  .loaderbt-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .loaderbt {
+    width: 100px;
+    aspect-ratio: 1;
+    display: grid;
+  }
+  
+  .loaderbt:before,
+  .loaderbt:after {
+    content: "";
+    grid-area: 1/1;
+    border-radius: 50%;
+    background: #2e9a40;
+    -webkit-mask: repeating-linear-gradient(#000 0 5px, #0000 0 10px);
+    animation: l35 1.5s infinite;
+  }
+  
+  .loaderbt:after {
+    -webkit-mask: repeating-linear-gradient(#0000 0 5px, #000 0 10px);
+    --s: -1;
+  }
+  
+  @keyframes l35 {
+    0%,
+    10% {
+      transform: translate(0) rotate(0);
+    }
+    35% {
+      transform: translate(calc(var(--s, 1) * 50%)) rotate(0);
+    }
+    66% {
+      transform: translate(calc(var(--s, 1) * 50%)) rotate(calc(var(--s, 1) * 180deg));
+    }
+    90%,
+    100% {
+      transform: translate(0) rotate(calc(var(--s, 1) * 180deg));
+    }
+  }
+  
+  .loaderbt-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #2e9a40;
+  }  

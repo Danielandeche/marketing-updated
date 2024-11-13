@@ -1,0 +1,41 @@
+{
+    "name": "@deriv/cfd",
+    "version": "1.0.0",
+    "description": "Deriv content",
+    "main": "dist/cfd/js/cfd.js",
+    "private": true,
+    "scripts": {
+        "start": "npm run test && npm run serve",
+        "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config \"./build/webpack.config.js\"",
+        "build": "",
+        "build:travis": "echo \"No build:travis specified\"",
+        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
+        "deploy": "echo \"No deploy specified\"",
+        "deploy:clean": "echo \"No deploy:clean specified\"",
+        "deploy:folder": "echo \"No deploy:folder specified\"",
+        "deploy:staging": "echo \"No deploy:staging specified\"",
+        "deploy:production": "echo \"No deploy:production specified\""
+    },
+    "engines": {
+        "node": "18.x"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/binary-com/deriv-app.git"
+    },
+    "keywords": [
+        "deriv"
+    ],
+    "author": "Deriv",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/binary-com/deriv-app/issues"
+    },
+    "homepage": "https://github.com/binary-com/deriv-app",
+    "devDependencies": {
+        
+    },
+    "dependencies": {
+      
+    }
+}

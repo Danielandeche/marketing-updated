@@ -1,0 +1,1187 @@
+/* #DFE1E7 */
+.main_app {
+    height: 70vh;
+    overflow: auto;
+    color: var(--text-general);
+}
+
+.main_app .top_bar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 2rem;
+}
+
+.main_app #symbol_options {
+    padding: 8px 20px;
+    border: 2px solid #ffad3b;
+    border-radius: 5px;
+}
+
+.no_of_ticks {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ffad3b;
+    border-radius: 5px;
+    color: var(--text-prominent);
+    font-size: 16px;
+    width: max-content;
+}
+
+.no_of_ticks input {
+    padding: 8px;
+    border-radius: 2px;
+    font-size: 14px;
+    width: 70px;
+}
+
+
+.no_of_ticks .sync_btn {
+    background: #0ba70b;
+    padding: 1px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.no_of_ticks .sync_btn svg {
+    width: 30px;
+    height: 30px;
+}
+
+.no_of_ticks .sync_btn svg.sync_active {
+    animation: rotate-circle 2s infinite linear;
+}
+
+@keyframes rotate-circle {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.main_app .symbol_price {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+}
+
+.main_app .symbol_price .current_price {
+    font-size: 16px;
+    font-weight: 700;
+    background: transparent;
+    padding: 5px 7px;
+    border-radius: 10px;
+    text-align: center;
+    color: var(--text-prominent);
+}
+
+.main_app .symbol_price .current_price h3 {
+    font-size: 16px;
+    color: #cc2e3d;
+    font-weight: bolder;
+}
+
+.guide {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    cursor: pointer;
+  }
+  
+  .guide svg {
+    font-size: 28px;
+    color: #2e9a40;
+  }
+  
+  @keyframes rotate360 {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(180deg);
+    }
+  }
+  .guide svg:hover {
+    animation: rotate360 0.3s linear;
+  }
+  
+  .guide h5 {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+.main_app .top_bar .bot_options {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.main_app .top_bar .bot_options .tp,
+.main_app .top_bar .bot_options .sl,
+.main_app .top_bar .bot_options .active_inactive,
+.main_app .top_bar .bot_options .copy_demo_trades,
+.main_app .top_bar .bot_options .account_cr,
+.main_app .top_bar .bot_options .ticks,
+.main_app .top_bar .bot_options .stake {
+    display: flex;
+    gap: 2rem;
+}
+
+.main_app .top_bar .bot_options .tp input,
+.main_app .top_bar .bot_options .sl input,
+.main_app .top_bar .bot_options .stake input {
+    font-size: 12px;
+    text-align: center;
+    border: none;
+    font-weight: 800;
+    border-radius: 2px;
+}
+
+.main_app .top_bar .bot_options .account_cr input {
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+}
+
+.main_app .rf_ou {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.main_app .tutorial {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.analysis_title {
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.main_app .rf_ou .rise_fall,
+.main_app .rf_ou .over_under {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 40px 0px 15px;
+}
+
+.main_app .over_under_options {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.main_app .over_under_options .digit_inputs {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.main_app .over_under_options .digit_inputs .over_digit,
+.main_app .over_under_options .digit_inputs .under_digit {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 14px;
+}
+
+.main_app .over_under_options .digit_inputs .over_digit input,
+.main_app .over_under_options .digit_inputs .under_digit input {
+    padding: 3%;
+    width: 50px;
+    text-align: center;
+}
+
+.main_app .over_under_options .over_oct_container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 12px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.main_app .over_under_options .over_oct_container .over_oct {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.main_app .over_under_options .over_oct_container .over_oct .overunder_buy_btn {
+    padding: 0px 10px;
+    background: #008079;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.main_app .over_under_options .over_oct_container .over_under_settings .ct_types_ou {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.main_app .over_under_options .over_oct_container .over_oct input {
+    height: 20px;
+    width: 20px;
+}
+
+.main_app .over_under_options .over_oct_container .over_oct .oneclick_amout {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.main_app .over_under_options .over_oct_container .over_oct .oneclick_amout input {
+    width: 70px;
+    padding: 6px 0px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.main_app .over_under_options .over_oct_container .over_under_settings {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.main_app .over_under_options .over_oct_container .over_under_settings input {
+    width: 48px;
+    padding: 6px 0px;
+    text-align: center;
+    border-radius: 2px;
+}
+.main_app .martingale{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5px;
+}
+
+.main_app .over_under_options .over_oct_container .over_under_settings .martingale,
+.main_app .over_under_options .over_oct_container .over_under_settings .percentage_value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5px;
+}
+
+.main_app .line_chart .linechat_oct {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.main_app .line_chart .oct_trading_options {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.main_app .line_chart .oct_trading_options .details_options {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-direction: column;
+}
+
+.main_app .line_chart .oct_trading_options .details_options input {
+    width: 20px;
+    height: 20px;
+}
+
+.main_app .line_chart .oct_trading_options .details_options .oneclick_amout {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 12px;
+}
+
+.main_app .line_chart .oct_trading_options .rise_fall_buttons .oneclick_amout input {
+    text-align: center;
+    width: 65px;
+    padding: 5px 0px;
+    border-radius: 2px;
+}
+
+.main_app .line_chart .oct_trading_options .rise_fall_buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.main_app .line_chart .oct_trading_options .rise_fall_buttons button {
+    border: none;
+    padding: 3px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.main_app .line_chart .oct_trading_options .rise_fall_buttons .rise_btn {
+    background: #00a79e;
+}
+
+.main_app .line_chart .oct_trading_options .rise_fall_buttons .fall_btn {
+    background: #cc2e3d;
+}
+
+.recharts-responsive-container {
+    font-size: 14px;
+}
+
+.card1 {
+    width: 400px;
+    height: 269px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    background: var(--general-section-1);
+    box-shadow: 0 2px 4px var(--text-general),
+                0 3px 10px var(--text-general);
+    margin-left: 20px;
+}
+
+
+.card2 {
+    width: 480px;
+    height: 269px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    padding: 10px;
+    background: var(--general-section-1);
+    box-shadow: 0 2px 4px var(--text-general),
+                0 3px 10px var(--text-general);
+    margin-left: 20px;
+}
+
+.card3 {
+    background: var(--general-section-1);
+    box-shadow: 0 2px 4px var(--text-general),
+                0 3px 10px var(--text-general);
+    width: 600px;
+    height: 269px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    padding: 10px;
+    margin-left: 20px;
+}
+
+.card4 {
+    background: var(--general-section-1);
+    box-shadow: 0 2px 4px var(--text-general),
+                0 3px 10px var(--text-general);
+    width: 400px;
+    height: 290px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    margin-left: 20px;
+}
+
+.card5 {
+    background: var(--general-section-1);
+    box-shadow: 0 2px 4px var(--text-general),
+                0 3px 10px var(--text-general);
+    width: 600px;
+    height: 269px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    padding: 10px;
+    margin-left: 20px;
+}
+
+.pie_diff .pie {
+    display: flex;
+    flex-direction: column;
+    padding: 13px;
+}
+
+.line_chart {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.main_app .digit_diff {
+    display: flex;
+    flex-direction: column;
+}
+
+.main_app .pie_diff {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.main_app .pie_diff .pie .odd_even_info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-direction: column;
+    width: 100%;
+}
+
+.main_app .pie_diff .pie .odd_even_info #contract_types {
+    margin-top: 10px;
+}
+
+.main_app .pie_diff .pie .odd_even_info input[type='checkbox'] {
+    height: 20px;
+    width: 20px;
+    margin-top: 10px;
+}
+
+.main_app .pie_diff .pie .odd_even_info .martingale input,
+.main_app .pie_diff .pie .odd_even_info .percentage_value input {
+    padding: 5px 0px;
+    width: 60px;
+    text-align: center;
+}
+
+.main_app .pie_diff .pie .odd_even_info .odd_even_settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 4px;
+}
+
+.main_app .pie_diff .pie .odd_even_info .analysis_title {
+    margin-top: 20px;
+}
+
+.main_app .pie_diff .pie .odd_even_info .odd_even_settings .martingale,
+.main_app .pie_diff .pie .odd_even_info .odd_even_settings .percentage_value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.main_app .pie_diff .pie .odd_even_info .tick_stake {
+    display: flex;
+    gap: 2px;
+}
+
+.main_app .pie_diff .pie .odd_even_info .oneclick_amout {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.main_app .pie_diff .pie .odd_even_info .oneclick_amout input {
+    width: 70px;
+    padding: 6px 0px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.main_app .pie_diff .pie .pie_container {
+    width: 60%;
+    height: 75%;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader {
+    justify-content: space-between;
+    width: 80%;
+    align-items: center;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .differs_choices {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.main_app .pie_diff .digit_diff .title_oc_trader .differs_setting {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+.main_app .pie_diff .digit_diff .title_oc_trader .differs_choices .auto_clicker {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 2px;
+    align-items: center;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .differs_choices .auto_clicker input {
+    width: 16px;
+    height: 16px;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .differs_choices input {
+    width: 16px;
+    height: 16px;
+}
+/*some modification*/
+.main_app .on_off_btn {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 2px;
+    align-items: center;
+}
+
+.main_app .auto_btn {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 2px;
+    align-items: center;
+}
+
+/*end of modification*/
+
+.main_app .pie_diff .digit_diff .title_oc_trader .oneclick_trader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .oneclick_trader input {
+    width: 20px;
+    height: 20px;
+}
+
+.main_app .oneclick_trader .martingale input{
+    padding: 5px 0px;
+    width: 60px !important;
+    text-align: center;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .oneclick_trader #contract_types {
+    border: none;
+    padding: 2px 5px;
+    border-radius: 2px;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .oneclick_trader #contract_duration {
+    border: none;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .oneclick_trader .oneclick_amout {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 13px;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .oneclick_trader .oneclick_amout input {
+    width: 75px;
+    padding: 12px 10px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.main_app .pie_diff .digit_diff .title_oc_trader .diff_options {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.main_app .pie_diff .digit_diff .custom_prediction {
+    height: 24px !important;
+    width: 38px !important;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.main_app .pie_diff .digit_diff .custom_buy_btn {
+    border: none;
+    padding: 4px 10px;
+    background: #00a79e;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.main_app .pie_diff .same_diff {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ========== DIFFERSBALLS CSS =============== */
+.differs_container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.differs_container .progress {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    color: #fff;
+    background: #444 linear-gradient(to bottom, transparent 80%, #877c7c 0);
+    transition: all 0.3s ease;
+}
+
+.differs_container .progress.top {
+    background: #444 linear-gradient(to bottom, transparent 60%, #43f94a 0);
+}
+
+.differs_container .progress.less {
+    background: #444 linear-gradient(to bottom, transparent 60%, #fb2929 0);
+}
+
+.differs_container .progress.second {
+    background: #444 linear-gradient(to bottom, transparent 60%, #f5f51b 0);
+}
+
+.differs_container .progress.active {
+    transform: scale(1.2);
+    padding-bottom: 20px;
+    
+}
+
+.differs_container .progress.active:after {
+    background: #CD5C5C;
+}
+
+.differs_container .progress h3 {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    z-index: 1;
+    font-weight: 500;
+}
+
+.differs_container .progress h4 {
+    position: absolute;
+    top: 54%;
+    left: 54%;
+    font-size: 1rem;
+    transform: translateX(-50%);
+    z-index: 1;
+    font-weight: 500;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.differs_container .progress:after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    background: #222;
+}
+
+.differs_container .progress:hover:after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    background: #4bb4b3;
+}
+
+/* Responsive Desktop */
+@media (min-width: 900px) {
+    /* .main_app .pie_diff {
+        justify-content: center;
+    }
+
+    .main_app .rf_ou {
+        justify-content: center;
+    }
+
+    .main_app .tutorial {
+        justify-content: center;
+    } */
+
+    .card1 {
+        width: 400px;
+        height: 320px;
+    }
+
+    .card2 {
+        width: 480px;
+        height: 320px;
+    }
+
+    .card3 {
+        width: 600px;
+        height: 320px;
+    }
+
+    .card4 {
+        width: 400px;
+        height: 320px;
+    }
+
+    .card5 {
+        width: 400px;
+        height: 320px;
+    }
+}
+
+/* Responsive Desktop */
+@media (max-height: 660px) {
+    .main_app .pie_diff {
+        height: 70%;
+    }
+}
+
+/* Responsive (Mobile) */
+@media (max-width: 720px) {
+    .main_app .top_bar {
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .main_app .symbol_price {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    .main_app .rf_ou {
+        flex-direction: column;
+        height: 125%;
+    }
+
+    .main_app .tutorial {
+        flex-direction: column;
+        height: 125%;
+    }
+
+    .main_app .rf_ou .rise_fall, .main_app .rf_ou .over_under {
+        width: 90%;
+    }
+
+    .line_chart {
+        width: 90%;
+    }
+    .main_app .line_chart .linechat_oct {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .main_app .line_chart .oct_trading_options .rise_fall_buttons button {
+        padding: 6px 12px;
+    }
+
+    .card3 {
+        height: 27%;
+    }
+
+    .main_app .pie_diff {
+        flex-direction: column;
+        height: 125%;
+        align-items: center;
+    }
+
+    .pie_diff .pie {
+        width: 90%;
+        height: auto;
+    }
+
+    .main_app .digit_diff {
+        width: 90%;
+        height: auto;
+    }
+
+    .differs_container {
+        display: grid;
+        gap: 30px 10px;
+        grid-template-columns: repeat(5, 1fr);
+    }
+    .differs_container .progress {
+        width: 53px;
+        height: 53px;
+    }
+    .differs_container .progress.active h3 {
+        font-size: 11px;
+    }
+    .differs_container .progress.active h4 {
+        font-size: 8px;
+    }
+    .main_app .pie_diff .digit_diff .title_oc_trader {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.button {
+    padding: 10px;
+    margin: 4px;
+    border: none;
+    cursor: pointer;
+    background-color: #808080; /* Gray color */
+    color: #ffffff; /* Black color */
+    border-radius: 5px;
+}
+
+.button.active {
+    background-color: #2e9a40; /* Blue color */
+    color: #ffffff; /* White color */
+}
+
+/* Toggle switch styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px; /* Reduced from 60px to 40px */
+    height: 20px; /* Reduced from 34px to 20px */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 20px; /* Adjusted to match the height */
+}
+
+.slider:before {
+    position: absolute;
+    content: '';
+    height: 16px; /* Adjusted from 26px to 16px */
+    width: 16px; /* Adjusted from 26px to 16px */
+    left: 2px; /* Adjusted from 4px to 2px */
+    bottom: 2px; /* Adjusted from 4px to 2px */
+    background-color: #fff;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 50%; /* Rounded shape */
+}
+
+input:checked + .slider {
+    background-color: #2196f3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px); /* Adjusted from 26px to 20px */
+    -ms-transform: translateX(20px); /* Adjusted from 26px to 20px */
+    transform: translateX(20px); /* Adjusted from 26px to 20px */
+}
+
+.h6 {
+    color: #000;
+}
+
+.file-upload-input {
+    display: none; /* Hide the default file input */
+}
+
+.settings {
+    display: flex;                /* Flexbox to align both upload and download sections */
+    justify-content: space-between; /* Distribute space between items */
+    gap: 20px;                    /* Add space between the icons */
+}
+
+.upload-label, .download-label, .strategies-label {
+    display: flex;                /* Flexbox for icon and text alignment */
+    flex-direction: column;       /* Stack icon and text vertically */
+    align-items: center;          /* Center align */
+    cursor: pointer;              /* Pointer cursor for clickable label */
+}
+
+.iconu {
+    color: #ff0000; /* Red color for upload icon */
+    font-size: 2.5rem;
+    margin-bottom: 2px;
+    transition: transform 0.2s, color 0.2s; /* Smooth transition */
+}
+
+.icond {
+    color: #00ffff; /* Cyan color for download icon */
+    font-size: 2.5rem;
+    margin-bottom: 2px;
+    transition: transform 0.2s, color 0.2s; /* Smooth transition */
+}
+
+.icons {
+    color: #2bff00; /* Cyan color for download icon */
+    font-size: 2.5rem;
+    margin-bottom: 2px;
+    transition: transform 0.2s, color 0.2s; /* Smooth transition */
+}
+
+.iconu:hover, .icond:hover, .icons:hover {
+    transform: scale(1.1);        /* Scale icon on hover */
+}
+
+.upload-label span {
+    color: #ff0000; /* Red color for upload text */
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.download-label span {
+    color: #00ffff; /* Cyan color for download text */
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.strategies-label span {
+    color: #2bff00; /* Cyan color for download text */
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.upload-label span:hover, .download-label, .strategies-label span:hover {
+    color: #007bff; /* Blue color on hover for both spans */
+}
+
+/* CSS for the modal */
+.modal-overlay {
+    position: fixed;
+    top: 0; /* Changed from 2 to 0 */
+    left: 0; /* Changed from 2 to 0 */
+    bottom: 0; /* Changed from 2 to 0 */
+    right: 0; /* Changed from 2 to 0 */
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    height: 70%;
+    width: 70%; /* Changed to a percentage for responsiveness */
+    max-width: 600px; /* Set a maximum width for larger screens */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+/* Start of pop up settings style */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    background-color: #ff0000;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #ffffff;
+    transition: background-color 0.3s;
+}
+
+.close-button:hover {
+    background-color: #cc0000;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #000;
+    font-weight: bolder;
+}
+
+h5 {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.settings-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.setting-item label {
+    margin-right: 10px;
+    font-size: 0.9em;
+    color: #555;
+    flex: 0 0 auto;
+}
+
+.setting-item select,
+.setting-item input {
+    padding: 5px;
+    font-size: 1em;
+    width: auto; /* Set width to auto to fit content */
+    max-width: 150px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    margin-left: auto; /* Push the input/select to the right */
+}
+
+.setting-item input:focus,
+.setting-item select:focus {
+    border-color: #2196F3;
+    box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+}
+
+.setting-item input:hover,
+.setting-item select:hover {
+    border-color: #007bff;
+}
+
+.active_inactive {
+    display: flex;
+    color: #555;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.settings-button {
+    background-color: transparent;
+    color: #007BFF;
+    border: 2px solid #007BFF;
+    padding: 2px 4px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.settings-button:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+/* end of pop up settings style */
+
+/* Modal close button */
+button.close-btn {
+    float: right;
+    cursor: pointer;
+    background-color: #ff0000; /* Set background to red */
+    border: none;
+    border-radius: 50%; /* Make it round */
+    width: 30px; /* Set width */
+    height: 30px; /* Set height */
+    display: flex; /* Center the "X" */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    font-size: 18px; /* Adjust font size */
+    color: #ffffff; /* Set text color to white */
+}
+
+button.close-btn:hover {
+    background-color: #8b0000; /* Darken on hover */
+}
+
+/* Modal header */
+h2.modal-header {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* Strategy list styling */
+ul.strategy-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 1em;
+}
+
+/* Each strategy item styling */
+ul.strategy-list li {
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect to make items look clickable */
+ul.strategy-list li:hover {
+    background-color: #f0f0f0;
+    color: #0056b3;
+}

@@ -1,0 +1,30 @@
+{
+    "name": "@deriv/appstore",
+    "version": "0.0.4",
+    "description": "Deriv Appstore",
+    "main": "dist/appstore/js/index.js",
+    "private": true,
+    "engines": {
+        "node": "18.x"
+    },
+    "scripts": {
+        "build": "",
+        "build:travis": "rimraf dist && webpack",
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "start": "rimraf dist && npm run test && npm run serve",
+        "deploy": "echo \"No deploy specified\"",
+        "deploy:clean": "echo \"No deploy:clean specified\"",
+        "deploy:folder": "echo \"No deploy:folder specified\"",
+        "deploy:staging": "echo \"No deploy:staging specified\"",
+        "deploy:production": "echo \"No deploy:production specified\"",
+        "test:eslint": "eslint \"./src/**/*.?(ts|tsx|js|jsx)\"",
+        "storybook": "start-storybook -p 6006",
+        "storybook:build": "build-storybook --output-dir .out"
+    },
+    "author": "Deriv",
+    "license": "Apache-2.0",
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+}

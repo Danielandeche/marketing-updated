@@ -1,0 +1,38 @@
+{
+    "name": "@deriv/p2p",
+    "version": "0.7.3",
+    "description": "p2p cashier",
+    "main": "dist/p2p/js/index.js",
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "lib"
+    ],
+    "engines": {
+        "node": "18.x"
+    },
+    "scripts": {
+        "test:eslint": "eslint \"./src/**/*.?(js|ts|jsx|tsx)\"",
+        "build": "",
+        "build:publish": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress; deriv-publisher postpublish",
+        "build:travis": "rimraf lib && webpack",
+        "serve": "rimraf lib && cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch",
+        "start": "rimraf lib && npm run test && npm run serve",
+        "deploy": "echo \"No deploy specified\"",
+        "deploy:clean": "echo \"No deploy:clean specified\"",
+        "deploy:folder": "echo \"No deploy:folder specified\"",
+        "deploy:staging": "echo \"No deploy:staging specified\"",
+        "deploy:production": "echo \"No deploy:production specified\"",
+        "publish_package": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress && npm publish; deriv-publisher postpublish"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+    
+    },
+    "devDependencies": {
+       
+    }
+}

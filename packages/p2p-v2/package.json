@@ -1,0 +1,19 @@
+{
+    "name": "@deriv/p2p-v2",
+    "private": true,
+    "version": "1.0.0",
+    "main": "dist/p2p-v2/js/index.js",
+    "engines": {
+        "node": "18.x"
+    },
+    "scripts": {
+        "build": "",
+        "start": "rimraf dist && npm run test && npm run serve"
+    },
+    "dependencies": {
+        
+    },
+    "devDependencies": {
+       
+    }
+}

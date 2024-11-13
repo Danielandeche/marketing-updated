@@ -1,0 +1,86 @@
+.install-app-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.install-app-overlay.dark_active .install-app-popup {
+    background: #151516;
+}
+
+.install-app-popup {
+    background-color: #fff;
+    width: 33%;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: popupAnimation 0.4s ease-out;
+}
+
+.install-app-popup p {
+    margin: 0 0 20px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.install-app-popup button {
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.install_now_button {
+    background-color: #45a049;
+}
+
+.install_now_button button:hover {
+    background-color: #45a049;
+}
+
+.no_install_button {
+    background-color: #f44336;
+    margin-left: 10px;
+}
+
+.no_install_button:hover {
+    background-color: #e53935;
+}
+
+/* Pop-up animation effect */
+@keyframes popupAnimation {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive (Mobile) */
+@media (max-width: 720px) {
+    .install-app-popup {
+        width: 80%;
+    }
+}

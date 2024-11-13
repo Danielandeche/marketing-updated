@@ -1,0 +1,48 @@
+.apollo-list__item__label {
+    width: 100%;
+}
+
+.apollo-list__wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow: auto;
+}
+
+.apollo-list__item {
+    display: flex;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(45deg, rgba(0, 212, 255, 0.858) 0%, rgba(48, 47, 73, 0.939) 55%);
+    margin: 1rem;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 16px;
+    height: 8rem;
+    font-weight: 600;
+    align-items: center;
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;
+}
+
+.apollo-list__item:hover {
+    background: linear-gradient(65deg, rgba(48, 47, 73, 0.939) 60%), rgba(0, 212, 255, 0.858) 10%;
+    color: #00ffff;
+}
+
+.apollo_massive_logo {
+    display: none;
+}
+
+@media screen and (max-width: 720px) {
+    .apollo-list__wrapper {
+        grid-template-columns: none;
+        height: calc(100vh - 25rem);
+    }
+}
+
+@media screen and (max-height: 650px) {
+    .apollo-list__wrapper {
+        height: 100%;
+        padding: 0px 0px 60px;
+    }
+}
