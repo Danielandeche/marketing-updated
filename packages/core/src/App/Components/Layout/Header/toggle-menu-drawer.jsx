@@ -21,6 +21,8 @@ import PlatformSwitcher from './platform-switcher';
 import MenuLink from './menu-link';
 import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
 import { useRemoteConfig } from '@deriv/api';
+import { FaTelegramPlane } from 'react-icons/fa';
+import { IoReloadSharp } from 'react-icons/io5';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
@@ -246,6 +248,26 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     height='16px'
                     className='header__mobile-drawer-icon'
                 />
+            </a>
+            <a
+                id="dt_mobile_drawer_toggle"
+                href="https://t.me/binarytools"
+                className="header__mobile-drawer-toggle"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <FaTelegramPlane size="25px" color="#229ed9" />
+            </a>
+            <a
+                id="dt_mobile_drawer_toggle"
+                href="#"
+                className="header__mobile-drawer-toggle"
+                onClick={(e) => {
+                    e.preventDefault();
+                    window.location.reload();
+                }}
+            >
+                <IoReloadSharp size="20px" color="#FF0000" />
             </a>
             <MobileDrawer
                 alignment={is_appstore ? 'right' : 'left'}
