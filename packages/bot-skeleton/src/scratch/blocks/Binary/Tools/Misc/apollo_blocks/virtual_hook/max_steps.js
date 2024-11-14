@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.max_steps = {
     init() {
         this.jsonInit({
-            message0: localize('Max Steps {{ input_max_steps }}', { input_max_steps: '%1' }),
+            message0: localize('No. of Virtual Losses {{ input_max_steps }}', { input_max_steps: '%1' }),
             args0: [
                 {
                     type: 'input_value',

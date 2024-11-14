@@ -196,3 +196,10 @@
     height: 16px;
     animation: spin 1s linear infinite;
 }
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+    .db-toolbox {
+        width: 16rem;
+    }
+}

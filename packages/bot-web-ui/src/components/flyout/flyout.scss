@@ -227,3 +227,13 @@
         margin: 0;
     }
 }
+
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+    .flyout {
+        left: 10rem;
+        min-width: 200px;
+        max-width: 350px;
+    }
+}
