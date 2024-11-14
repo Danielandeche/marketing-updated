@@ -13,36 +13,36 @@ import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockD
 import './blockly';
 
 // Custom Bots
-import ap1 from './xml/apollo_bots/MKOREAN SV6 BOT.xml';
-import ap2 from './xml/apollo_bots/MKOREAN SV5 SPEED BOT.xml';
-import ap3 from './xml/apollo_bots/MKOREAN SV4 SPEED BOT.xml';
-import ap4 from './xml/apollo_bots/MKOREAN SV2 .xml';
-import ap5 from './xml/apollo_bots/MKOREAN SV1 2024.xml';
-import ap6 from './xml/apollo_bots/MKOREAN Auto Switch EVEN ODD.xml';
-import ap7 from './xml/apollo_bots/MASTER BOT V6 UPGRADED D-Bot 💯💯💯.xml';
-import ap8 from './xml/apollo_bots/Expert speed bot📈📉🚀 .xml';
-import ap9 from './xml/apollo_bots/Marvel_PRO_Fully_Auto_V_2_0_Original.xml';
-import ap10 from './xml/apollo_bots/Marvel SPLIT ORIGINAL.xml';
-import ap11 from './xml/apollo_bots/LAS VEGAS 📃💵.xml';
-import ap12 from './xml/apollo_bots/G8 EXPERT BOT.xml';
-import ap13 from './xml/apollo_bots/Binary V5 Expert pro.xml';
-import ap14 from './xml/apollo_bots/360 Printer Version 2 [ Original ].xml';
+import ap10 from './xml/apollo_bots/MKOREAN SV6 BOT.xml';
+import ap11 from './xml/apollo_bots/MKOREAN SV5 SPEED BOT.xml';
+import ap12 from './xml/apollo_bots/MKOREAN SV4 SPEED BOT.xml';
+import ap13 from './xml/apollo_bots/MKOREAN SV2 .xml';
+import ap14 from './xml/apollo_bots/MKOREAN SV1 2024.xml';
+import ap15 from './xml/apollo_bots/MKOREAN Auto Switch EVEN ODD.xml';
+import ap16 from './xml/apollo_bots/MASTER BOT V6 UPGRADED D-Bot 💯💯💯.xml';
+import ap17 from './xml/apollo_bots/Expert speed bot📈📉🚀 .xml';
+import ap18 from './xml/apollo_bots/Marvel_PRO_Fully_Auto_V_2_0_Original.xml';
+import ap19 from './xml/apollo_bots/Marvel SPLIT ORIGINAL.xml';
+import ap20 from './xml/apollo_bots/LAS VEGAS 📃💵.xml';
+import ap21 from './xml/apollo_bots/G8 EXPERT BOT.xml';
+import ap22 from './xml/apollo_bots/Binary V5 Expert pro.xml';
+import ap23 from './xml/apollo_bots/360 Printer Version 2 [ Original ].xml';
 
 export const apollo_bot_list = [
-    { id: 0, name: 'MKOREAN SV6 BOT', xml: ap1 },
-    { id: 1, name: 'MKOREAN SV5 SPEED BOT', xml: ap2 },
-    { id: 2, name: 'MKOREAN SV4 SPEED BOT', xml: ap3 },
-    { id: 3, name: 'MKOREAN SV2', xml: ap4 },
-    { id: 4, name: 'MKOREAN SV1 2024', xml: ap5 },
-    { id: 5, name: 'MKOREAN Auto Switch EVEN ODD Bot', xml: ap6 },
-    { id: 6, name: 'MASTER BOT V6 UPGRADED D-Bot 💯💯💯', xml: ap7 },
-    { id: 7, name: 'Expert speed bot📈📉🚀 ', xml: ap8 },
-    { id: 8, name: 'Marvel_PRO_Fully_Auto_V_2_0_Original', xml: ap9 },
-    { id: 9, name: 'Marvel SPLIT ORIGINAL', xml: ap10 },
-    { id: 10, name: 'LAS VEGAS 📃💵', xml: ap11 },
-    { id: 11, name: 'G8 EXPERT BOT', xml: ap12 },
-    { id: 12, name: 'Binary V5 Expert pro', xml: ap13 },
-    { id: 13, name: '360 Printer Version 2 [ Original ]', xml: ap14 },
+    { id: 0, name: 'MKOREAN SV6 BOT', xml: ap10 },
+    { id: 1, name: 'MKOREAN SV5 SPEED BOT', xml: ap11 },
+    { id: 2, name: 'MKOREAN SV4 SPEED BOT', xml: ap12 },
+    { id: 3, name: 'MKOREAN SV2', xml: ap13 },
+    { id: 4, name: 'MKOREAN SV1 2024', xml: ap14 },
+    { id: 5, name: 'MKOREAN Auto Switch EVEN ODD Bot', xml: ap15 },
+    { id: 6, name: 'MASTER BOT V6 UPGRADED D-Bot 💯💯💯', xml: ap16 },
+    { id: 7, name: 'Expert speed bot📈📉🚀 ', xml: ap17 },
+    { id: 8, name: 'Marvel_PRO_Fully_Auto_V_2_0_Original', xml: ap18 },
+    { id: 9, name: 'Marvel SPLIT ORIGINAL', xml: ap19 },
+    { id: 10, name: 'LAS VEGAS 📃💵', xml: ap20 },
+    { id: 11, name: 'G8 EXPERT BOT', xml: ap21 },
+    { id: 12, name: 'Binary V5 Expert pro', xml: ap22 },
+    { id: 13, name: '360 Printer Version 2 [ Original ]', xml: ap23 },
 ];
 
 class DBot {

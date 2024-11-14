@@ -47,8 +47,7 @@ export const handleLostLiveStep = total_profit => {
 
 export const calculateMartingale = profit => {
     const current_lost = Math.abs(profit);
-    config.vh_variables.total_loss += current_lost;
-    const newStake = config.vh_variables.total_loss * config.vh_variables.martingale;
+    const newStake = current_lost * config.vh_variables.martingale;
     if (newStake < 0.35) {
         config.vh_variables.mart_stake = 0.35;
     } else {

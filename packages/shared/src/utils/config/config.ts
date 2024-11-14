@@ -60,7 +60,7 @@ export const getAppId = () => {
         app_id = config_app_id;
     } else if (user_app_id.length) {
         if (/app\.github\.dev/i.test(window.location.hostname)) {
-            app_id = 65328;
+            app_id = 65483;
         } else if (/Binarytool-sgi9\.vercel\.app/i.test(window.location.hostname)) {
             app_id = 63233;
         } else {
