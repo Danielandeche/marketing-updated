@@ -13,6 +13,9 @@ import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockD
 import './blockly';
 
 // Custom Bots
+import ap1 from './xml/apollo_bots/Comrades Saviour.xml';
+import ap2 from './xml/apollo_bots/Barriers Accumulator Master.xml';
+import ap3 from './xml/apollo_bots/Virtual Account Switcher.xml';
 import ap10 from './xml/apollo_bots/MKOREAN SV6 BOT.xml';
 import ap11 from './xml/apollo_bots/MKOREAN SV5 SPEED BOT.xml';
 import ap12 from './xml/apollo_bots/MKOREAN SV4 SPEED BOT.xml';
@@ -29,20 +32,23 @@ import ap22 from './xml/apollo_bots/Binary V5 Expert pro.xml';
 import ap23 from './xml/apollo_bots/360 Printer Version 2 [ Original ].xml';
 
 export const apollo_bot_list = [
-    { id: 0, name: 'MKOREAN SV6 BOT', xml: ap10 },
-    { id: 1, name: 'MKOREAN SV5 SPEED BOT', xml: ap11 },
-    { id: 2, name: 'MKOREAN SV4 SPEED BOT', xml: ap12 },
-    { id: 3, name: 'MKOREAN SV2', xml: ap13 },
-    { id: 4, name: 'MKOREAN SV1 2024', xml: ap14 },
-    { id: 5, name: 'MKOREAN Auto Switch EVEN ODD Bot', xml: ap15 },
-    { id: 6, name: 'MASTER BOT V6 UPGRADED D-Bot 💯💯💯', xml: ap16 },
-    { id: 7, name: 'Expert speed bot📈📉🚀 ', xml: ap17 },
-    { id: 8, name: 'Marvel_PRO_Fully_Auto_V_2_0_Original', xml: ap18 },
-    { id: 9, name: 'Marvel SPLIT ORIGINAL', xml: ap19 },
-    { id: 10, name: 'LAS VEGAS 📃💵', xml: ap20 },
-    { id: 11, name: 'G8 EXPERT BOT', xml: ap21 },
-    { id: 12, name: 'Binary V5 Expert pro', xml: ap22 },
-    { id: 13, name: '360 Printer Version 2 [ Original ]', xml: ap23 },
+    { id: 0, name: 'Comrades Saviour!!!', xml: ap1 },
+    { id: 1, name: 'Barriers Accumulator Master', xml: ap2 },
+    { id: 2, name: 'Virtual Account Switcher', xml: ap3 },
+    { id: 9, name: 'MKOREAN SV6 BOT', xml: ap10 },
+    { id: 10, name: 'MKOREAN SV5 SPEED BOT', xml: ap11 },
+    { id: 11, name: 'MKOREAN SV4 SPEED BOT', xml: ap12 },
+    { id: 12, name: 'MKOREAN SV2', xml: ap13 },
+    { id: 13, name: 'MKOREAN SV1 2024', xml: ap14 },
+    { id: 14, name: 'MKOREAN Auto Switch EVEN ODD Bot', xml: ap15 },
+    { id: 15, name: 'MASTER BOT V6 UPGRADED D-Bot 💯💯💯', xml: ap16 },
+    { id: 16, name: 'Expert speed bot📈📉🚀 ', xml: ap17 },
+    { id: 17, name: 'Marvel_PRO_Fully_Auto_V_2_0_Original', xml: ap18 },
+    { id: 18, name: 'Marvel SPLIT ORIGINAL', xml: ap19 },
+    { id: 19, name: 'LAS VEGAS 📃💵', xml: ap20 },
+    { id: 20, name: 'G8 EXPERT BOT', xml: ap21 },
+    { id: 21, name: 'Binary V5 Expert pro', xml: ap22 },
+    { id: 22, name: '360 Printer Version 2 [ Original ]', xml: ap23 },
 ];
 
 class DBot {

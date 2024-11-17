@@ -1,0 +1,128 @@
+<xml xmlns="http://www.w3.org/1999/xhtml" is_dbot="true" collection="false">
+  <variables>
+    <variable type="" id="]5iLl6(7ZfUYNLLS6q.3" islocal="false" iscloud="false">Prediction</variable>
+    <variable type="" id="bl9gNIKkN@m|.7=Z9Dc%" islocal="false" iscloud="false">Stake</variable>
+  </variables>
+  <block type="trade_definition" id="L@Q#-]N+XBeV+*Pk~nE2" deletable="false" x="0" y="60">
+    <statement name="TRADE_OPTIONS">
+      <block type="trade_definition_market" id=")7mn7E%5t*N8t[b1%GvP" deletable="false" movable="false">
+        <field name="MARKET_LIST">synthetic_index</field>
+        <field name="SUBMARKET_LIST">random_index</field>
+        <field name="SYMBOL_LIST">R_100</field>
+        <next>
+          <block type="trade_definition_tradetype" id="2}wcc?[fgv!x#kkTl$6o" deletable="false" movable="false">
+            <field name="TRADETYPECAT_LIST">digits</field>
+            <field name="TRADETYPE_LIST">matchesdiffers</field>
+            <next>
+              <block type="trade_definition_contracttype" id="w,IubS0Y)aPaw[/(J,Tb" deletable="false" movable="false">
+                <field name="TYPE_LIST">both</field>
+                <next>
+                  <block type="trade_definition_candleinterval" id="Fv-$jpkN,djvJm5ThYGQ" deletable="false" movable="false">
+                    <field name="CANDLEINTERVAL_LIST">60</field>
+                    <next>
+                      <block type="trade_definition_restartbuysell" id="PClzs|t]C^18l@B^Htj(" deletable="false" movable="false">
+                        <field name="TIME_MACHINE_ENABLED">TRUE</field>
+                        <next>
+                          <block type="trade_definition_restartonerror" id="1ily$%Z!O$N;B.c]{4:c" deletable="false" movable="false">
+                            <field name="RESTARTONERROR">TRUE</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <statement name="INITIALIZATION">
+      <block type="variables_set" id="SX9]6GL^muUpbL@PA?;n">
+        <field name="VAR" id="bl9gNIKkN@m|.7=Z9Dc%" variabletype="">Stake</field>
+        <value name="VALUE">
+          <block type="math_number" id="O1fKsVZYzDWY]LZY?_f/">
+            <field name="NUM">5</field>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id=";VgXEDj8A5p%d}SOq[a1">
+            <field name="VAR" id="]5iLl6(7ZfUYNLLS6q.3" variabletype="">Prediction</field>
+            <value name="VALUE">
+              <block type="math_number" id="f}o8slnt#/yU=wOqSh^c">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+            <next>
+              <block type="text_print" id="di/h:4ga0*X*3oALB~%?">
+                <value name="TEXT">
+                  <shadow type="text" id="qlq6zG)C}N3NcE$~x9aP">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                  <block type="text" id="^P9t~U_p89S%0~|l{=ff">
+                    <field name="TEXT">Trade Random Digits from 0-9. Only 1 run per Prediction.Keep on increasing stake by  compounding your profit to Hit Take Profit First..................................All the Best!!!</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <statement name="SUBMARKET">
+      <block type="trade_definition_tradeoptions" id="BlJYBZ)-T^2,JH5+%6(N">
+        <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="true"></mutation>
+        <field name="DURATIONTYPE_LIST">t</field>
+        <value name="DURATION">
+          <shadow type="math_number_positive" id="hH#~3.CCIij1UXG1F{VH">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="math_number" id="BBZ$L$2s^?~mx%ZdjZ)@">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <value name="AMOUNT">
+          <shadow type="math_number_positive" id="zu(gUc|tiFy8i7RRa3fm">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get" id="t}jTkKZ~3l^tB^a6K2lX">
+            <field name="VAR" id="bl9gNIKkN@m|.7=Z9Dc%" variabletype="">Stake</field>
+          </block>
+        </value>
+        <value name="PREDICTION">
+          <shadow type="math_number_positive" id="*J1)jP~r7Fl}C(.MJ[_#">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get" id="8-se8-EW~+S%kxgfpBrv">
+            <field name="VAR" id="]5iLl6(7ZfUYNLLS6q.3" variabletype="">Prediction</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="after_purchase" id="qWVM-_};!KzsS]~n4Lda" x="981" y="60">
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="controls_if" id="JVjwuJXsV]5b6%eM._s5">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="contract_check_result" id="i(@bcfWN4d^@Lwcg+}%V">
+            <field name="CHECK_RESULT">win</field>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="set_tp" id="2J2(big8,Y9_(=yW4$Wr"></block>
+        </statement>
+        <statement name="ELSE">
+          <block type="set_sl" id="wDJ^U;^v!.9#;y:08*bG"></block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+  <block type="before_purchase" id=")Tv/V-InpSs8@g4hz)K)" deletable="false" x="0" y="708">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="apollo_purchase" id="oc1zyNJ#O%B:1^m/}A2y">
+        <field name="PURCHASE_LIST">DIGITDIFF</field>
+      </block>
+    </statement>
+  </block>
+</xml>

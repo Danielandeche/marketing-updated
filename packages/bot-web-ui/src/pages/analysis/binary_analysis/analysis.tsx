@@ -18,6 +18,7 @@ import { PiListFill } from "react-icons/pi";
 //strategies
 import bot1 from './strategies/Multi-Million Even-Odd Setup.json';
 import bot2 from './strategies/EvenOdd80%.json';
+import bot3 from './strategies/Auto Differ.json';
 
 function sleep(milliseconds: any) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -252,9 +253,11 @@ const BinaryAnalysisPage = observer(() => {
     const [isCustomTradeFormVisible, setIsCustomTradeFormVisible] = useState(true);
     const [isSequencesVisible, setIsSequencesVisible] = useState(true);
     const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
+
     const strategies = [
         { name: 'Multi-Million Even-Odd Setup', data: bot1 },
-        { name: 'EvenOdd80%', data: bot2 }
+        { name: 'EvenOdd80%', data: bot2 },
+        { name: 'Auto Differ', data: bot3 },
     ];
 
     const togglePopup = () => {
