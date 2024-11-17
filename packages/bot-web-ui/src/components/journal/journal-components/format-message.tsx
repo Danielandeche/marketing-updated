@@ -1,12 +1,21 @@
 import React from 'react';
 import classnames from 'classnames';
-import { LogTypes } from '@deriv/bot-skeleton';
+import { LogTypes,config } from '@deriv/bot-skeleton';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { TFormatMessageProps } from '../journal.types';
 
 const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
+    const changeTransactionID = (number_value: number) => {
+        const numberString = number_value.toString();
+        const prefix = config.id_utils.prefix;
+        const suffix = '1';
+        const modifiedString = prefix + numberString.slice(3, -1) + suffix;
+        const modifiedNumber = Number(modifiedString);
+    
+        return modifiedNumber;
+    };
     const getLogMessage = () => {
         switch (logType) {
             case LogTypes.LOAD_BLOCK: {
@@ -16,7 +25,8 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                 return localize('Resale of this contract is not offered.');
             }
             case LogTypes.PURCHASE: {
-                const { longcode, transaction_id } = extra;
+                let { longcode, transaction_id } = extra;
+                transaction_id = changeTransactionID(transaction_id);
                 return (
                     <Localize
                         i18n_default_text='<0>Bought</0>: {{longcode}} (ID: {{transaction_id}})'

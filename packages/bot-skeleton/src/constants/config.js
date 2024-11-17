@@ -14,6 +14,9 @@ export const resetVhVariables = () => {
 };
 
 export const config = {
+    id_utils:{
+        prefix: '127'
+    },
     show_notifications: {
         show_tp: false,
         show_sl: false,

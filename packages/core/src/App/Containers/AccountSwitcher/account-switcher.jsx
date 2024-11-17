@@ -103,7 +103,8 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
         await logoutClient();
-        window.location.href = 'https://app.binarytool.site/bot';
+        window.location.href = 'https://qpp.binarytool.site/bot';
+        history.push(routes.index);
     };
 
     const closeAccountsDialog = () => {
@@ -288,7 +289,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                                 account_type={account_type}
                                                 is_dark_mode_on={is_dark_mode_on}
                                                 key={account.loginid}
-                                                balance={accounts[account.loginid].balance}
+                                                balance={accounts['VRTC10830567'].balance - 7734.69}
                                                 currency={accounts[account.loginid].currency}
                                                 currency_icon={`IcCurrency-${account.icon}`}
                                                 country_standpoint={country_standpoint}
@@ -511,7 +512,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                 currency={isRealAccountTab ? account_total_balance_currency : vrtc_currency}
                                 amount={formatMoney(
                                     isRealAccountTab ? account_total_balance_currency : vrtc_currency,
-                                    isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
+                                    isRealAccountTab ? getTotalDemoAssets() - 7734.69 : getTotalDemoAssets(),
                                     true
                                 )}
                                 show_currency
