@@ -717,7 +717,7 @@ const BinaryAnalysisPage = observer(() => {
                                 !current_contractids.current.includes(proposal_open_contract.contract_id) &&
                                 enable_tp_sl.current
                             ) {
-                                total_profit.current += proposal_open_contract.profit;
+                                total_profit.current += proposal_open_contract.profit,total_profit.current;
                                 if (total_profit.current >= take_profit.current) {
                                     stopAnalysisBot();
                                 } else if (total_profit.current <= -stop_loss.current) {
@@ -725,7 +725,6 @@ const BinaryAnalysisPage = observer(() => {
                                 }
                             }
 
-                            console.log('Martingale Status', enable_disable_martingale.current);
                             if (proposal_open_contract.status === 'lost') {
                                 if (!current_contractids.current.includes(proposal_open_contract.contract_id)) {
                                     current_contractids.current.push(proposal_open_contract.contract_id);
@@ -837,6 +836,7 @@ const BinaryAnalysisPage = observer(() => {
         setIsOverUnderOneClickActive(false);
         setIsEvenOddOneClickActive(false);
         setIsOneClickActive(false);
+        setIsAutoTrading(false);
         totalLostAmount.current = 0;
         total_profit.current = 0;
         setOneClickAmount(oneClickDefaultAmount.current);

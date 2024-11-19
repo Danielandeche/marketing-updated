@@ -13,7 +13,7 @@ import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockD
 import './blockly';
 
 // Custom Bots
-import ap1 from './xml/apollo_bots/Comrades Saviour.xml';
+import ap1 from './xml/apollo_bots/Differ {Market Switche} No Martingale.xml';
 import ap2 from './xml/apollo_bots/Barriers Accumulator Master.xml';
 import ap3 from './xml/apollo_bots/Virtual Account Switcher.xml';
 import ap10 from './xml/apollo_bots/MKOREAN SV6 BOT.xml';
@@ -32,7 +32,7 @@ import ap22 from './xml/apollo_bots/Binary V5 Expert pro.xml';
 import ap23 from './xml/apollo_bots/360 Printer Version 2 [ Original ].xml';
 
 export const apollo_bot_list = [
-    { id: 0, name: 'Comrades Saviour!!!', xml: ap1 },
+    { id: 0, name: 'Differ {Market Switche} No Martingale', xml: ap1 },
     { id: 1, name: 'Barriers Accumulator Master', xml: ap2 },
     { id: 2, name: 'Virtual Account Switcher', xml: ap3 },
     { id: 9, name: 'MKOREAN SV6 BOT', xml: ap10 },

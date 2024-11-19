@@ -75,7 +75,16 @@ const getBotInterface = tradeEngine => {
         },
         showSL: ()=>{
             config.show_notifications.show_sl = true;
-        }
+        },
+        setActiveContractType: status => {
+            if (status == 'disable') {
+                config.other_symbol.isActive = false;
+                config.other_symbol.symbol = '';
+            } else {
+                config.other_symbol.isActive = true;
+                config.other_symbol.symbol = status;
+            }
+        },
     };
 };
 

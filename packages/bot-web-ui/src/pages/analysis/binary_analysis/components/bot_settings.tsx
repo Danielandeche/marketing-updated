@@ -83,7 +83,7 @@ const BotSettings = ({
 
     const handleIsActiveInActive = () => {
         setEnableSlTpValue(!enableSlTpValue);
-        enable_tp_sl.current = !enable_tp_sl.current;
+        enable_tp_sl.current = !enableSlTpValue;
     };
 
     const handleEnableDisableMart = () => {

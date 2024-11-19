@@ -36,122 +36,16 @@ const DigitSequenceComponent: React.FC<Props> = ({
     handleCustomPredictionInputChange,
 }) => {
     const [numDigits, setNumDigits] = useState<number | string>(3); // Allow both number and string
-    const [comparisonOperator, setComparisonOperator] = useState('greater than');
-    const [tradeAction, setTradeAction] = useState('DIGITOVER');
-    const [isAutoTrading, setIsAutoTrading] = useState(false); // State for auto-trading
-    const [tradeExecuted, setTradeExecuted] = useState(false); // Track if trade has been executed
-    const [numDigits1, setNumDigits1] = useState<number | string>(5);
-    const [comparisonOperator1, setComparisonOperator1] = useState('even');
-    const [tradeAction1, setTradeAction1] = useState('DIGITEVEN');
-    const [isAutoTrading1, setIsAutoTrading1] = useState(false);
-    const [tradeExecuted1, setTradeExecuted1] = useState(false);
-    const [lastTradeType, setLastTradeType] = useState<string | null>(null);
+
 
     const handleNumDigitsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setNumDigits(value === '' ? '' : Number(value)); // Set to empty string if cleared
     };
 
-    const handleComparisonOperatorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setComparisonOperator(event.target.value);
-    };
-
-    const handleTradeActionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setTradeAction(event.target.value);
-    };
-
     const predictionValue = typeof customPrediction === 'string' ? parseInt(customPrediction) : customPrediction;
     const lastNDigits = digitList.slice(-numDigits);
 
-    const handleNumDigitsChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setNumDigits1(value === '' ? '' : Number(value));
-    };
-
-    const handleComparisonOperatorChange1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setComparisonOperator1(event.target.value);
-    };
-
-    const handleTradeActionChange1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setTradeAction1(event.target.value);
-    };
-
-    const lastNDigits1 = digitList.slice(-Number(numDigits1));
-
-    const shouldTriggerTrade = lastNDigits.every(digit => {
-        switch (comparisonOperator) {
-            case 'less than LDP':
-                return digit < predictionValue;
-            case 'less or equal to LDP':
-                return digit <= predictionValue;
-            case 'greater than LDP':
-                return digit > predictionValue;
-            case 'greater or equal to LDP':
-                return digit >= predictionValue;
-            case 'equal to LDP':
-                return digit === predictionValue;
-            default:
-                return false;
-        }
-    });
-
-    const shouldTriggerTrade1 = useCallback(() => {
-        if (comparisonOperator1 === 'custom') {
-            const allEven = lastNDigits1.every(digit => digit % 2 === 0);
-            const allOdd = lastNDigits1.every(digit => digit % 2 !== 0);
-            if (allEven && lastTradeType !== 'even') {
-                buy_contract('DIGITODD', true);
-                setLastTradeType('even');
-            } else if (allOdd && lastTradeType !== 'odd') {
-                buy_contract('DIGITEVEN', true);
-                setLastTradeType('odd');
-            }
-            return allEven || allOdd;
-        } else {
-            return lastNDigits1.every(digit => {
-                if (comparisonOperator1 === 'even') return digit % 2 === 0;
-                if (comparisonOperator1 === 'odd') return digit % 2 !== 0;
-                return false;
-            });
-        }
-    }, [comparisonOperator1, lastNDigits1, lastTradeType, buy_contract]);
-
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-
-        if (isAutoTrading) {
-            interval = setInterval(() => {
-                if (shouldTriggerTrade && !tradeExecuted) {
-                    buy_contract_differs(tradeAction); // Take the trade if conditions are met
-                    setTradeExecuted(true); // Mark trade as executed
-                } else if (!shouldTriggerTrade) {
-                    setTradeExecuted(false); // Reset trade execution if conditions are not met
-                }
-            }, 1000); // Adjust the interval time as needed
-        }
-
-        return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
-    }, [buy_contract_differs, isAutoTrading, shouldTriggerTrade, tradeAction, tradeExecuted]);
-
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-
-        if (isAutoTrading1) {
-            interval = setInterval(() => {
-                if (shouldTriggerTrade1() && !tradeExecuted1) {
-                    if (comparisonOperator1 !== 'custom') {
-                        buy_contract(tradeAction1, true); // Execute trade
-                    }
-                    setTradeExecuted1(true); // Mark trade as executed
-                } else if (!shouldTriggerTrade1()) {
-                    setTradeExecuted1(false); // Reset trade execution if conditions aren't met
-                    setLastTradeType(null);
-                }
-            }, 1000); // Adjust the interval time as needed
-        }
-
-        return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
-    }, [buy_contract, isAutoTrading1, tradeAction1, tradeExecuted1, shouldTriggerTrade1, comparisonOperator1]);
 
     const {
         evenPercentage,
@@ -221,19 +115,6 @@ const DigitSequenceComponent: React.FC<Props> = ({
                 {item}
             </div>
         ));
-    };
-
-    const handle_buy_contract_differs = (contract_type: string) => {
-        if (!isTradeActive) {
-            setIsTradeActive(true);
-            buy_contract_differs(contract_type);
-        }
-    };
-    const handle_buy_contract = (contract_type: string) => {
-        if (!isTradeActive) {
-            setIsTradeActive(true);
-            buy_contract(contract_type, true);
-        }
     };
 
     return (
