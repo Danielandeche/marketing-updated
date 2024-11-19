@@ -221,20 +221,8 @@ const htmlInjectConfig = () => ({
             },
         },
         ...[
-            { name: 'favicon', rel: 'icon', size: '16' },
             { name: 'favicon', rel: 'icon', size: '32' },
-            { name: 'favicon', rel: 'icon', size: '96' },
-            { name: 'favicon', rel: 'icon', size: '160' },
-            { name: 'favicon', rel: 'icon', size: '192' },
             { name: 'apple-touch-icon', size: '57' },
-            { name: 'apple-touch-icon', size: '60' },
-            { name: 'apple-touch-icon', size: '72' },
-            { name: 'apple-touch-icon', size: '76' },
-            { name: 'apple-touch-icon', size: '114' },
-            { name: 'apple-touch-icon', size: '120' },
-            { name: 'apple-touch-icon', size: '144' },
-            { name: 'apple-touch-icon', size: '152' },
-            { name: 'apple-touch-icon', size: '180' },
         ].map(({ name, rel, size }) => ({
             path: `public/images/favicons/${name}-${size}.png`,
             attributes: {
