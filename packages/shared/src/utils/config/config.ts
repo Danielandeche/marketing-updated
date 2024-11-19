@@ -58,6 +58,8 @@ export const getAppId = () => {
         app_id = platform_app_ids[platform as keyof typeof platform_app_ids];
     } else if (config_app_id) {
         app_id = config_app_id;
+    } else if (/localhost/i.test(window.location.hostname)) {
+        app_id = 36300;
     } else if (user_app_id.length) {
         if (/app\.github\.dev/i.test(window.location.hostname)) {
             app_id = 65483;
@@ -70,8 +72,6 @@ export const getAppId = () => {
     } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = is_bot ? 19112 : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16303; // it's being used in endpoint chrome extension - please do not remove
-    } else if (/localhost/i.test(window.location.hostname)) {
-        app_id = 36300;
     } else {
         window.localStorage.removeItem('config.default_app_id');
         app_id = is_bot ? 19111 : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16929;

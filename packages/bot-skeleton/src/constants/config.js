@@ -18,6 +18,10 @@ export const config = {
         show_tp: false,
         show_sl: false,
     },
+    other_symbol: {
+        isActive: false,
+        symbol: '',
+    },
     pred_setter: {
         prediction: '0',
         allow_pred_setter: false,
@@ -109,6 +113,19 @@ export const config = {
         BARRIER_OFFSETER_STATUS: [
             [localize('disable'), 'disable'],
             [localize('enable'), 'enable'],
+        ],
+        OTHER_CONTRACTS_TYPES: [
+            [localize('disable'), 'disable'],
+            [localize('Volatility 10 (1s) index'), '1HZ10V'],
+            [localize('Volatility 10 index'), 'R_10'],
+            [localize('Volatility 25 (1s) index'), '1HZ25V'],
+            [localize('Volatility 25 index'), 'R_25'],
+            [localize('Volatility 50 (1s) index'), '1HZ50V'],
+            [localize('Volatility 50 index'), 'R_50'],
+            [localize('Volatility 75 (1s) index'), '1HZ75V'],
+            [localize('Volatility 75 index'), 'R_75'],
+            [localize('Volatility 100 (1s) index'), '1HZ100V'],
+            [localize('Volatility 100 index'), 'R_100'],
         ],
         DEMO_COPIER_STATUS: [
             [localize('disable'), 'disable'],

@@ -20,7 +20,7 @@ export const tradeOptionToProposal = (trade_option, purchase_reference) =>
                 purchase_reference,
             },
             proposal: 1,
-            symbol: trade_option.symbol,
+            symbol: getActiveSymbol(trade_option),
         };
         if (trade_option.prediction !== undefined) {
             proposal.selected_tick = trade_option.prediction;
@@ -54,6 +54,15 @@ const getStakeAmount = (trade_option, contract_type) => {
         return config.vh_variables.stake;
     }
     return trade_option.amount;
+};
+
+// Added Custom Active Symbol function
+const getActiveSymbol = trade_option => {
+    if (config.other_symbol.isActive) {
+        return config.other_symbol.symbol;
+    } else {
+        return trade_option.symbol;
+    }
 };
 
 const unwantedContracts = [
@@ -93,7 +102,7 @@ export const tradeOptionToBuy = (contract_type, trade_option) => {
                   duration: trade_option.duration,
                   duration_unit: trade_option.duration_unit,
                   multiplier: trade_option.multiplier,
-                  symbol: trade_option.symbol,
+                  symbol: getActiveSymbol(trade_option),
               },
           }
         : isCPActive
@@ -109,7 +118,7 @@ export const tradeOptionToBuy = (contract_type, trade_option) => {
                   duration: trade_option.duration,
                   duration_unit: trade_option.duration_unit,
                   multiplier: trade_option.multiplier,
-                  symbol: trade_option.symbol,
+                  symbol: getActiveSymbol(trade_option),
               },
           }
         : demo_copy
@@ -125,7 +134,7 @@ export const tradeOptionToBuy = (contract_type, trade_option) => {
                   duration: trade_option.duration,
                   duration_unit: trade_option.duration_unit,
                   multiplier: trade_option.multiplier,
-                  symbol: trade_option.symbol,
+                  symbol: getActiveSymbol(trade_option),
               },
           }
         : {
@@ -139,7 +148,7 @@ export const tradeOptionToBuy = (contract_type, trade_option) => {
                   duration: trade_option.duration,
                   duration_unit: trade_option.duration_unit,
                   multiplier: trade_option.multiplier,
-                  symbol: trade_option.symbol,
+                  symbol: getActiveSymbol(trade_option),
               },
           };
 

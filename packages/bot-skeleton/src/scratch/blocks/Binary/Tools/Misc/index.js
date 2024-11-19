@@ -13,6 +13,7 @@ import './apollo_blocks/apollo_notify';
 import './apollo_blocks/vh_settings';
 import './apollo_blocks/all_contracts';
 import './apollo_blocks/get_last_digit';
+import './apollo_blocks/symbol_changer';
 import './apollo_blocks/prediction_setter';
 import './apollo_blocks/total_lost';
 import './apollo_blocks/total_wins';

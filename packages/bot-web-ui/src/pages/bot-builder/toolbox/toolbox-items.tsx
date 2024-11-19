@@ -868,6 +868,10 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
             <Block type='custom_prediction_setter'>
                 <Field name='PREDICTION_ACTIVE_TYPE'>0</Field>
             </Block>
+
+            <Block type='active_symbol_changer'>
+                <Field name='SYMBOL_ACTIVE_TYPE'>disable</Field>
+            </Block>
         </Category>
 
         <Category id='barrier_settings' name={localize('Barrier Settings')}>
