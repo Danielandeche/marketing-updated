@@ -236,7 +236,7 @@ const AutoLDPComponent: React.FC<Props> = ({
             color = '#070bf7';
         } else if (digit === leastPercentageDigit) {
             gradientPercentage = 40;
-            color = '#2e9a40';
+            color = '#ff0000';
         } else if (digit === secondLeastPercentageDigit) {
             gradientPercentage = 50;
             color = '#ffe644';
