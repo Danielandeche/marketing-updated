@@ -17,7 +17,10 @@ import ap1 from './xml/apollo_bots/Differ {Market Switche} No Martingale.xml';
 import ap2 from './xml/apollo_bots/Differ {Market Switche} Split Martingale.xml';
 import ap3 from './xml/apollo_bots/Over 2 Titanium.xml';
 import ap4 from './xml/apollo_bots/Barriers Accumulator Master.xml';
-import ap5 from './xml/apollo_bots/Virtual Account Switcher.xml';
+import ap5 from './xml/apollo_bots/Rise Fall Auto Direction.xml';
+import ap6 from './xml/apollo_bots/Differ {Market Switche}   with Adjustable Martingale.xml';
+import ap7 from './xml/apollo_bots/Stop After 10 Successful Runs.xml';
+import ap9 from './xml/apollo_bots/Virtual Account Switcher.xml';
 import ap10 from './xml/apollo_bots/MKOREAN SV6 BOT.xml';
 import ap11 from './xml/apollo_bots/MKOREAN SV5 SPEED BOT.xml';
 import ap12 from './xml/apollo_bots/MKOREAN SV4 SPEED BOT.xml';
@@ -38,7 +41,10 @@ export const apollo_bot_list = [
     { id: 1, name: 'Differ {Market Switche} Split Martingale', xml: ap2 },
     { id: 2, name: 'Over 2 Titanium', xml: ap3 },
     { id: 3, name: 'Barriers Accumulator Master', xml: ap4 },
-    { id: 4, name: 'Virtual Account Switcher', xml: ap5 },
+    { id: 4, name: 'Rise Fall Auto Direction', xml: ap5 },
+    { id: 5, name: 'Differ {Market Switche}   with Adjustable Martingale', xml: ap6 },
+    { id: 6, name: 'Stop After 10 Successful Runs', xml: ap7 },
+    { id: 8, name: 'Virtual Account Switcher', xml: ap9 },
     { id: 9, name: 'MKOREAN SV6 BOT', xml: ap10 },
     { id: 10, name: 'MKOREAN SV5 SPEED BOT', xml: ap11 },
     { id: 11, name: 'MKOREAN SV4 SPEED BOT', xml: ap12 },

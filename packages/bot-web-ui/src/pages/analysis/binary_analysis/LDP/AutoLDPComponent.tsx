@@ -242,7 +242,7 @@ const AutoLDPComponent: React.FC<Props> = ({
     const shouldTriggerTrade2 = useCallback(() => {
         if (comparisonOperator2 === 'rf') {
             // Check for alternating rise and fall
-            const allRise = lastNTicks.every((_, index) => tickList[index + 1] > tickList[index]);
+            const allRise = lastNTicks.every((_) => tickList[i] > tickList[i - 1]);
             const allFall = lastNTicks.every((_, index) => tickList[index + 1] < tickList[index]);
 
             if (allRise && lastTradeType2 !== 'rise') {
@@ -256,7 +256,7 @@ const AutoLDPComponent: React.FC<Props> = ({
         } else {
             // Default logic for rise or fall based on selected comparison operator
             return lastNTicks.every((_, index) => {
-                if (comparisonOperator2 === 'rise') return tickList[index + 1] > tickList[index];
+                if (comparisonOperator2 === 'rise') return tickList[i] > tickList[i - 1];
                 if (comparisonOperator2 === 'fall') return tickList[index + 1] < tickList[index];
                 return false;
             });
