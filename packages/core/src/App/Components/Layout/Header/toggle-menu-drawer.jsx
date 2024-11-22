@@ -340,18 +340,27 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 </MobileDrawer.Item>
                                 {HelpCentreRoute()}
                                 {is_logged_in && (
-                                    <MobileDrawer.Item
+                                    
+                                    <><React.Fragment>
+                                        <MobileDrawer.Item>
+                                            <MenuLink
+                                                link_to={routes.reports}
+                                                icon='IcAccountLimits'
+                                                text={localize('Reports')}
+                                                onClickLink={toggleDrawer} />
+                                        </MobileDrawer.Item>
+                                    </React.Fragment><MobileDrawer.Item
                                         onClick={() => {
                                             toggleDrawer();
                                             history.push(routes.index);
                                             logoutClient().then(() => {
                                                 window.location.href = getStaticUrl('/');
                                             });
-                                        }}
+                                        } }
                                         className='dc-mobile-drawer__item'
                                     >
-                                        <MenuLink icon='IcLogout' text={localize('Log out')} />
-                                    </MobileDrawer.Item>
+                                            <MenuLink icon='IcLogout' text={localize('Log out')} />
+                                        </MobileDrawer.Item></>
                                 )}
                             </MobileDrawer.Body>
                             <MobileDrawer.Footer className={is_logged_in ? 'dc-mobile-drawer__footer--servertime' : ''}>

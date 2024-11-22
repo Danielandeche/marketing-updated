@@ -40,6 +40,18 @@ type Props = {
     setTradeExecuted1: React.Dispatch<React.SetStateAction<boolean>>;
     lastTradeType: string | null;
     setLastTradeType: React.Dispatch<React.SetStateAction<string | null>>;
+    numTicks: number | string;
+    setNumTicks: React.Dispatch<React.SetStateAction<number | string>>;
+    comparisonOperator2: string;
+    setComparisonOperator2: React.Dispatch<React.SetStateAction<string>>;
+    tradeAction2: string;
+    setTradeAction2: React.Dispatch<React.SetStateAction<string>>;
+    isAutoTrading2: boolean;
+    setIsAutoTrading2: React.Dispatch<React.SetStateAction<boolean>>;
+    tradeExecuted2: boolean;
+    setTradeExecuted2: React.Dispatch<React.SetStateAction<boolean>>;
+    lastTradeType2: string | null;
+    setLastTradeType2: React.Dispatch<React.SetStateAction<string | null>>;
     presetName: string;
     setPresetName: React.Dispatch<React.SetStateAction<string>>;
     fileInputKey: number;
@@ -87,6 +99,18 @@ const AutoLDPComponent: React.FC<Props> = ({
     setLastTradeType,
     isCustomTradeFormVisible,
     setIsCustomTradeFormVisible,
+    numTicks,
+    setNumTicks,
+    comparisonOperator2,
+    setComparisonOperator2,
+    tradeAction2,
+    setTradeAction2,
+    isAutoTrading2,
+    setIsAutoTrading2,
+    tradeExecuted2,
+    setTradeExecuted2,
+    lastTradeType2,
+    setLastTradeType2,
     isSequencesVisible,
     setIsSequencesVisible,
 }) => {
@@ -121,7 +145,21 @@ const AutoLDPComponent: React.FC<Props> = ({
         setTradeAction1(event.target.value);
     };
 
+    const handleNumTicksChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setNumTicks(value === '' ? '' : Number(value));
+    };
+
+    const handleComparisonOperatorChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setComparisonOperator2(event.target.value);
+    };
+
+    const handleTradeActionChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setTradeAction2(event.target.value);
+    };
+
     const lastNDigits1 = digitList.slice(-Number(numDigits1));
+    const lastNTicks = tickList.slice(-Number(numTicks));
 
     const shouldTriggerTrade = lastNDigits.every(digit => {
         switch (comparisonOperator) {
@@ -200,6 +238,49 @@ const AutoLDPComponent: React.FC<Props> = ({
         return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
     }, [buy_contract, isAutoTrading1, tradeAction1, tradeExecuted1, shouldTriggerTrade1, comparisonOperator1]); 
 
+    // Rise/Fall Auto Trading logic
+    const shouldTriggerTrade2 = useCallback(() => {
+        if (comparisonOperator2 === 'rf') {
+            // Check for alternating rise and fall
+            const allRise = lastNTicks.every((_) => tickList[i] > tickList[i - 1]);
+            const allFall = lastNTicks.every((_, index) => tickList[index + 1] < tickList[index]);
+
+            if (allRise && lastTradeType2 !== 'rise') {
+                buy_contract('PUT', true);
+                setLastTradeType2('rise');
+            } else if (allFall && lastTradeType2 !== 'fall') {
+                buy_contract('CALL', true);
+                setLastTradeType2('fall');
+            }
+            return allRise || allFall;
+        } else {
+            // Default logic for rise or fall based on selected comparison operator
+            return lastNTicks.every((_, index) => {
+                if (comparisonOperator2 === 'rise') return tickList[i] > tickList[i - 1];
+                if (comparisonOperator2 === 'fall') return tickList[index + 1] < tickList[index];
+                return false;
+            });
+        }
+    }, [comparisonOperator2, lastNTicks, tickList, lastTradeType2, buy_contract]);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (isAutoTrading2) {
+            interval = setInterval(() => {
+                if (shouldTriggerTrade2() && !tradeExecuted2) {
+                    if (comparisonOperator2 !== 'rf') {
+                        buy_contract(tradeAction2, true); // Execute trade
+                    }
+                    setTradeExecuted2(true); // Mark trade as executed
+                } else if (!shouldTriggerTrade2()) {
+                    setTradeExecuted2(false); // Reset trade execution if conditions aren't met
+                    setLastTradeType2(null);
+                }
+            }, 1000); // Adjust the interval time as needed
+        }
+        return () => clearInterval(interval); // Cleanup interval on unmount or when auto-trading stops
+    }, [buy_contract, isAutoTrading2, tradeAction2, tradeExecuted2, shouldTriggerTrade2, comparisonOperator2]);
+
     calculatePercentages(digitList, tickList, predictionValue);
 
     digitList = digitList.slice(-10);
@@ -215,6 +296,19 @@ const AutoLDPComponent: React.FC<Props> = ({
         return digitList.map((digit, index) => (
             <div key={index} className={`digit-box ${digit % 2 === 0 ? 'even' : 'odd'}`}>
                 {digit % 2 === 0 ? 'E' : 'O'}
+            </div>
+        ));
+    };
+
+    const getRiseFallSequence = () => {
+        const riseFallSequence: string[] = [];
+        for (let i = 1; i < tickList.length; i++) {
+            riseFallSequence.push(tickList[i] > tickList[i - 1] ? 'R' : 'F');
+        }
+
+        return riseFallSequence.map((item, index) => (
+            <div key={index} className={`digit-box ${item === 'R' ? 'rise-ldp' : 'fall-ldp'}`}>
+                {item}
             </div>
         ));
     };
@@ -236,7 +330,7 @@ const AutoLDPComponent: React.FC<Props> = ({
             color = '#070bf7';
         } else if (digit === leastPercentageDigit) {
             gradientPercentage = 40;
-            color = '#2e9a40';
+            color = '#ff0000';
         } else if (digit === secondLeastPercentageDigit) {
             gradientPercentage = 50;
             color = '#ffe644';
@@ -246,7 +340,7 @@ const AutoLDPComponent: React.FC<Props> = ({
         }
 
         return `#444 linear-gradient(to bottom, transparent ${gradientPercentage}%, ${color} 0)`;
-    }; 
+};
 
     return (
         <div className='ldp_max_container'>
@@ -408,6 +502,54 @@ const AutoLDPComponent: React.FC<Props> = ({
                                             onClick={() => setIsAutoTrading1(prev => !prev)}
                                         >
                                             {isAutoTrading1 ? 'STOP' : 'START'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <div className="card-container">
+                    <div className="card-header">
+                        <h4>Rise Fall Auto bot</h4>
+                        <div className="toggle-icon" onClick={() => setIsSequencesVisible(prev => !prev)}>
+                            {isSequencesVisible ? <FaEyeSlash size={25} /> : <FaEye size={25} />}
+                        </div>
+                    </div>
+
+                    {isSequencesVisible && (
+                        <div className="card-body">
+                            <div className="sequence">
+                                <div className="sequence-container">{getRiseFallSequence()}</div>
+                                <div className="custom-trade-form">
+                                    <label>
+                                        If the last
+                                        <input type="number" value={numTicks} onChange={handleNumTicksChange} />
+                                        digits are
+                                    </label>
+                                    <select value={comparisonOperator2} onChange={handleComparisonOperatorChange2}>
+                                        <option value="fall">Fall</option>
+                                        <option value="rise">Rise</option>
+                                        <option value="rf">If Rise → Fall, Fall → Rise</option>
+                                    </select>
+
+                                    {comparisonOperator2 !== 'rf' && (
+                                        <>
+                                            <label>it trades</label>
+                                            <select value={tradeAction2} onChange={handleTradeActionChange2}>
+                                                <option value="CALL">Rise</option>
+                                                <option value="PUT">Fall</option>
+                                            </select>
+                                        </>
+                                    )}
+
+                                    <div className="auto-trade-controls">
+                                        <button
+                                            style={{ backgroundColor: isAutoTrading2 ? 'red' : 'green', color: '#fff' }}
+                                            onClick={() => setIsAutoTrading2(prev => !prev)}
+                                        >
+                                            {isAutoTrading2 ? 'STOP' : 'START'}
                                         </button>
                                     </div>
                                 </div>
