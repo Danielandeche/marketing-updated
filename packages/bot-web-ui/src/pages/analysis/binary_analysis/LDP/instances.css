@@ -1,0 +1,463 @@
+/* Container styles */
+.ldp-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.ldp-main {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ldp-digits, .ldp-sequences {
+    margin-bottom: 20px;
+}
+
+.ldp-sequence-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.ldp-digit-box {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: bold;
+    background-color: #ddd;
+}
+
+.ldp-digit-box.even {
+    background-color: #4caf50;
+    color: white;
+}
+
+.ldp-digit-box.odd {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Input and label styles */
+.ldp-input-group label {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.ldp-input-group input {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.ldp-input-group select {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.ldp-sequences .ldp-metrics {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.ldp-metric {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.ldp-metric.even {
+    background-color: #4caf50;
+    color: white;
+}
+
+.ldp-metric.odd {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Instances styles */
+.ldp-auto-trading-instance {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Wrapper for each instance */
+.instance-wrapper {
+    margin-bottom: 20px; /* Space between instances */
+}
+
+/* Styling for the instance header */
+.instance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 10px; /* Space between header and table */
+}
+
+/* Close button style */
+.remove-instance-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.remove-instance-btn:hover {
+    background-color: #e53935;
+}
+
+/* Button styling */
+button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: none;
+}
+
+button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.add-instance-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.add-instance-btn {
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-instance-btn:hover {
+    background-color: #45a049;
+}
+
+/* Conditional styles based on dark mode */
+.ldp-main {
+    transition: background-color 0.3s;
+}
+
+body.dark-mode .ldp-main {
+    background-color: #333;
+    color: white;
+}
+
+body.dark-mode .ldp-container {
+    background-color: #444;
+}
+
+body.dark-mode .ldp-input-group input,
+body.dark-mode .ldp-input-group select {
+    background-color: #555;
+    color: white;
+    border-color: #666;
+}
+
+body.dark-mode .ldp-metric.even {
+    background-color: #388e3c;
+}
+
+body.dark-mode .ldp-metric.odd {
+    background-color: #d32f2f;
+}
+
+body.dark-mode .ldp-auto-trading-instance {
+    background-color: #424242;
+    color: white;
+}
+
+body.dark-mode .remove-instance-btn {
+    background-color: #d32f2f;
+}
+
+body.dark-mode button {
+    background-color: #007bff;
+    color: white;
+}
+
+body.dark-mode button:hover {
+    background-color: #005bb5;
+}
+
+/* General table styling */
+.ldp-instance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.ldp-instance-table th, .ldp-instance-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.ldp-instance-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.ldp-instance-table td {
+    background-color: #fff;
+}
+
+.ldp-auto-trading-instance button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    font-size: 14px;
+    border: none;
+}
+
+.ldp-auto-trading-instance button:hover {
+    background-color: #45a049;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    /* General Table Styles */
+    .ldp-instance-table {
+        font-size: 12px;
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .ldp-instance-table th, .ldp-instance-table td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .ldp-instance-table th {
+        display: table-cell; /* Ensure headers are displayed */
+        font-weight: bold;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Instance Table Styling */
+    .ldp-instance-table td {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding-left: 10px;
+        padding-right: 10px;
+        position: relative;
+        border: none;
+    }
+
+    .ldp-instance-table td select, .ldp-instance-table td input {
+        width: 100%;
+    }
+
+    .ldp-instance-table td button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Instance Action Button and "X" Remove Button Styles */
+    .remove-instance-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #ff0000; /* Red color for the X */
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    /* Adjust remove button styling for smaller screens */
+    .remove-instance-btn:hover {
+        background-color: #e53935;
+        color: white;
+    }
+
+    /* Ensure table cells are shown properly */
+    .ldp-instance-table td span,
+    .ldp-instance-table td button {
+        display: block;
+        margin-top: 10px;
+    }
+
+    /* Instance container and header on mobile */
+    .ldp-auto-trading-instance {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    /* Instance Header */
+    .instance-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .instance-title {
+        font-weight: bold;
+        font-size: 16px;
+        color: #000;
+    }
+
+    /* Input and Select Fields */
+    .ldp-input-group input, .ldp-input-group select {
+        padding: 8px;
+        font-size: 14px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+
+    /* Button styles */
+    button {
+        padding: 10px 15px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border: none;
+    }
+
+    button:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    /* Styling for Add Instance Button */
+    .add-instance-btn-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .add-instance-btn {
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .add-instance-btn:hover {
+        background-color: #45a049;
+    }
+
+    /* Adjustments for instance wrapper on mobile */
+    .instance-wrapper {
+        margin-bottom: 20px; /* Space between instances */
+    }
+
+    /* Instance header spacing */
+    .instance-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px; /* Space between "X" button and instance title */
+        margin-bottom: 10px; /* Space between header and table */
+    }
+
+    /* Instance remove button on mobile */
+    .remove-instance-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #ff0000; /* Red color for the X */
+        font-size: 18px;
+        cursor: pointer;
+    }
+    
+    /* Adjust background color for instance header */
+    .ldp-instance-table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+
+    /* Styling for instance columns on mobile */
+    .ldp-auto-trading-instance button {
+        width: auto;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        font-size: 14px;
+        border: none;
+    }
+
+    /* Ensure buttons are correctly displayed */
+    .ldp-auto-trading-instance button:hover {
+        background-color: #45a049;
+    }
+}
+
+/* For tablet and larger screens (above 768px) */
+@media (min-width: 769px) {
+    .ldp-instance-table th, .ldp-instance-table td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .ldp-instance-table td {
+        display: table-cell;
+    }
+
+    .ldp-instance-table td select, .ldp-instance-table td input {
+        width: 80%;
+    }
+
+    .ldp-auto-trading-instance button {
+        width: auto;
+    }
+
+    .remove-instance-btn {
+        position: initial;
+    }
+}
