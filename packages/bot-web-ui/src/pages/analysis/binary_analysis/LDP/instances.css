@@ -1,6 +1,7 @@
 /* Container styles */
 .ldp-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     padding: 20px;
     background-color: #f4f4f4;
@@ -9,9 +10,9 @@
 .ldp-main {
     background-color: #fff;
     border-radius: 10px;
-    padding: 20px;
-    width: 90%;
-    max-width: 1200px;
+    width: fit-content;
+    max-width: 500px;
+    margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -168,9 +169,6 @@ button:hover {
 }
 
 /* Conditional styles based on dark mode */
-.ldp-main {
-    transition: background-color 0.3s;
-}
 
 body.dark-mode .ldp-main {
     background-color: #333;
@@ -249,3 +247,32 @@ body.dark-mode button:hover {
 .ldp-auto-trading-instance button:hover {
     background-color: #45a049;
 }
+
+/* Responsive styles for splitting table into two columns on mobile */
+@media (max-width: 768px) {
+    .ldp-instance-table {
+        width: 100%;
+        border-collapse: collapse; /* Ensures borders stay consistent */
+    }
+
+    .ldp-instance-table th,
+    .ldp-instance-table td {
+        display: inline-block;
+        width: 48%; /* Each cell takes up 48% of the row */
+        box-sizing: border-box;
+        text-align: left;
+        margin-bottom: 10px; /* Adds space between cells */
+    }
+
+    .ldp-instance-table th {
+        font-weight: bold;
+    }
+
+    /* Ensuring proper alignment of table rows on mobile */
+    .ldp-instance-table tr {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+}
+

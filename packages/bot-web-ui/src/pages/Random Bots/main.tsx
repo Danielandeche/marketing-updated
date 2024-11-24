@@ -33,20 +33,20 @@ const BotCardProps = {
 };
 
 const BotCardProps2 = {
-    botName: 'Under 9 Random ',
-    botDescription: 'This Bot takes Under 9 trades randomly with no special analysis. Very Demure.',
-    recommended: false,
+    botName: 'Auto Even Odd {4} ',
+    botDescription: 'This Bot takes Even trade if last 4 Digits are Odd. And Vice Versa',
+    recommended: true,
 };
 
 const BotCardProps3 = {
-    botName: 'Under 8 ',
-    botDescription: 'A powerful bot that analyzes market trends and makes trades accordingly.',
-    recommended: FaLinesLeaning,
+    botName: 'Auto Even Odd {5} ',
+    botDescription: 'This Bot takes Even trade if last 5 Digits are Odd. And Vice Versa',
+    recommended: true,
 };
 
 const BotCardProps4 = {
-    botName: 'Under 8 Pro',
-    botDescription: 'A high-frequency trading bot that specializes in quick, small profit trades.',
+    botName: 'Auto Even Odd {6} ',
+    botDescription: 'This Bot takes Even trade if last 6 Digits are Odd. And Vice Versa',
     recommended: true,
 };
 
@@ -74,7 +74,7 @@ const RandomBots = () => {
     const [takeProfit, setTakeProfit] = useState<string | number>(5);
     const [stopLoss, setStopLoss] = useState<string | number>(10);
     const [pnl, setPNL] = useState(0);
-    const [stake, setStake] = useState<string | number>(2);
+    const [stake, setStake] = useState<string | number>(0.5);
     const [defaultStake, setDefaultStake] = useState<string | number>(stake);
     const [martingale, setMartingale] = useState<string | number>(1.2);
     const [isSubscribed, setIsSubscribed] = useState(false);
@@ -180,24 +180,32 @@ const RandomBots = () => {
         total_profit.current = 0;
     };
 
-    const buy_contract = (contract_type: string, barrier: number) => {
+    const buy_contract = (contract_type: string, barrier?: number) => {
         isTradeActiveRef.current = false;
+    
+        const parameters: any = {
+            amount: stakeRef.current,
+            basis: 'stake',
+            contract_type,
+            currency: 'USD',
+            duration: 1,
+            duration_unit: 't',
+            symbol: activeSymbolRef.current,
+        };
+    
+        // Include the barrier only if it's provided (e.g., for DIGITOVER/DIGITUNDER)
+        if (barrier !== undefined) {
+            parameters.barrier = barrier.toString();
+        }
+    
         api_base.api.send({
             buy: '1',
             price: stakeRef.current,
             subscribe: 1,
-            parameters: {
-                amount: stakeRef.current,
-                basis: 'stake',
-                contract_type,
-                currency: 'USD',
-                duration: 1,
-                duration_unit: 't',
-                symbol: activeSymbolRef.current,
-                barrier: barrier.toString(),
-            },
+            parameters,
         });
     };
+    
 
     const checkLastDigitsStats = (myList: number[], numDigits: number, threshold: number) => {
         if (myList.length >= numDigits) {
@@ -224,43 +232,80 @@ const RandomBots = () => {
     }
 
     const strategyPanel = (lastDigitList: number[]) => {
-        if (isTradeActiveRef.current && isTradeActiveRef_v2.current) {
-            if (activeStrategyRef.current === 1) {
-                if (checkLastDigitsStats(lastDigitList, 1, 8)) {
-                    buy_contract('DIGITUNDER', 8);
-                } else if (checkLastDigitsStats(lastDigitList, 2, 7)) {
-                    buy_contract('DIGITUNDER', 8);
-                } else if (checkLastDigitsStats(lastDigitList, 3, 7)) {
-                    buy_contract('DIGITUNDER', 8);
-                } else if (checkLastDigitsStats(lastDigitList, 4, 7)) {
-                    buy_contract('DIGITUNDER', 8);
-                } else if (checkLastDigitsStats(lastDigitList, 5, 6)) {
-                    buy_contract('DIGITUNDER', 8);
-                }
-            } else if (activeStrategyRef.current === 2) {
-                buy_contract('DIGITUNDER', 9);
-            } else if (activeStrategyRef.current === 3) {
-                if (checkLastDigitsStats(lastDigitList, 1, 8)) {
-                    buy_contract('DIGITUNDER', 8);
-                }
-            } else if (activeStrategyRef.current === 4) {
-                if (checkLastDigitsStats(lastDigitList, 2, 7)) {
-                    buy_contract('DIGITUNDER', 8);
-                }
-            } else if (activeStrategyRef.current === 5) {
-                if (checkLastDigitsStats(lastDigitList, 3, 7)) {
-                    buy_contract('DIGITUNDER', 7);
-                }
-            } else if (activeStrategyRef.current === 6) {
-                if (checkLastDigitsStats(lastDigitList, 4, 6)) {
-                    buy_contract('DIGITUNDER', 7);
+        if (!isTradeActiveRef.current || !isTradeActiveRef_v2.current) {
+            isTradeActiveRef.current = false;
+            return;
+        }
+    
+        // Helper function to check if the last digits meet a condition
+        const checkDigitsCondition = (list: number[], count: number, threshold: number, comparison: 'greater' | 'less') => {
+            const lastDigits = list.slice(-count);
+            if (comparison === 'greater') {
+                return lastDigits.every(digit => digit >= threshold);
+            } else if (comparison === 'less') {
+                return lastDigits.every(digit => digit <= threshold);
+            }
+            return false;
+        };
+    
+        // Helper function to check if the last N digits are even or odd
+        const checkLastNDigitsEvenOrOdd = (list: number[], count: number, type: 'even' | 'odd') => {
+            const lastNDigits = list.slice(-count);
+            if (type === 'even') {
+                return lastNDigits.every(digit => digit % 2 === 0); // All digits must be even
+            } else if (type === 'odd') {
+                return lastNDigits.every(digit => digit % 2 !== 0); // All digits must be odd
+            }
+            return false;
+        };
+    
+        // Helper function to execute trades based on conditions
+        const executeTrade = (condition: boolean, type: string, target?: number) => {
+            if (condition) {
+                if (target !== undefined) {
+                    buy_contract(type, target); // Trade with a target barrier for DIGITOVER/DIGITUNDER
+                } else {
+                    buy_contract(type); // Trade without a target barrier for DIGITEVEN/DIGITODD
                 }
             }
-        } else {
-            isTradeActiveRef.current = false;
+        };
+    
+        const activeStrategy = activeStrategyRef.current;
+    
+        if (activeStrategy === 1) {
+            // Strategy 1: Combined conditions
+            executeTrade(checkDigitsCondition(lastDigitList, 2, 8, 'greater'), 'DIGITUNDER', 7);
+            executeTrade(checkDigitsCondition(lastDigitList, 2, 2, 'less'), 'DIGITOVER', 2);
+            executeTrade(checkDigitsCondition(lastDigitList, 3, 8, 'greater'), 'DIGITUNDER', 8);
+            executeTrade(checkDigitsCondition(lastDigitList, 3, 2, 'less'), 'DIGITOVER', 1);
+        } else if (activeStrategy === 2) {
+            // Strategy 2: If last 4 digits are Even trade Odd and Vice Versa
+            const last3DigitsAreEven = checkLastNDigitsEvenOrOdd(lastDigitList, 4, 'odd');
+            executeTrade(last3DigitsAreEven, 'DIGITEVEN');
+            const last3DigitsAreOdd = checkLastNDigitsEvenOrOdd(lastDigitList, 4, 'even');
+            executeTrade(last3DigitsAreOdd, 'DIGITODD');
+        } else if (activeStrategy === 3) {
+            // Strategy 3: If last 5 digits are Even trade Odd and Vice Versa
+            const last3DigitsAreEven = checkLastNDigitsEvenOrOdd(lastDigitList, 5, 'odd');
+            executeTrade(last3DigitsAreEven, 'DIGITEVEN');
+            const last3DigitsAreOdd = checkLastNDigitsEvenOrOdd(lastDigitList, 5, 'even');
+            executeTrade(last3DigitsAreOdd, 'DIGITODD');
+        } else if (activeStrategy === 4) {
+            // Strategy 4: If last 6 digits are Even trade Odd and Vice Versa
+            const last3DigitsAreEven = checkLastNDigitsEvenOrOdd(lastDigitList, 6, 'odd');
+            executeTrade(last3DigitsAreEven, 'DIGITEVEN');
+            const last3DigitsAreOdd = checkLastNDigitsEvenOrOdd(lastDigitList, 6, 'even');
+            executeTrade(last3DigitsAreOdd, 'DIGITODD');
+        } else if (activeStrategy === 4) {
+        } else if (activeStrategy === 5) {
+            // Strategy 5
+            executeTrade(checkDigitsCondition(lastDigitList, 3, 7, 'less'), 'DIGITUNDER', 7);
+        } else if (activeStrategy === 6) {
+            // Strategy 6
+            executeTrade(checkDigitsCondition(lastDigitList, 4, 6, 'less'), 'DIGITUNDER', 7);
         }
-    };
-
+    };    
+  
     const TPSLStatus = () => {
         if (total_profit.current >= take_profit.current) {
             stopAnalysisBot();
@@ -334,9 +379,12 @@ const RandomBots = () => {
             const subscription = api_base.api.onMessage().subscribe(({ data }: { data: any }) => {
                 if (data.msg_type === 'buy') {
                     const { buy } = data;
-                    appendToConsole(buy.longcode, 'green');
+                    const time = new Date().toLocaleTimeString();
+                    appendToConsole(`[${time}]`, 'gray');
+                    appendToConsole(buy.longcode, 'white');
+                
                     isTradeActiveRef.current = false;
-                }
+                }                              
 
                 if (data.msg_type === 'proposal_open_contract') {
                     const { proposal_open_contract } = data;
