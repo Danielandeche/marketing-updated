@@ -65,7 +65,7 @@ const AppWrapper = observer(() => {
     const init_render = React.useRef(true);
     const { ui } = useStore();
     const { url_hashed_values, is_mobile } = ui;
-    const hash = ['dashboard', 'bot_builder', 'ldptool', 'manual', 'freebot', 'AIbots'];
+    const hash = ['dashboard', 'bot_builder', 'ldptool', 'AIbots', 'manual', 'freebot'];
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
@@ -203,8 +203,10 @@ const AppWrapper = observer(() => {
                         <div icon='IcDbotViewDetail' label={<Localize i18n_default_text='LDP' />} id={'id-3'}>
                             <AnalysisPage />
                         </div>
-
-                        <div icon='IcChartsTabDbot' label={<Localize i18n_default_text='D-Trader' />} id={'id-4'}>
+                        <div icon='IcDbotViewDetail' label={<Localize i18n_default_text='AI Bots' />} id='id-4'>
+                            <RandomBots />
+                        </div>
+                        <div icon='IcChartsTabDbot' label={<Localize i18n_default_text='D-Trader' />} id={'id-5'}>
                             <Router>
                                 <Trader {...passthrough} />
                             </Router>
@@ -214,20 +216,17 @@ const AppWrapper = observer(() => {
                         <div
                             icon='IcTradingViewChart'
                             label={<Localize i18n_default_text='Chart/Analysis' />}
-                            id='id-5'
+                            id='id-6'
                         >
                             <Chart />
                         </div>
 
-                        <div icon='IcGear' label={<Localize i18n_default_text='Free Bots' />} id='id-6'>
+                        <div icon='IcGear' label={<Localize i18n_default_text='Free Bots' />} id='id-7'>
                             <ApolloBots handleTabChange={handleTabChange} />
                         </div>
 
-                        <div icon='IcClient' label={<Localize i18n_default_text='Replicator' />} id={'id-7'}>
+                        <div icon='IcClient' label={<Localize i18n_default_text='Replicator' />} id={'id-8'}>
                             <CopyTrader />
-                        </div>
-                        <div icon='IcDbotViewDetail' label={<Localize i18n_default_text='AI Bots' />} id='id-8'>
-                            <RandomBots />
                         </div>
                     </Tabs>
                 </div>

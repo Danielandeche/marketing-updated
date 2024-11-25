@@ -12,6 +12,7 @@ import RiseFallBarChart from './components/rf_bar_chart';
 import './analysis.css';
 import DigitSequenceComponent from './LDP/DigitSequenceComponent';
 import AutoLDPComponent from './LDP/AutoLDPComponent';
+import LDPInstanceComponent from './LDP/ldpinstances';
 import { ImFolderUpload, ImFolderDownload } from "react-icons/im";
 import { PiListFill } from "react-icons/pi";
 
@@ -1221,13 +1222,19 @@ const BinaryAnalysisPage = observer(() => {
                         className={`button ${activeCard === 'AUTOLDP' ? 'active' : ''}`}
                         onClick={() => handleSetActiveCard('AUTOLDP')}
                     >
-                        Auto LDP
+                    Auto LDP
+                    </button>
+                    <button
+                        className={`button ${activeCard === 'Instances' ? 'active' : ''}`}
+                        onClick={() => handleSetActiveCard('Instances')}
+                    >
+                    Auto %
                     </button>
                     <button
                         className={`button ${activeCard === 'LDP' ? 'active' : ''}`}
                         onClick={() => handleSetActiveCard('LDP')}
                     >
-                        Manual LDP
+                    Manual LDP
                     </button>
                     
                     {/* Dropdown for Pro Tool with active check */}
@@ -1305,6 +1312,23 @@ const BinaryAnalysisPage = observer(() => {
                 setIsSequencesVisible={setIsSequencesVisible}
             />
             
+            )}
+            {activeCard === 'Instances' && (
+                <LDPInstanceComponent
+                    digitList={getLastDigitList()}
+                    tickList={getTickList()}
+                    CirclesDigitList={getLast1000DigitList()}
+                    customPrediction={customPrediction}
+                    handleCustomPredictionInputChange={handleCustomPredictionInputChange}
+                    is_dark_mode_on={is_dark_mode_on}
+                    buy_contract={buy_contract}
+                    buy_contract_differs={buy_contract_differs}
+                    selectTickList={selectTickList}
+                    handleMartingaleInputChange={handleMartingaleInputChange}
+                    martingaleValueRef={martingaleValueRef}
+                    isTradeActive={isTradeActive}
+                    setIsTradeActive={setIsTradeActive}
+                    guideElement={guideElement} />
             )}
             {activeCard === 'LDP' && (
                 <DigitSequenceComponent

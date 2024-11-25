@@ -93,21 +93,21 @@ export const updateWorkspaceName = active_tab => {
     if (active_tab == 2) {
         document.title += ` - LDP Tool`;
         return;
-    }
+    }   
     if (active_tab == 3) {
-        document.title += ` - D-Trader`;
+        document.title += ` - AI Bot`;
         return;
     }
     if (active_tab == 4) {
-        document.title += ` - Free Bot`;
+        document.title += ` - D-Trader`;
         return;
     }
     if (active_tab == 5) {
-        document.title += ` - Copy Trading`;
+        document.title += ` - Free Bot`;
         return;
     }
     if (active_tab == 6) {
-        document.title += ` - AI Bot`;
+        document.title += ` - Copy Trading`;
         return;
     }
 

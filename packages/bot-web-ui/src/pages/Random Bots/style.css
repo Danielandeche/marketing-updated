@@ -147,7 +147,7 @@
 
 .rd-trade-page-console {
     background-color: #000;
-    color: #038003;
+    color: #777;
     padding: 15px;
     border-radius: 5px;
     text-align: left;
@@ -244,6 +244,16 @@
     font-size: 24px;
     font-weight: bold;
     color: #fff;
+}
+
+.white {
+    color: #777;
+}
+
+.gray {
+    color: #666;
+    font-size: smaller;
+    font-style: italic;
 }
 
 .green {
