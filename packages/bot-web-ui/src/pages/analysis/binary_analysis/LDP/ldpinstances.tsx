@@ -136,28 +136,28 @@ const LDPInstanceComponent: React.FC<Props> = ({
     };
 
     return (
-        <div className="ldp-container">
+        <div className="instance-container">
             {instances.map((instance, index) => (
-                <div className="ldp-main" style={{ color: is_dark_mode_on ? '#fff' : '#000' }}>
+                <div className="instance-card" style={{ color: is_dark_mode_on ? '#fff' : '#000' }}>
                     <div className="instance-header">
-                        <span className="instance-title">Instance {index + 1}</span>
-                        <button className="remove-instance-btn" onClick={() => removeInstance(index)}>
+                        <span className="header-title">Instance {index + 1}</span>
+                        <button className="btn-remove-instance" onClick={() => removeInstance(index)}>
                             <span>X</span>
                         </button>
                     </div>
-                    <div className="digit-container-ldp">
-                        <div className="last_p">
-                            <div className="martingale_ldp">
+                    <div className="digit-container">
+                        <div className="inputs-group">
+                            <div className="input-block">
                                 <label>LDP:</label>
                                 <input
-                                    className="custom_prediction"
+                                    className="input-custom-prediction"
                                     type="number"
                                     value={customPrediction}
                                     onChange={handleCustomPredictionInputChange}
                                 />
                             </div>
                             {selectTickList()}
-                            <div className="martingale_ldp">
+                            <div className="input-block">
                                 <small>Martingale</small>
                                 <input
                                     type="number"
@@ -169,10 +169,10 @@ const LDPInstanceComponent: React.FC<Props> = ({
                         </div>
                     </div>
 
-                    <div className="sequence">
+                    <div className="sequence-section">
                         <h4>Even Odd</h4>
-                        <div className="sequence-container">{getEvenOddSequence()}</div>
-                        <div className="metrics">
+                        <div className="sequence-wrapper">{getEvenOddSequence()}</div>
+                        <div className="metrics-container">
                             <button className="metric even">
                                 Even {evenPercentage.toFixed(2)}%
                             </button>
@@ -183,102 +183,95 @@ const LDPInstanceComponent: React.FC<Props> = ({
                     </div>
 
                     {/* Instances List - Table Format */}
-                    <table className="ldp-instance-table">
+                    <table className="instance-table">
+                        <thead>
+                            <tr>
+                                <th>If</th>
+                                <th>Condition</th>
+                                <th>Percentage %</th>
+                                <th>Trade Selection</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <div className="instance-wrapper" key={index}>
-                                {/* Table Row (with data) */}
-                                <table className="ldp-instance-table">
-                                <thead>
-                                    <tr>
-                                        <th>If</th>
-                                        <th>Condition</th>
-                                        <th>Percentage %</th>
-                                        <th>Trade Selection</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr className="ldp-auto-trading-instance">
-                                    <td>
-                                        <select
+                            <tr className="auto-trading-row">
+                                <td data-label="If">
+                                    <select
                                         value={instance.evenOddSelection}
                                         onChange={(e) =>
                                             setInstances((prev) =>
-                                            prev.map((inst, i) =>
-                                                i === index
-                                                ? { ...inst, evenOddSelection: e.target.value as 'Even' | 'Odd' }
-                                                : inst
-                                            )
+                                                prev.map((inst, i) =>
+                                                    i === index
+                                                        ? { ...inst, evenOddSelection: e.target.value as 'Even' | 'Odd' }
+                                                        : inst
+                                                )
                                             )
                                         }
-                                        >
+                                    >
                                         <option value="Even">Even %</option>
                                         <option value="Odd">Odd %</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select
+                                    </select>
+                                </td>
+                                <td data-label="Condition">
+                                    <select
                                         value={instance.operator}
                                         onChange={(e) =>
                                             setInstances((prev) =>
-                                            prev.map((inst, i) =>
-                                                i === index
-                                                ? { ...inst, operator: e.target.value as 'Greater than' | 'Less than' | 'Equal' }
-                                                : inst
-                                            )
+                                                prev.map((inst, i) =>
+                                                    i === index
+                                                        ? { ...inst, operator: e.target.value as 'Greater than' | 'Less than' | 'Equal' }
+                                                        : inst
+                                                )
                                             )
                                         }
-                                        >
+                                    >
                                         <option value="Greater than">Greater than</option>
                                         <option value="Less than">Less than</option>
                                         <option value="Equal">Equal</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input
+                                    </select>
+                                </td>
+                                <td data-label="Percentage %">
+                                    <input
                                         type="number"
                                         value={instance.threshold}
                                         onChange={(e) =>
                                             setInstances((prev) =>
-                                            prev.map((inst, i) =>
-                                                i === index ? { ...inst, threshold: parseInt(e.target.value) } : inst
-                                            )
+                                                prev.map((inst, i) =>
+                                                    i === index ? { ...inst, threshold: parseInt(e.target.value) } : inst
+                                                )
                                             )
                                         }
-                                        />
-                                    </td>
-                                    <td>
-                                        <select
+                                    />
+                                </td>
+                                <td data-label="Trade Selection">
+                                    <select
                                         value={instance.tradeSelection}
                                         onChange={(e) =>
                                             setInstances((prev) =>
-                                            prev.map((inst, i) =>
-                                                i === index
-                                                ? { ...inst, tradeSelection: e.target.value as 'Even' | 'Odd' }
-                                                : inst
-                                            )
+                                                prev.map((inst, i) =>
+                                                    i === index
+                                                        ? { ...inst, tradeSelection: e.target.value as 'Even' | 'Odd' }
+                                                        : inst
+                                                )
                                             )
                                         }
-                                        >
+                                    >
                                         <option value="Even">Even Trade</option>
                                         <option value="Odd">Odd Trade</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <button onClick={() => handleStartStop(index)}>
+                                    </select>
+                                </td>
+                                <td data-label="Action">
+                                    <button onClick={() => handleStartStop(index)}>
                                         {instance.isTrading ? 'Stop' : 'Start'}
-                                        </button>
-                                    </td>
-                                    </tr>
-                                </tbody>
-                                </table>
-                            </div>
+                                    </button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>       
             ))}
             
-            <button className="add-instance-btn" onClick={addInstance}>
+            <button className="btn-add-instance" onClick={addInstance}>
                 Add Instance
             </button>
         </div>

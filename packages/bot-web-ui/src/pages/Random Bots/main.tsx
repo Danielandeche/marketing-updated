@@ -27,14 +27,14 @@ type ActiveSymbolTypes = {
 };
 
 const BotCardProps = {
-    botName: 'All-In-One ',
-    botDescription: 'This is a all in one bot trading both Under 7 and Under 8 after a certain alogarith is met.',
-    recommended: true,
+    botName: 'Over-Under 5 Same time',
+    botDescription: 'This Bot trades Over 5 and Under 5 at same time. Randomly',
+    recommended: false,
 };
 
 const BotCardProps2 = {
-    botName: 'Auto Even Odd {4} ',
-    botDescription: 'This Bot takes Even trade if last 4 Digits are Odd. And Vice Versa',
+    botName: 'Over-Under 5 PRO Same time',
+    botDescription: 'This Bot trades Over 5 and Under 5 at same time. If the last digit is 5',
     recommended: true,
 };
 
@@ -76,7 +76,7 @@ const RandomBots = () => {
     const [pnl, setPNL] = useState(0);
     const [stake, setStake] = useState<string | number>(0.5);
     const [defaultStake, setDefaultStake] = useState<string | number>(stake);
-    const [martingale, setMartingale] = useState<string | number>(1.2);
+    const [martingale, setMartingale] = useState<string | number>(1);
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [lastDigit, setLastDigit] = useState(0);
     const [currentTick, setCurrentTick] = useState<number | string>('Updating...');
@@ -238,15 +238,22 @@ const RandomBots = () => {
         }
     
         // Helper function to check if the last digits meet a condition
-        const checkDigitsCondition = (list: number[], count: number, threshold: number, comparison: 'greater' | 'less') => {
+        const checkDigitsCondition = (
+            list: number[],
+            count: number,
+            threshold: number,
+            comparison: 'greater' | 'less' | 'equal'
+        ) => {
             const lastDigits = list.slice(-count);
             if (comparison === 'greater') {
                 return lastDigits.every(digit => digit >= threshold);
             } else if (comparison === 'less') {
                 return lastDigits.every(digit => digit <= threshold);
+            } else if (comparison === 'equal') {
+                return lastDigits.every(digit => digit === threshold);
             }
             return false;
-        };
+        };        
     
         // Helper function to check if the last N digits are even or odd
         const checkLastNDigitsEvenOrOdd = (list: number[], count: number, type: 'even' | 'odd') => {
@@ -273,17 +280,11 @@ const RandomBots = () => {
         const activeStrategy = activeStrategyRef.current;
     
         if (activeStrategy === 1) {
-            // Strategy 1: Combined conditions
-            executeTrade(checkDigitsCondition(lastDigitList, 2, 8, 'greater'), 'DIGITUNDER', 7);
-            executeTrade(checkDigitsCondition(lastDigitList, 2, 2, 'less'), 'DIGITOVER', 2);
-            executeTrade(checkDigitsCondition(lastDigitList, 3, 8, 'greater'), 'DIGITUNDER', 8);
-            executeTrade(checkDigitsCondition(lastDigitList, 3, 2, 'less'), 'DIGITOVER', 1);
+            buy_contract('DIGITUNDER', 5);
+            buy_contract('DIGITOVER', 5);
         } else if (activeStrategy === 2) {
-            // Strategy 2: If last 4 digits are Even trade Odd and Vice Versa
-            const last3DigitsAreEven = checkLastNDigitsEvenOrOdd(lastDigitList, 4, 'odd');
-            executeTrade(last3DigitsAreEven, 'DIGITEVEN');
-            const last3DigitsAreOdd = checkLastNDigitsEvenOrOdd(lastDigitList, 4, 'even');
-            executeTrade(last3DigitsAreOdd, 'DIGITODD');
+            executeTrade(checkDigitsCondition(lastDigitList, 1, 5, 'equal'), 'DIGITUNDER', 5);
+            executeTrade(checkDigitsCondition(lastDigitList, 1, 5, 'equal'), 'DIGITOVER', 5);
         } else if (activeStrategy === 3) {
             // Strategy 3: If last 5 digits are Even trade Odd and Vice Versa
             const last3DigitsAreEven = checkLastNDigitsEvenOrOdd(lastDigitList, 5, 'odd');
@@ -291,17 +292,18 @@ const RandomBots = () => {
             const last3DigitsAreOdd = checkLastNDigitsEvenOrOdd(lastDigitList, 5, 'even');
             executeTrade(last3DigitsAreOdd, 'DIGITODD');
         } else if (activeStrategy === 4) {
-            // Strategy 4: If last 6 digits are Even trade Odd and Vice Versa
             const last3DigitsAreEven = checkLastNDigitsEvenOrOdd(lastDigitList, 6, 'odd');
             executeTrade(last3DigitsAreEven, 'DIGITEVEN');
             const last3DigitsAreOdd = checkLastNDigitsEvenOrOdd(lastDigitList, 6, 'even');
             executeTrade(last3DigitsAreOdd, 'DIGITODD');
         } else if (activeStrategy === 4) {
+            executeTrade(checkDigitsCondition(lastDigitList, 2, 8, 'greater'), 'DIGITUNDER', 7);
+            executeTrade(checkDigitsCondition(lastDigitList, 2, 2, 'less'), 'DIGITOVER', 2);
+            executeTrade(checkDigitsCondition(lastDigitList, 3, 8, 'greater'), 'DIGITUNDER', 8);
+            executeTrade(checkDigitsCondition(lastDigitList, 3, 2, 'less'), 'DIGITOVER', 1);
         } else if (activeStrategy === 5) {
-            // Strategy 5
             executeTrade(checkDigitsCondition(lastDigitList, 3, 7, 'less'), 'DIGITUNDER', 7);
         } else if (activeStrategy === 6) {
-            // Strategy 6
             executeTrade(checkDigitsCondition(lastDigitList, 4, 6, 'less'), 'DIGITUNDER', 7);
         }
     };    
